@@ -1,0 +1,194 @@
+/* !!! NOTE : Colors, background images and styling of elements are removed from here.
+   This concerns the body itself, the logo and the navigation bar at the top of the page.
+*/
+/* Resetting margin and padding */
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body {
+   /*background-color:rgb(253, 203, 183); */
+   background-color:whitesmoke;
+   /* background-image:linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.9)); */
+   background-attachment:fixed;
+   background-size:cover;
+   font-family:'Times New Roman', Times, serif;
+}
+
+/* Adjusting the content to take 80% of width */
+/* main {
+    margin:auto;
+    width:80%;    
+} */
+
+/* !!!!!!!!!!!!  Navigation bar styling !!!!!!!!!!!!! */
+
+/* Fixing nav bar */
+.sticky {
+    position:sticky;
+    top:0;
+    width:100%;
+}
+
+/* Messing with the logo */
+/* #symbol {
+    width:100%;
+    text-align:center;
+} */
+
+/* Fixing the size of the logo */
+.logo {
+    margin:1% 2%;
+    width:230px;
+    height:150px;
+}
+
+.logo0 {
+    width:300px;
+    height:50px;
+}
+
+/* Adjusting position of home, services etc */
+.flexboxcontainer  {
+    font-family:monospace;
+    background-color:rgba(0,0,0,0.4);
+    background-color:#212a2f;
+    display:flex;
+    align-items:center;
+    font-size:23px;
+
+}
+
+/* Setting size of each part (home, services etc) */
+.flexbox:first-child{
+    padding-left:1%;
+    padding-right:30%;
+}
+.flexbox {
+    font-weight:bold;
+    color:whitesmoke;
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    list-style:none;
+    padding:10px;
+    transition:300ms;
+    text-shadow:1px 1px 2px black;
+}
+.flexbox:hover {
+    font-weight:900;
+    color:brown;
+}
+
+.flexbox::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background:white;
+    transition: width .3s;
+    margin-top:4px;
+}
+.flexbox:hover::after {
+    width:100%;
+}
+.flexbox:first-child:hover::after{
+    width:0;
+}
+
+
+/* !!!!!!!!!!!!!!!! Styling last part of the page !!!!!!!!!!!!!!!*/
+.footer2 {
+    font-weight:900;
+    font-family:monospace;
+    color:white;
+    /* background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,1)); */
+    background-color:black;
+    text-align:center;
+}
+
+.footer2 h3 {
+    color:rgba(255,255,255,0.4);
+    font-size:23px;
+    margin-top:5%;
+    margin-bottom:2%;
+}
+
+.footer2 a, .footer2 p {
+    color:white;
+    font-size:16px;
+    transition:300ms;
+}
+.footer2 a {
+    text-decoration:underline;
+    font-weight:900;
+}
+
+.footer2 a:hover {
+    color:lightseagreen;
+    transition:300ms;
+}
+
+.footer2 hr {
+    color:rgba(0,0,0,0.3);
+    width:80%;
+    margin: 2% auto 2% auto;
+}
+
+.footer2 br {
+    display:block;
+    margin:2%;
+}
+
+/* Changing the display of footer2 to grid */
+.parent {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .div1 { grid-area: 1 / 1 / 2 / 2; }
+    .div2 { grid-area: 1 / 2 / 2 / 3; }
+    .div3 { grid-area: 1 / 3 / 2 / 4; }
+    .div4 { grid-area: 1 / 4 / 2 / 5; }
+    .div5 { grid-area: 2 / 2 / 3 / 4; }
+        
+/* Making it phone friendly */
+
+@media only screen and (max-width:600px) {
+    .flexboxcontainer {
+        font-size:15px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+    .flexbox {
+        padding:6px;
+        flex:none;
+        width:100%;
+    }
+    .flexbox:first-child{
+        order:-1; /* Making sure that logo stays at the top */
+        padding:10px;
+    }
+}
+@media only screen and (min-width:600px) and (max-width:1200px) {
+    .flexboxcontainer {
+        font-size:18px;
+        flex-wrap:wrap;
+        justify-content:space-evenly;
+    }
+    .flexbox {
+        flex:none;
+    }
+    .flexbox:first-child {
+        width:100%;
+        padding:0;
+        order:-1;   
+    }
+    .flexbox:hover {
+        font-weight:none;
+    }
+}

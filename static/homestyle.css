@@ -1,0 +1,552 @@
+/* The idea here is to specify a different background for each part, so I took it off the body element */
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+   /* background-color:rgb(253, 203, 183); */
+   margin:auto;
+   font-family:'Times New Roman', Times, serif;
+   color:rgba(0,0,0,0.7);
+   color:whitesmoke;
+   text-align:center;
+}
+
+.sticky {
+    z-index:99999999999;
+}
+
+
+/* Adding some shadow to text */
+h1, h2, p {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9); 
+}
+
+
+/* Styling the first header */
+
+.first-header {
+    z-index:999;
+    background-image:url(/static/images/images-testing/1most-beautiful.png);
+    width:100vw;
+    height:100vh;
+    background-attachment:scroll;
+    background-size:cover;
+    background-position:bottom;
+}
+
+
+/* Setting up the first image to show up once user enters site */
+
+#first, #first-h1 {
+    animation:FadeIn 5s forwards;
+}
+#first-h1 {
+    position:absolute;
+    width:30%;
+    padding:4%;
+    z-index:100;
+}
+#second-h1 {
+    position:absolute;
+    left:75%;
+    top:50%;
+    padding:4%;
+    opacity:0;
+    animation:FadeIn 3s ease-in 1500ms forwards;
+}
+#third-h1, #fourth-h1 {
+    position:absolute;
+    top:80%;
+    left:2%;
+    /* opacity:0;
+    animation:FadeIn 3s linear 5s forwards; */
+}
+#fourth-h1 {
+    left:75%;
+    /* animation:FadeIn 3s linear 4s forwards; */
+}
+#first {
+    width:100vw;
+    height:120vh;
+}
+
+
+/* Scroll down to next section button */
+#down0 {
+    position:absolute;
+    top:80%;
+    left:48%;
+    opacity:0;
+    animation:FadeIn 1s ease-in 2s forwards, arrowAnimation 3s ease-in-out 2s infinite;
+    padding-bottom:3%;
+}
+
+#down0, #down1:hover{
+    cursor:pointer;
+} 
+
+#down1 {
+    margin:1%;
+    width:48px;
+    height:24px;
+}
+
+/* Setting up the first slider that showcases Morocco */
+.slider0-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; 
+    overflow: hidden;
+    z-index:999999999999;
+}
+
+.slider0-images {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slider0-text {
+    background-color:rgba(0,0,0,0.5);
+    color:whitesmoke;
+    line-height:4vh;
+    font-size:22px;
+    padding:5%;
+    padding-bottom:2%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:99;
+}
+.slider0-text p {
+    /* Adding some styling through borders */
+    border-left:2px solid rgba(255, 255, 255, 0.3);
+    border-right:2px solid rgba(255, 255, 255, 0.3);
+    padding:1%;
+}
+.slider0-text hr {
+    color:rgba(0,0,0,0.7);
+    width:50%;
+    margin:auto;
+}
+
+.welcome {
+    display:block;
+    color:white;
+    font-size:3vw;
+    margin:3%;
+}
+
+.welcome:last-child {
+    margin:2%;
+}
+
+.slider0-image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.slider0-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.slider0-image:first-child {
+    opacity: 1;
+}
+
+
+/* Specifying the background for what once was the home page */
+#home-main {
+    position:relative;
+    /* background-image:url(/images/background-images/2-mostbeautiful.png);
+    background-attachment:fixed;
+    background-size:cover;
+    background-position:top; */
+}
+
+/* Styling the hrs of the second slider */
+#hrx, #hry, #hrz {
+    left:46vw;
+    position:absolute;
+    z-index:999;
+    color:rgba(255, 255, 255, 0.3);
+}
+#hrx {
+    top:215px;
+    width:9%;
+}
+#hry {
+    top:225px;
+    width:6%;
+    left:47.5vw;
+}
+#hrz {
+    top:235px;
+    width:3%;
+    left:49vw;
+}
+
+/* Style for the slider of paintings */
+
+#paintings-p {
+    background-color:rgba(0,0,0,0.5);
+    color:whitesmoke;
+    line-height:4vh;
+    font-size:22px;
+    padding:5%;
+    padding-bottom:1%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:99;
+}
+#paintings-p p {
+    padding:1%;
+    border-left:2px solid rgba(255, 255, 255, 0.3);
+    border-right:2px solid rgba(255, 255, 255, 0.3);
+}
+.slider-container {
+    background-color:rgb(60,22,46);
+    position: relative;
+    height: 100vh;
+    z-index:999999999999;
+}
+.slider-object {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    /* Setting up the slider */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s; /* Adjust the duration as needed */
+  
+}
+.slider-object.active {
+    opacity: 1;
+    z-index: 1;
+}
+/* Adjusting the dimensions of the image */
+.paintings {
+    display:inline-block;
+    width:75vw;
+    height:100vh;
+}
+/* Adjusting the writings next to the image */
+.slider-object p {
+    color:white;
+    text-align:center;
+}
+/* Adjusting the size of the image's title */
+.title {
+    font-size:4vw;
+}
+/* Adjusting the size of the image's painter */
+.slider-object p .author {
+    font-size:2vw;
+}
+
+h1 {
+    padding-bottom:1%;
+    text-align:center;
+    font-size:50px;
+}
+.first-header h1 {
+    font-style:italic;
+}
+/* Setting up the animations */
+
+/* Adding a fading effect to the slider images */
+@keyframes FadeIn {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+}
+}
+/* Arrow animation */
+@keyframes arrowAnimation {
+    0%, 100% {
+        opacity: 0; /* Start and end with full opacity */
+        transform: translateY(0); /* Start and end at original position */
+    }
+    25%, 75% {
+        opacity: 1; /* Fade out and in during the middle of animation */
+        transform: translateY(20px); /* Move downwards during the middle of animation */
+    }
+}
+
+/* NEW (newer than "home-main" at least) : making a custom header with the same background */
+#explore {
+    background-image:url(/static/images/background-images/2-mostbeautiful.png);
+    width:100%;
+    height:110vh;
+    background-attachment:fixed;
+    background-size:cover;
+    background-position:top;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Displaying the sliders one next to the other */
+.flex {
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+}
+.slider {
+    position: relative;
+    width:500px;
+    height:700px;
+    overflow: hidden;
+    margin:auto;
+}
+
+.slider-image, .slider2-image {
+    width:500px;
+    object-fit:cover; /* This ensures images maintain aspect ratio and fit the container */
+}
+
+.slider-images {
+    display:flex;
+    width:500px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-arrows {
+    position: absolute;
+    top: 50%;
+    left:0%;
+    right:0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-arrow {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+
+/* Styling the first footer of the page */
+.footer1 {
+    font-size:25px;
+    margin:3%;
+    margin-bottom:0%;
+    padding-bottom:2%;
+    text-align:center;
+    background-color: rgba(255, 192, 203, 0.6);
+
+}
+.footer1 h2 {
+    padding:1% 0;
+}
+.footer1 p {
+    padding:1%;
+}
+/* Changing the colors of the link tags (a) */
+#h1-artists a, .footer1 a {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    color:crimson;
+    text-decoration:none;
+    font-weight:900;
+    transition:500ms ease;
+}
+#h1-artists a:visited, .footer1 a:visited {
+    color:crimson;
+}
+#h1-artists a:hover, .footer1 a:hover {
+    color:lightblue;
+    transition:500ms ease;
+}
+
+/* Styling hr lines  */
+hr {
+    color:rgba(0,0,0,0.3);
+    width:80%;
+    margin: 2% auto 2% auto;
+}
+
+
+/* Making the page mobile friendly */
+
+@media only screen and (min-width:300px) and (max-width:500px) {
+    h2, #intro h1, h1 {
+        font-size:23px;
+    }
+    h2 {
+        margin:5% 0;
+    }
+    p {
+        font-size:18px;
+    }
+    .slider, .slider-images, .slider1-image, .slider2-image {
+        width:200px;
+    }
+    #second-h1 {
+        right:2%;
+        top:30%;
+    }
+    #third-h1 {
+        width:50%;
+    }
+
+    #first {
+        width:100%;
+        height:70vh;
+    }
+
+    #down0 {
+        top:70%;
+        left:45%;
+
+    }
+    #down0 {
+        width:20px;
+        height:40px;
+    }
+    #down1 {
+        width:30px;
+    }
+    .slider0-text, #paintings-p {
+        line-height:30px;
+    }
+    .welcome {
+        font-size:9vw;
+    }
+    .paintings {
+        display:block;
+        width:auto;
+        height:auto;
+    }
+    .slider-object {
+        overflow:hidden;
+    }
+
+    #paintings-p {
+        font-size:18px;
+    }
+    #explore h1 {
+        font-size:30px;
+    }
+    .sticky {
+        position:static;
+    }
+    .sticky a {
+        font-size:18px;
+    }
+}
+@media only screen and (min-width:501px) and (max-width:600px) {
+    #intro h1, h1 {
+        font-size:26px;
+    }
+    .slider-images {
+        width:10vw;
+        height:50vh;
+    }
+    .back , .next {
+        padding:5px;
+        width:10vw;
+        height:5vh;
+    }
+    #second-h1 {
+        right:2%;
+        top:25%;
+    }
+    #first {
+        width:125vw;
+        height:100vh;
+    }
+    .slider0-text, #paintings-p {
+        line-height:40px;
+    }
+    .welcome {
+        font-size:35px;
+    }
+    #down1 {
+        margin:3%;
+        width:30px;
+    }
+    #explore h1 {
+        font-size:34px;
+    }
+    .sticky {
+        position:static;
+    }
+    .sticky a {
+        font-size:23px;
+    }
+}
+@media only screen and (min-width:601px) and (max-width:1001px) {
+    .slider1-image {
+        width:80vw;
+        height:60vh;
+    }
+    h1 {
+        font-size:35px;
+    }
+    #second-h1 {
+        top:30%;
+    }
+    #down0 {
+        left:46%;
+        top:70%;
+    }
+    .back , .next {
+        padding:75px 14px;
+    }
+    #first {
+        width:100vw;
+        height:120vh;
+    }
+    .slider0-text, #paintings-p {
+        line-height:40px;
+    }
+    .welcome {
+        font-size:37px;
+    }
+    #down1 {
+        margin:3%;
+    }
+    .sticky a {
+        font-size:25px;
+    }
+    .sticky a:hover {
+        font-weight:100;
+    }
+}
+@media only screen and (min-width:1001px) and (max-width:1200px) {
+    h1 {
+        font-size:38px;
+    }
+    #second-h1 {
+        top:10%;
+    }
+    .slider0-text, #paintings-p {
+        line-height:40px;
+    }
+} 
+
+@media only screen and (min-width:1201px) {
+    #second-h1 {
+        top:23%;
+    }
+}

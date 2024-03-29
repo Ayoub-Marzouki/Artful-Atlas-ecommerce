@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
+    <title>{% block title %} {% endblock title %} </title>
+    <link rel="icon" href="{% block icon %} {% endblock icon %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% block cssFilename %} {% endblock cssFilename %}"">  <!--To include the specific style file-->
+    <script defer src="{% block script %}{% endblock script %}"></script>
+
+</head>
+<body>
+    <header class="sticky">
+        <nav class="flexboxcontainer">
+            <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+            <a class="flexbox" href="index.html">Home</a>
+            <a class="flexbox" href="services.html">Services</a>
+            <a class="flexbox" href="contact.html">Contact</a>
+            <a class="flexbox" href="sell.html">Sell</a>
+            <a class="flexbox" href="about.html">About</a>
+            <a class="flexbox" href="artists.html">Artists</a>
+            <a class="flexbox" href="store2.html">Store</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+
+        {% endblock content %}
+    </main>
+
+    <footer class="footer2">
+        <div class="parent">
+            <div class="div1">
+                <h3 class="gridbox">How may we help you?</h3>
+                <p><a href="faqs.html">FAQS</a></p>
+                <br>
+                <p><a href="contact.html">Contact us</a></p> 
+            </div>
+
+            <div class="div2"> 
+                <h3>Learn more</h3>
+                <p>Learn more <a href="about.html">about us</a></p>
+                <br>
+                <p>Learn more about our <a href="artists.html">artists</a></p>
+            </div>
+
+            <div class="div3">
+                <h3>Customer services</h3>
+                <p>Discover our <a href="services.html">services</a></p>
+            </div>
+        <div class="div4">
+            <h3>Shop now</h3>
+            <p>Visit our <a href="store2.html">store</a></p>
+        </div>
+        <div class="div5">
+            <h3>language</h3>
+                <p>English - <a href="">Change</a></p>
+        </div>
+    </div>
+        <br>
+        <br>
+        <p>Copyright &copy; 2024 Artful Atlas. All rights reserved</p>
+        <hr>
+        <a href="index.html"><img class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas Logo"></a>
+    </footer>
+    
+</body>
+</html>
