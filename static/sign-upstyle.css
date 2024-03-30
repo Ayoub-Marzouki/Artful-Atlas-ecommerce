@@ -1,0 +1,68 @@
+body {
+    font-family:sans-serif;
+    text-align:center;
+    background-image:linear-gradient(to bottom,#212a2f,#00415a,#1E5162,#296E85);
+}
+
+main {
+    padding:3%;
+    background-color:whitesmoke;
+    width:40%;
+    margin:3% auto;
+    border-radius:15px;
+}
+
+a:hover {
+    color:lightseagreen;
+    transition:300ms;
+}
+a:visited, a {
+    font-weight:900;
+    color:rgba(0,0,0,0.5);
+    transition:300ms;
+}
+
+/* Styling the form  */
+
+#form {
+    margin:1%;
+}
+#form h1 {
+    font-size:40px;
+    margin:1%;
+}
+
+input {
+    padding:2%;
+    margin:2%;
+    width:300px;
+    height:50px;
+    border:3px solid lightseagreen;
+    border-radius:5px;
+}
+
+#login, #privacy {
+    color:rgba(0,0,0,0.5);
+}
+
+#submit, h4 {
+    width:300px;
+    padding:3%;
+    margin:1%;
+    display:inline-block;
+    font-weight:900;
+    font-size:15px;
+    color:whitesmoke;
+    background-color:lightseagreen;
+    border:1px solid rgba(0,0,0,0.5);
+    border-radius:5px;
+}
+#submit:hover, h4:hover {
+    cursor:pointer;
+}
+
+.hr {
+    margin:2% auto 1% auto;
+    width:50%;
+    color:rgba(0,0,0,0.5);
+}
