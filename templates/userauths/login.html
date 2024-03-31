@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'loginstyle.css' %}">
+    <link rel="icon" href="images/logos-images/logo.png" type="image/x-icon">
+    <title>Log in</title>
+</head>
+<body>
+    <main>
+        <img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas">
+        <header id="form">
+            <h1>Log in to Artful Atlas</h1>
+            <p id="sign-up">New to Artful Atlas? <a href="sign-up.html">Sign up</a></p>
+            <form action="" method="post">
+                {% csrf_token %} 
+                <input type="email" required name="email" placeholder="Email">
+                <br>
+                <input type="password" required name="password" placeholder="Password">
+                <br>
+                <input type="checkbox" name="Remember me" id="remember" value="remember">
+                <label for="remember">Remember me</label> &nbsp;
+                <a href="#">Forgot password?</a>
+                <button id="submit" type="submit">Log in</button>
+            </form>
+
+            <hr class="hr">
+            <p>Or</p>
+
+            <header id="social-media">
+                <h4>Continue with Facebook</h4>
+                <h4>Continue with Google</h4>
+                <h4>Continue with Instagram</h4>
+            </header>
+        </header>
+
+        <p id="privacy">Your personal data will be used to enhance your experience throughout this website, to manage access to your account, and for other purposes. Learn more in our <a href="#">privacy policy</a>.</p>
+    </main>    
+</body>
+</html>
