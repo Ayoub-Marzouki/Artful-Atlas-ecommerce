@@ -61,14 +61,9 @@ body {
 }
 
 /* Setting size of each part (home, services etc) */
-.flexbox:first-child{
-    padding-left:1%;
-    padding-right:30%;
-}
 .flexbox {
     font-weight:bold;
     color:whitesmoke;
-    flex:1;
     text-align:center;
     text-decoration:none;
     list-style:none;
@@ -95,6 +90,37 @@ body {
 }
 .flexbox:first-child:hover::after{
     width:0;
+}
+
+/* Account's other links */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #212a2f;
+    z-index: 1;
+}
+
+.dropdown-content a, .dropdown a {
+    color: whitesmoke;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+    transition: color 300ms;
+}
+
+.dropdown-content a:hover {
+    background-color: #343a40;
+    color:lightseagreen;
+    transition:300ms;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
 

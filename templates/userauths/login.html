@@ -16,7 +16,7 @@
         <img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas">
         <header id="form">
             <h1>Log in to Artful Atlas</h1>
-            <p id="sign-up">New to Artful Atlas? <a href="sign-up.html">Sign up</a></p>
+            <p id="sign-up">New to Artful Atlas? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>
             <form action="" method="post">
                 {% csrf_token %} 
                 <input type="email" required name="email" placeholder="Email">
