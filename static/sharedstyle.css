@@ -16,6 +16,10 @@ body {
    font-family:'Times New Roman', Times, serif;
 }
 
+#messages {
+    float:left;
+}
+
 /* Adjusting the content to take 80% of width */
 /* main {
     margin:auto;

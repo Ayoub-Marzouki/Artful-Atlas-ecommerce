@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.conf import settings
+# from userauths.models import User
 
 User = settings.AUTH_USER_MODEL
 
@@ -39,18 +40,16 @@ def login_view(request):
 
         try:
             user = User.object.get(email=email)
-
         except:
             messages.warning(request,f"No user with {email} exists. Try again?")
+    user = authenticate(request,email=email,password=password)
 
-        user = authenticate(request,email=email,password=password)
-
-        if user is not None:
+    if user is not None:
             login(request,user)
             messages.success(request,"Success! You are logged in.")
             return redirect("home:index")
-        else:
-            messages.warning(request,"User does not exist. Try signing up?")
+    else:
+        messages.warning(request,"User does not exist. Try signing up?")
     
     return render(request,"userauths/login.html")
 
