@@ -1,17 +1,6 @@
 {% load static %}
 
 
-{% if form.errors %}
-  <ul>
-    {% for error in form.errors %}
-      <li>{{ error }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,29 +9,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
     <link rel="stylesheet" href="{% static 'sign-upstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
+    <script src="{% static 'messagesjs.js' %}" defer></script>
     <link rel="icon" href="images/logos-images/logo.png" type="image/x-icon">
     <title>Sign up</title>
 </head>
+
 <body>
+    <!-- Handling the login / sign-up / etc messages -->
+    {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="message" data-tags="{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <main>
-        <img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas">
+      <a href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas"></a>
         <header id="form">
             <h1>Create an Account</h1>
             <p id="login">Already have an account? <a href="{% url 'userauths:login' %}">Login</a></p>
 
-            <!-- <input type="text" placeholder="Username">
-            <br>
-            <input type="email" placeholder="Email">
-            <br>
-            <input type="password" placeholder="Password">
-            <br>
-            <input type="text" placeholder="Confirm Password"> -->
             <form action="" method="post">
                 {% csrf_token %}
                 {{form.username}}
                 {{form.email}}
                 {{form.password1}}
-                {{form.password2}}
+                {{form.passwordConfirmation}}
                 <p>Select one of the options :</p>
 
                 <p>+ I'm an Art Enthusiast</p>

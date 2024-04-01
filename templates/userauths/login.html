@@ -8,12 +8,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
     <link rel="stylesheet" href="{% static 'loginstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
     <link rel="icon" href="images/logos-images/logo.png" type="image/x-icon">
+    <script src="{% static 'messagesjs.js' %}" defer></script>
     <title>Log in</title>
 </head>
 <body>
+    <!-- Handling the login / sign-up / etc messages -->
+    {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="message" data-tags="{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <main>
-        <img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas">
+        <a href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas"></a>
         <header id="form">
             <h1>Log in to Artful Atlas</h1>
             <p id="sign-up">New to Artful Atlas? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>

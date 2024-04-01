@@ -6,14 +6,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
     <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
-    <title>{% block title %} {% endblock title %} </title>
     <link rel="icon" href="{% block icon %} {% endblock icon %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% block cssFilename %} {% endblock cssFilename %}"">  <!--To include the specific style file-->
+    <link rel="stylesheet" href="{% block cssFilename %} {% endblock cssFilename %}">  <!--To include the specific style file-->
     <script defer src="{% block script %}{% endblock script %}"></script>
-
+    <script src="{% static 'messagesjs.js' %}" defer></script>
+    <title>{% block title %} {% endblock title %} </title>
 </head>
 <body>
+    <!-- Handling the login / sign-up / etc messages -->
+    {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="message" data-tags="{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <header class="sticky">
         <nav class="flexboxcontainer">
             <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
@@ -38,8 +50,6 @@
             </div>
         </nav>
     </header>
-
-    
 
     <main>
         {% block content %}
