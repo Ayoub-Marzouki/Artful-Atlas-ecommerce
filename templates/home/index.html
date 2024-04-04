@@ -10,74 +10,88 @@
 
 {% block script %} /static/homejs.js {% endblock script %}
 
-
+{% block header %}
+&nbsp;
+{% endblock header %}
 {% block content %}
-<header class="first-header">
+<header id="header-0">
+    <div>
+        <h1>Artful Atlas</h1>
+        <h2>Welcome to Artful Atlas - your gateway to a world of Moroccan art and culture. Explore our diverse collection and experience the beauty of Moroccan artworks.</h2>
+        <h2 id="down00">Explore</h2>
+    </div>
+    <img src="{% static 'images/paintings/elderly-riad.png' %}" alt="">
+</header>
+
+<header id="selection" class="first-header">
     <!-- <h1 id="first-h1">Stare at her enough...</h1> -->
     <!-- <img id="first" src="{% static 'images/images-testing/1most-beautiful.png' %}" alt="Image of a young lady"> -->
     <!-- <h1 id="second-h1">And it starts to look Alive </h1> -->
-    <h1 id="third-h1">Selection of the month.</h1>
+    <h1 id="third-h1">Selection of the month</h1>
     <h1 id="fourth-h1">-Mehdi Ragani</h1>
-<img id="down0" src="{% static 'images/arrows/down.png' %}" alt="Scroll-Down">
+    <img id="down0" src="{% static 'images/arrows/down.png' %}" alt="Scroll-Down">
 </header>
 
-
-<header class="slider0-container" id="moroccan-slider">
-    <div class="slider0-images">
-        <div class="slider0-text">
-            <p> <span class="welcome">It goes without saying</span> <br> that Moroccan culture and art are incredibly rich, reflecting a blend of influences from various civilizations over the centuries. From bustling markets to intricate architecture, Morocco exudes a unique charm. Its art, including stunning architecture, vibrant textiles, and intricate metalwork, preserves the essence of Moroccan identity.
-            </p>
-            <img id="down1" src="{% static 'images/arrows/white-down.png' %}" alt="Scroll-Down">
-            <hr>
+<header id="nav" class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <a class="flexbox" href="index.html">Home</a>
+        <a class="flexbox" href="services.html">Services</a>
+        <a class="flexbox" href="contact.html">Contact</a>
+        <a class="flexbox" href="sell.html">Sell</a>
+        <a class="flexbox" href="about.html">About</a>
+        <a class="flexbox" href="artists.html">Artists</a>
+        <a class="flexbox" href="store2.html">Store</a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'userauths:logout' %}">Log out</a>
+                {% else %}
+                <a href="{% url 'userauths:login' %}">Login</a>
+                {% endif %}
+            </div>
         </div>
-        <div class="slider0-image-container">
-            <img class="slider0-image" src="{% static 'images/slider0/morocco3.jpg' %}" alt="">
-            <img class="slider0-image" src="{% static 'images/slider0/morocco2.jpg' %}" alt="">
-            <img class="slider0-image" src="{% static 'images/slider0/morocco4.jpg' %}" alt="">
-            <img class="slider0-image" src="{% static 'images/slider0/morocco5.jpg' %}" alt="">
-            <img class="slider0-image" src="{% static 'images/slider0/morocco1.jpg' %}" alt="">
-        </div>
-    </div>
+    </nav>
 </header>
 
+<header id="intro1">
+    <br><br>
+    <h1>Exclusive Artworks</h1>
+    <figure>
+      <img id="intro2" class="animate" src="{% static 'images/paintings/souq.jpg' %}" alt="">
+      <span class="larger">Dive deeper into the world of art collecting with our <a href="store2.html">limited edition Exclusive Artworks</a>. Explore the depths of creativity and discover the perfect piece to elevate your space.</span>
+      <img id="intro3" class="animate" src="{% static 'images/paintings/souq2.png' %}" alt="">
+      <img id="intro4" class="animate" src="{% static 'images/paintings/city2.jpg' %}" alt="">
+    </figure>
+  </header>
 
-<header id="home-main">
-    <div id="paintings-p">
-        <p><span class="welcome">Our job</span> is to extend Moroccan identity even further to reach the whole world, through featuring young Moroccan talents that thrive on depicting their origins in their own unique way. <hr id="hrx"> <hr id="hry"> <hr id="hrz"> 
-        </p>
-    </div>
-    
-    <header class="slider-container" id="paintings-slider">
-        <div class="slider-object active">
-                <img class="paintings" src="{% static 'images/paintings/woman1.jpg' %}" alt="Moroccan Woman">
-                <p class="title"> <span style="color:darkred">Moroccan</span> <span style="color:darkgreen">Proud</span> <span style="color:pink">Woman</span> <br> <span class="author">- Mehdi Ragani</span> </p>
-            </div>
-            <br>
-            <div class="slider-object">
-                <img class="paintings" src="{% static 'images/paintings/alley1.jpg' %}" alt="Moroccan Alley">
-                <p class="title"> Moroccan Alley <br> <span class="author">- Mehdi Ragani</span> </p>
-            </div>
-            <div class="slider-object">
-                <img class="paintings" src="{% static 'images/paintings/door1.jpg' %}" alt="Moroccan Alley">
-                <p class="title"> Door at the Old Medina <br> <span class="author">- Mehdi Ragani</span> </p>
-            </div>
-            <div class="slider-object">
-                <img class="paintings" src="{% static 'images/paintings/door2.jpg' %}" alt="Moroccan Alley">
-                <p class="title"> Door at the Old Medina <br> <span class="author">- Mehdi Ragani</span> </p>
-            </div>
-            <div class="slider-object">
-                <img class="paintings" src="{% static 'images/paintings/home1.jpg' %}" alt="Moroccan Alley">
-                <p class="title"> Old Medina <br> <span class="author">- Mehdi Ragani</span> </p>
-            </div>
-    </header>
-
-</header>
-
-<header id="explore">
+<!-- <header id="explore">
     <h1>And so, we leave you to explore our <span style="color:lightskyblue">Artful Atlas!</span></h1>
-</header>
+</header> -->
 
-<br><br>
+<header id="featured-products">
+    <br><br>
+    <h1>Featured Products</h1>
+    <span class="larger">Enjoy our collection of standout <a href="store2.html">Featured Products</a>, each chosen for its exceptional quality and artistic merit. These handpicked pieces offer a touch of elegance for any space. Find your next statement artwork and elevate your surroundings with timeless beauty.</span>
+    <section class="flex0">
+        <div>
+            <span class="larger">- Artist Name</span>
+            <img class="featured-product" src="{% static 'images/paintings/door2.jpg' %}" alt="Front Door">
+        </div>
+        <div>
+            <img class="featured-product" src="{% static 'images/paintings/city1.jpg' %}" alt="A view from the balcony">
+            <span class="larger">- Artist name</span>
+        </div>
+        <div>
+            <span class="larger">- Artist name</span>
+            <img class="featured-product" src="{% static 'images/paintings/home1.jpg' %}" alt="Home sweet home">
+        </div>
+    </section>
+    <br><br><br><br><br><br>
+</header>
 
 <header class="flex">
     <header id="slider1" class="slider">
@@ -89,16 +103,14 @@
             <img class="slider-image" src="{% static '/images/images-testing/5.jpg' %}" alt="Image 5">
             <img class="slider-image" src="{% static '/images/images-testing/6.webp' %}" alt="Image 6" width="600">
         </div>
-        <div class="slider-arrows">
+        <!-- <div class="slider-arrows">
             <img class="slider-arrow left-arrow" src="{% static '/images/arrows/left.png' %}" alt="Previous">
             <img class="slider-arrow right-arrow" src="{% static '/images/arrows/right.png' %}" alt="Next">
-        </div>
+        </div> -->
     </header> 
-
-    <h1 id="h1-artists">More about our  <a href="artists.html">artists</a></h1>
-
+    
     <header id="slider2" class="slider">
-        <h1>A glimpse of their work</h1>
+        <h1>Their touch</h1>
         <div class="slider-images">
             <img class="slider2-image" src="{% static 'images/images-testing/second-type/1.jpeg' %}">                    
             <img class="slider2-image" src="{% static 'images/images-testing/second-type/2.jpeg' %}">
@@ -113,11 +125,16 @@
             <img class="slider2-image" src="{% static 'images/images-testing/second-type/11.jpeg' %}">
             <img class="slider2-image" src="{% static 'images/images-testing/second-type/12.jpeg' %}">
         </div>
-        <div class="slider-arrows">
+        <!-- <div class="slider-arrows">
             <img class="slider-arrow left-arrow" src="{% static '/images/arrows/left.png' %}" alt="Previous">
             <img class="slider-arrow right-arrow" src="{% static '/images/arrows/right.png' %}" alt="Next">
-        </div>
+        </div> -->
     </header>
+</header>
+
+<header id="discover-artists">
+    <span class="larger">Discover a curated collection of captivating artworks by Moroccan talented artists. From mesmerizing paintings to exquisite landscapes, explore diverse expressions of creativity that inspire and enrich. Dive into our artists' corner and find the perfect piece to elevate your space.</span>
+    <h1 id="h1-artists">More about our  <a href="artists.html">artists</a></h1>
 </header>
 
 <br><br>
@@ -126,13 +143,4 @@
 <hr>
 <h1>Ratings</h1>
 <hr>
-
-<!-- <footer class="footer1">
-    <h2>Discover More</h2>
-    <p>Discover our array of offerings: delve into our <a href="services.html">services</a> to uncover our current offerings, or explore our <a href="about.html">about us</a> section to gain insight into our identity and values.</p>
-    <p>Visit our <a href="store2.html">shop</a> for exquisite paintings, or reach out via our <a href="contact.html">contact</a> page for inquiries and collaborations. Don't miss our inspiring <a href="artists.html">artists!</a></p>
-</footer> -->
-
-</header>
-
 {% endblock content %}
