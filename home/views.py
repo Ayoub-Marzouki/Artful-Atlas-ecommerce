@@ -1,7 +1,34 @@
 from django.shortcuts import render
-from django.http import HttpResponse  # manually imported it to use it in index view
+from home.models import Technique, Style, Product
 
-# Create your views here.
+
 def index(request):
-    # return HttpResponse("meow")
     return render(request,'home/index.html')
+
+
+def product_list_view(request):
+    products = Product.objects.filter(product_status = "published")
+    
+    context = {
+        "products":products
+    }
+    return render(request,'store/store.html', context)
+
+
+def technique_list_view(request):
+    techniques = Technique.objects.all()
+    
+    context = {
+        "techniques":techniques
+    }
+    return render(request,'home/')
+
+def style_list_view(request):
+    styles = Style.objects.all()
+    
+    context = {
+        "styles":styles
+    }
+    return render(request,'home/')
+
+

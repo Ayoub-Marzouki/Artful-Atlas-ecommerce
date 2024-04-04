@@ -1,0 +1,39 @@
+{% extends 'partials/base.html' %}
+
+{% load static %} 
+
+{% block title %} Store {% endblock title %}
+
+{% block cssFilename %} /static/storestyle.css {% endblock cssFilename %}
+
+{% block script %} /static/storejs.js {% endblock script %}
+
+{% block content %}
+<div id="message-container">Item added!</div>
+<h1>Artworks</h1>
+<div class="cart">
+    <img src="{% static 'images/icons/cart.png' %}" alt="cart icon" width="30" height="30">
+    <span class="cart-word">Cart</span>
+    <span id="cart-counter">0</span>
+</div>
+
+
+<header class="store">
+    {% for p in products %}
+        <figure>
+            <a href="/storedetails/{{ p.pid }}.html">
+                {% if p.image %}
+                    <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
+                {% endif %}
+            </a>
+            <p class="view-more"><a href="/storedetails/{{ p.pid }}.html" target="_blank">View More</a></p>
+            <p>{{ p.title }}</p>
+            <p>{{ p.price }} dh</p>
+            <p> By {{p.user}} </p>
+            <p>Technique : {{p.technique}} || Style : {{p.style}} </p>
+            <p class="cart-button">Add To Cart</p>
+        </figure>
+    {% endfor %}
+</header>
+ 
+{% endblock content %}

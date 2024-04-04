@@ -4,8 +4,6 @@
 
 {% block title %} Home {% endblock title %}
 
-{% block icon %} /static/images/logos-images/logo.png {% endblock icon %}
-
 {% block cssFilename %} /static/homestyle.css {% endblock cssFilename %}
 
 {% block script %} /static/homejs.js {% endblock script %}
@@ -34,14 +32,14 @@
 
 <header id="nav" class="sticky">
     <nav class="flexboxcontainer">
-        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
-        <a class="flexbox" href="index.html">Home</a>
+        <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <a class="flexbox" href="{% url 'home:index' %}">Home</a>
         <a class="flexbox" href="services.html">Services</a>
         <a class="flexbox" href="contact.html">Contact</a>
         <a class="flexbox" href="sell.html">Sell</a>
         <a class="flexbox" href="about.html">About</a>
         <a class="flexbox" href="artists.html">Artists</a>
-        <a class="flexbox" href="store2.html">Store</a>
+        <a class="flexbox" href="store">Store</a>
         <div class="flexbox dropdown">
             <a>Account</a>
             <div class="dropdown-content">

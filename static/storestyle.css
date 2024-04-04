@@ -1,0 +1,177 @@
+/* Messing with background color, and font family of text */
+body {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    text-align:center;
+    font-size:larger;
+    color:rgba(0,0,0,0.7);
+}
+
+/* 
+#background {
+    position:fixed;
+    z-index:-1;
+    width:100vw;
+    height:100vh;
+}
+*/
+
+/* Resizing width of main to 100% */
+main {
+    width:100%;
+}
+
+/* Making the nav bar stay right where it is */
+/* .sticky {
+    position:relative;
+} */
+
+/* Setting some space between "Artworks" and "Featured products " */
+h1 {
+    margin-top:3%;
+}
+
+/* Styling the cart icon and whatnot */
+.cart {
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    position:sticky;
+    top:5%;
+    padding-right:2%;
+
+}
+.cart-word {
+    background-color:azure;
+    border-right:3px solid rgba(0, 0, 0, 0.4);
+    border-radius:50%;
+    padding-left:1%;
+    padding-right:1%;
+}
+#cart-counter {
+    background-color:azure;
+    padding:0 1%;
+    border-radius:25%;
+}
+
+/* Styling the store; centering the images and showing 3 per row*/
+.store {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10%;
+}
+.store-images {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.4), 10px 10px 10px rgba(0,0,0,0.4);
+    width:300px;
+    height:300px;
+    transition:300ms;
+    /*
+    border:26px solid;
+    border-image:url(images/frame.png) 10% round;
+    */
+    margin-bottom:3%;
+    
+}
+ 
+/* Will probably adjust this more */
+.store-images:hover {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.2), 10px 10px 10px rgba(0,0,0,0.2);
+    border-width:30px; 
+    transition:300ms;
+    /* Thinking about changing the image, same image from a different angle */
+} 
+
+
+/* Messing with the style of whatever will be written*/
+.store figure {
+    font-size:18px;
+    margin:2%;
+}
+.store figure p {
+    padding:3%;
+}
+
+/* Messing with "Add to Cart */
+.cart-button {
+    color:black;
+    padding:3%;
+    background-color:cornsilk;
+    opacity:0;
+    transition:300ms;
+    
+}
+figure:hover .cart-button {
+    opacity:1;
+    transition:300ms;
+}
+.cart-button:hover {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.3), 10px 10px 10px rgba(0,0,0,0.2);
+    cursor:pointer;
+}
+
+/* Adjusting "View More" and adding some effects */
+.view-more {
+    background-color:rgba(255,255,255,0.7); 
+    width:100%;
+    position:relative;
+    bottom:15%;
+    margin-bottom:-14%;
+    opacity:0;
+    transition:300ms;
+}
+figure:hover .view-more {
+    opacity:1;
+    cursor:pointer;
+    transition:300ms;
+}
+.view-more a {
+    text-decoration:none;
+    color:rgba(0,0,0,0.7);;
+}
+/* Showing a message whenever user clicks on "Add to Cart" */
+#message-container {
+    position: fixed;
+    top:15%;
+    left: 90%;
+    transform: translateX(-50%);
+    background-color:lightseagreen;
+    color:white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index:300;
+}
+
+/* Making the page mobile friendly */
+
+@media only screen and (max-width:600px) {
+    #intro2 {
+        animation:SlideInFromLeft 3s forwards;
+    }
+    #intro3 {
+        animation:InfadeCenter 3s forwards;
+    }
+    #intro4 {
+        animation:SlideInFromRight 3s forwards;
+    }
+    #intro2 , #intro3 , #intro4 {
+        width:30vw;
+        height:50vh;
+    }
+}
+@media only screen and (min-width:600px) and (max-width:1200px) {
+    #intro2 {
+        animation:SlideInFromLeft 3s forwards;
+    }
+    #intro3 {
+        animation:InfadeCenter 3s forwards;
+    }
+    #intro4 {
+        animation:SlideInFromRight 3s forwards;
+    }
+    #intro2 , #intro3 , #intro4 {
+        width:30vw;
+        height:50vh;
+    }
+}

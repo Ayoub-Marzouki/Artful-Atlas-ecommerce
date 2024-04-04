@@ -99,7 +99,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to = user_directory_path)
     description = models.TextField(null = True, blank = True)
     price = models.DecimalField(max_digits=99999, decimal_places=2) # 99999,99
-    old_price = models.DecimalField(max_digits=99999,decimal_places=2) # b7al sold
+    # old_price = models.DecimalField(max_digits=99999,decimal_places=2) # b7al sold
     specifications = models.TextField(null=True, blank = True) 
     product_status = models.CharField(choices = STATUS, max_length=10,default = "In review")
     status =models.BooleanField(default = True)
@@ -129,9 +129,9 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
-    def get_discount(self):
-        new_price = (self.price / self.old_price) * 100
-        return new_price
+    # def get_discount(self):
+    #     new_price = (self.price / self.old_price) * 100
+    #     return new_price
 
 
 class ProductImages(models.Model):
