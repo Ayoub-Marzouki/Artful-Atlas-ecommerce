@@ -1,48 +1,54 @@
 from django.contrib import admin
-
+from django.utils.html import format_html
 from home.models import Technique, Style, Artist, Tags, Product, ProductImages, CartOrder, CartOrderItems, ProductReview, WishList, Address
+
+
+def display_image(obj):
+    if obj.image:
+        return format_html('<img src="{}" style="width: 130px; height: auto;" />', obj.image.url)
+    else:
+        return "No Image"
+
+display_image.short_description = 'Image'
 
 class ProductImagesAdmin(admin.TabularInline):
     model = ProductImages
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin]
-    list_display = ['user', 'title', 'product_image', 'price', 'featured', 'product_status']
+    list_display = ['user', 'title', display_image, 'price', 'featured', 'product_status']
 
 class StyleAdmin(admin.ModelAdmin):
-     list_display = ['title', 'style_image']
+    list_display = ['title', display_image]
 
 class TechniqueAdmin(admin.ModelAdmin):
-     list_display = ['title', 'technique_image']
+    list_display = ['title', display_image]
 
 class ArtistAdmin(admin.ModelAdmin):
-     list_display = ['title', 'artist_image']
+    list_display = ['name', 'city', display_image]
 
 class CartOrderAdmin(admin.ModelAdmin):
-     list_display = ['user', 'price','paid_status','order_date', 'product_status']
+    list_display = ['user', 'price','paid_status','order_date', 'product_status']
 
 class CartOrderItemsAdmin(admin.ModelAdmin):
-     list_display = ['order', 'invoice_no','item','image', 'quantity', 'price', 'total']
+    list_display = ['order', 'invoice_no','item','image', 'quantity', 'price', 'total']
 
 class ProductReviewAdmin(admin.ModelAdmin):
-     list_display = ['user', 'product','review','rating']
+    list_display = ['user', 'product','review','rating']
 
 class WishListAdmin(admin.ModelAdmin):
-     list_display = ['user', 'product', 'date']
+    list_display = ['user', 'product', 'date']
 
 class AddressAdmin(admin.ModelAdmin):
-     list_display = ['user', 'address','address_status']
+    list_display = ['user', 'address','address_status']
 
-
-# admin.site.register(Tags,TagsAdmin)
-admin.site.register(Technique,TechniqueAdmin)
-admin.site.register(Style,StyleAdmin)
-admin.site.register(Artist,ArtistAdmin)
-admin.site.register(Product,ProductAdmin)
-# admin.site.register(ProductImages,ProductImagesAdmin)
-# We commented the line above because Django will automatically display the ProductImages related to a Product in the ProductAdmin page.
-admin.site.register(CartOrder,CartOrderAdmin)
-admin.site.register(CartOrderItems,CartOrderItemsAdmin)
-admin.site.register(ProductReview,ProductReviewAdmin)
-admin.site.register(WishList,WishListAdmin)
-admin.site.register(Address,AddressAdmin)
+# Register models with their corresponding admin classes
+admin.site.register(Technique, TechniqueAdmin)
+admin.site.register(Style, StyleAdmin)
+admin.site.register(Artist, ArtistAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(CartOrder, CartOrderAdmin)
+admin.site.register(CartOrderItems, CartOrderItemsAdmin)
+admin.site.register(ProductReview, ProductReviewAdmin)
+admin.site.register(WishList, WishListAdmin)
+admin.site.register(Address, AddressAdmin)

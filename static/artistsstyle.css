@@ -1,0 +1,216 @@
+/* Adjusting the width of the page, and the size of the text. */
+main {
+    width:100%;
+    font-size:19px;
+}
+
+.sticky {
+    z-index:999;
+}
+/* Centering specific text */
+.center {
+    text-align:center;
+    margin-top:3%;
+}
+
+/*                 Styling the filter section                */
+
+/* Making the 'Search for an artist' clickable visually */
+#filter-header {
+    transition:300ms;
+    padding:1%;
+    display:flex;
+    gap:1%;
+}
+#filter-header:hover {
+    cursor:pointer;
+    color:lightseagreen;
+    transition:300ms;
+}
+
+/* Making the filters initially unvisible through max-height + overflow */
+#drop-content {
+    display:flex;
+    flex-wrap:wrap;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+/* Forcing the filters to take equal space */
+#drop-content div {
+    flex:1;
+}
+
+/* Adding some space to the container of the filter */
+#filter {
+    padding: 2%;
+    margin-bottom: 3%;
+}
+
+/* Styling "Search for an artist..." */
+
+#filter-header {
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#filter-header:hover, #artists-link:hover {
+    color: #008080; /* Lightseagreen */
+}
+
+/* Making the filter box invisible through max-height + overflow */
+
+#drop-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+/* Styling the filters' types */
+
+#drop-content p {
+    color:lightseagreen;
+    font-weight: bold;
+    margin:2%;
+    text-align:center;
+}
+
+#artists-link {
+    color:black;
+    text-decoration:none;
+    transition: color 0.3s ease;
+}
+
+/* Stlying the input (Artist's name..) */
+
+#drop-content input[type="text"] {
+    border:10px solid skyblue;
+    background-color:skyblue;
+    width:90%;
+    height:40px;
+    border-radius:15px;
+    padding:2%;
+    margin:2%;
+}
+
+/* Stlying and Adding some space for the filters' names */
+
+#drop-content input[type="text"], #drop-content ul {
+    margin-bottom: 10px;
+}
+
+#drop-content ul li {
+    border-radius:10px;
+    list-style: none;
+    padding:3%;
+    text-align:center;
+    transition:300ms;
+    color:rgba(0,0,0,0.8);
+}
+
+#drop-content ul li:hover {
+    background-color:lightblue;
+    cursor: pointer;
+    transition:300ms;
+}
+/* Styling the location filter */
+#location-filter {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#location-input {
+    width: calc(100% - 20px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#selected-locations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.selected-location {
+    background-color: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.selected-location span {
+    margin-right: 5px;
+}
+
+.remove-location {
+    cursor: pointer;
+}
+
+
+/* Styling                    Profiles                         */
+
+#profiles {
+    background-color:lightblue;
+    padding:1%;
+    padding-right:0;
+}
+
+.profile-info {
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.profile-pictures {
+    border-radius:50%;
+    width:130px;
+    height:130px;
+}
+
+.icons {
+    width:25px;
+    height:25px;
+}
+
+.profile-info a {
+    color:black;
+}
+
+/* Adding the fade effect to the artworks */
+.profile-artworks {
+    padding:1%;
+    background-color:#b1f2ffb1;
+    border-radius:10px;
+    display:flex;
+    gap:1%;
+    overflow: hidden; /* Ensure the overflow is hidden to hide the fading effect */
+    position: relative; /* Set position relative to allow absolute positioning of gradient */
+}
+.profile-artworks::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%; /* Adjust the width of the fading effect */
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), lightblue); /* Adjust the gradient color and opacity */
+}
+/* Positionning the "x artworks" to the right center of the artworks section */
+.artworks-link {
+    position: absolute;
+    top: 45%; /* Adjust the vertical position */
+    right: 10px; /* Adjust the horizontal position */
+    color: black;
+    font-weight:600;
+    z-index: 1; /* Ensure the link is above the fading effect */
+}
+
+/* Forcing the height to 300px */
+.artworks {    
+    height:300px;
+    border-radius:5px;
+}

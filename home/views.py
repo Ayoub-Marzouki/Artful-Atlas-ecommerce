@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from home.models import Technique, Style, Product
+from django.shortcuts import render, HttpResponse
+from home.models import Technique, Style, Product, Artist
 
 
 def index(request):
@@ -15,20 +15,34 @@ def product_list_view(request):
     return render(request,'store/store.html', context)
 
 
-def technique_list_view(request):
-    techniques = Technique.objects.all()
-    
+def artist_list_view(request):
+    artists = Artist.objects.all()
     context = {
-        "techniques":techniques
+        "artists": artists,
     }
-    return render(request,'home/')
+    return render(request, "artists/artists.html",context)
 
-def style_list_view(request):
-    styles = Style.objects.all()
-    
+def artist_detail_view(request, aid):
+    artist = Artist.objects.get(aid=aid)
     context = {
-        "styles":styles
+        "artist": artist,
     }
-    return render(request,'home/')
+    return render(request, "artists/artists.html",context)
+
+# def technique_list_view(request):
+#     techniques = Technique.objects.all()
+    
+#     context = {
+#         "techniques":techniques
+#     }
+#     return render(request,'home/')
+
+# def style_list_view(request):
+#     styles = Style.objects.all()
+    
+#     context = {
+#         "styles":styles
+#     }
+#     return render(request,'home/')
 
 

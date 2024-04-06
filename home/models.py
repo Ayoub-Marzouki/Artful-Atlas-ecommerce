@@ -40,20 +40,78 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 
+CITY_CHOICES = [
+    ('Agadir', 'Agadir'),
+    ('Al Hoceima', 'Al Hoceima'),
+    ('Azilal', 'Azilal'),
+    ('Beni Mellal', 'Beni Mellal'),
+    ('Ben Slimane', 'Ben Slimane'),
+    ('Berkane', 'Berkane'),
+    ('Berrechid', 'Berrechid'),
+    ('Boujdour', 'Boujdour'),
+    ('Casablanca', 'Casablanca'),
+    ('Chefchaouen', 'Chefchaouen'),
+    ('Dakhla', 'Dakhla'),
+    ('El Aaiun', 'El Aaiun'),
+    ('El Hajeb', 'El Hajeb'),
+    ('El Jadida', 'El Jadida'),
+    ('Errachidia', 'Errachidia'),
+    ('Essaouira', 'Essaouira'),
+    ('Fes', 'Fes'),
+    ('Figuig', 'Figuig'),
+    ('Guelmim', 'Guelmim'),
+    ('Ifrane', 'Ifrane'),
+    ('Kénitra', 'Kénitra'),
+    ('Khemisset', 'Khemisset'),
+    ('Khénifra', 'Khénifra'),
+    ('Khouribga', 'Khouribga'),
+    ('Laâyoune', 'Laâyoune'),
+    ('Larache', 'Larache'),
+    ('Marrakech', 'Marrakech'),
+    ('Meknès', 'Meknès'),
+    ('Midelt', 'Midelt'),
+    ('Mohammedia', 'Mohammedia'),
+    ('Nador', 'Nador'),
+    ('Ouarzazate', 'Ouarzazate'),
+    ('Ouezzane', 'Ouezzane'),
+    ('Oujda', 'Oujda'),
+    ('Rabat', 'Rabat'),
+    ('Safi', 'Safi'),
+    ('Salé', 'Salé'),
+    ('Sefrou', 'Sefrou'),
+    ('Settat', 'Settat'),
+    ('Sidi Ifni', 'Sidi Ifni'),
+    ('Sidi Kacem', 'Sidi Kacem'),
+    ('Sidi Slimane', 'Sidi Slimane'),
+    ('Skhirat', 'Skhirat'),
+    ('Tan-Tan', 'Tan-Tan'),
+    ('Tanger', 'Tanger'),
+    ('Taza', 'Taza'),
+    ('Tétouan', 'Tétouan'),
+    ('Tinghir', 'Tinghir'),
+    ('Tiznit', 'Tiznit'),
+    ('Youssoufia', 'Youssoufia'),
+]
+
+
 class Artist(models.Model):
     aid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix="artist", alphabet = "abcdefgh123456")
-    title = models.CharField(max_length = 200)
+    name = models.CharField(max_length = 200)
     image = models.ImageField(upload_to = user_directory_path)
+    shortBio=models.TextField(max_length=50)
     description = models.TextField(null = True, blank = True)
-    address = models.CharField(max_length = 200, default = "25 Jump Street ...")
-    chat_resp_time = models.CharField(max_length = 200, default = "Not much!")
-    phone = models.CharField(max_length = 200, default = "06 11 22 33 44")
-    shipping_time = models.CharField(max_length = 200, default = "not much")
-    authentic_rating = models.CharField(max_length = 100, default ="Good")
-    days_return = models.CharField(max_length = 200, default ="100")
+    city = models.CharField(max_length=100, choices=CITY_CHOICES, default="City you live in")
+    address = models.CharField(max_length = 200, default = "25 Jump Street ...", null = True, blank = True)
+    chat_resp_time = models.CharField(null = True, blank = True, max_length = 200, default = "Not much!")
+    phone = models.CharField(null = True, blank = True, max_length = 200, default = "06 11 22 33 44")
+    shipping_time = models.CharField(null = True, blank = True, max_length = 200, default = "not much")
+    authentic_rating = models.CharField(null = True, blank = True, max_length = 100, default ="Good")
+    days_return = models.CharField(null = True, blank = True, max_length = 200, default ="100")
     warranty_period = models.CharField(max_length = 200)
 
-    user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True) # or models.CASCADE if you want to delete the rest of their data (store, products etc)
+    technique = models.ManyToManyField(Technique, blank=True)
+    style = models.ManyToManyField(Style, blank=True)
+    user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     class Meta:
         verbose_name_plural = "Artists"
@@ -62,7 +120,7 @@ class Artist(models.Model):
         return mark_safe('<img src="%s" alt="artist" />' % (self.image.url))
     
     def __str__(self):
-        return self.title
+        return self.name
     
 
     
@@ -99,7 +157,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to = user_directory_path)
     description = models.TextField(null = True, blank = True)
     price = models.DecimalField(max_digits=99999, decimal_places=2) # 99999,99
-    # old_price = models.DecimalField(max_digits=99999,decimal_places=2) # b7al sold
+    # old_price = models.DecimalField(max_digits=99999,decimal_places=2, null=True) # b7al sold
     specifications = models.TextField(null=True, blank = True) 
     product_status = models.CharField(choices = STATUS, max_length=10,default = "In review")
     status =models.BooleanField(default = True)
@@ -109,8 +167,9 @@ class Product(models.Model):
     # The tags, the user, the technique and the style associated with the product
     # tags = models.ForeignKey(Tags, on_delete = models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
-    technique = models.ForeignKey(Technique, on_delete = models.SET_NULL, null=True)
-    style = models.ForeignKey(Style, on_delete = models.SET_NULL, null=True)
+    artist = models.ForeignKey(Artist,on_delete=models.SET_NULL, null=True, related_name="product")
+    technique = models.ManyToManyField(Technique, blank=True)
+    style = models.ManyToManyField(Style, blank=True)
     
     # stock keeping unit; to keep track of stock levels
     sku = ShortUUIDField(unique = True, length = 4, max_length = 20, prefix="sku ", alphabet = "1234567890")

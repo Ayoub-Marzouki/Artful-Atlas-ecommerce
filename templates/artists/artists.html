@@ -1,0 +1,99 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block cssFilename %} /static/artistsstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/artistsjs.js {% endblock script %}
+
+{% block content %}
+    <header class="center">
+        <h1>Artists Haven</h1>
+        <br>
+        <br>
+        <p>Taste the vibrant palette of Morocco with {{artists.count}} Moroccan artists! Immerse yourself in a world of color and creativity.</p>
+    </header>
+
+    <header id="filter">
+        <h3 id="filter-header"> <img class="icons" src="{% static 'images/icons/filter.png' %}" alt=""> Search for an Artist </h3>
+        <section id="drop-content" class="hidden">
+            <div>
+                <p>Name</p>
+                <input type="text" placeholder ="Artist's name..">
+            </div>   
+
+            <div>
+                <p>Techniques used</p>
+                <ul>
+                    <li>Meow technique</li>
+                </ul>
+            </div>
+
+            <div>
+                <p>Styles used</p>
+                <ul>
+                    <li>Meow style</li>
+                </ul>
+            </div>
+
+            <div>
+                <p>Subject Matter</p>
+                <ul>
+                    <li>Landscapes</li>
+                    <li>Portraits</li>
+                    <li>Nature</li>
+                    <li>Animals</li>
+                </ul>
+            </div>
+
+            <div>
+                <p>Artistic philosophy</p>
+                <ul>
+                    <li>Traditional</li>
+                    <li>Experimental</li>
+                    <li>Conceptual</li>
+                    <li>Environmental</li>
+                </ul>
+            </div>
+
+            <div id="location-filter">
+                <p>Location</p>
+                <input type="text" id="location-input" placeholder="Search for a city...">
+                <div id="selected-locations"></div>
+            </div>
+        </section>
+        <!-- <h3 style="text-align:end"><a id="artists-link" href="#">View all Artists</a></h3> -->
+    </header>
+
+    <header id="profiles">
+        {% for a in artists %}
+        <section class="profile-info">
+            <img class="profile-pictures" src="{{ a.image.url }}" alt="Profile picture">
+            &nbsp;
+            <a href="">{{a.name}}</a>
+            &nbsp;&nbsp;
+            <p>69</p> &nbsp;
+            <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
+            &nbsp;&nbsp;
+            <p>{{a.city}}</p> &nbsp;
+            <img class="icons" src="{% static 'images/icons/location.png' %}" alt="Location Icon">
+            &nbsp;&nbsp;
+            <p>Short Bio : &nbsp; </p>
+            <p>{{a.shortBio}}</p>
+        </section>
+        <br>
+        <section class="profile-artworks">
+            {% for p in a.product.all %}
+            <img class="artworks landscape" src="{{p.image.url}}" alt="">
+            {% endfor %}
+            <img class="artworks portrait" src="{% static 'images/paintings/souq2.png' %}" alt="">
+            <img class="artworks landscape" src="{% static 'images/paintings/elderly-riad.png' %}" alt="">
+            <img class="artworks portrait" src="{% static 'images/paintings/city1.jpg' %}" alt="">
+            <img class="artworks portrait" src="{% static 'images/paintings/city1.jpg' %}" alt="">
+            <a href="#" class="artworks-link">{{ a.product.count }} artworks &gt;</a>
+        </section>
+        <br>
+        {% endfor %}
+    </header>
+{% endblock content %}
