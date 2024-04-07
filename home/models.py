@@ -97,9 +97,11 @@ CITY_CHOICES = [
 class Artist(models.Model):
     aid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix="artist", alphabet = "abcdefgh123456")
     name = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to = user_directory_path)
+    image = models.ImageField(upload_to = user_directory_path, default="artist image")
+    profileArtworkImage = models.ImageField(upload_to = user_directory_path, default ="artwork image to be shown in your profile")
     shortBio=models.TextField(max_length=50)
-    description = models.TextField(null = True, blank = True)
+    description = models.TextField(max_length = 300, default = "With an unwavering passion for art, this dedicated enthusiasm aspires to illuminate and enrich the lives of others through the captivating power of creativity...")
+    biography = models.TextField(max_length = 300, default ="Born in xxxx, at 'city', I was always eager to paint....")
     city = models.CharField(max_length=100, choices=CITY_CHOICES, default="City you live in")
     address = models.CharField(max_length = 200, default = "25 Jump Street ...", null = True, blank = True)
     chat_resp_time = models.CharField(null = True, blank = True, max_length = 200, default = "Not much!")

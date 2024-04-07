@@ -27,7 +27,7 @@ def artist_detail_view(request, aid):
     context = {
         "artist": artist,
     }
-    return render(request, "artists/artists.html",context)
+    return render(request, "artists/artist-details.html",context)
 
 # def technique_list_view(request):
 #     techniques = Technique.objects.all()

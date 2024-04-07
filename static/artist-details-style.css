@@ -1,0 +1,180 @@
+body {
+    font-size:x-large;
+} 
+
+/* Styling the profile artwork, and setting up for the profile pic to maintain its position */
+
+#profile-artwork {
+    border-end-end-radius:10px;
+    border-end-start-radius:10px;
+    background-size: cover;
+    background-position:50%;
+    height: 60vh;
+    display: flex;
+    position:relative;
+    cursor:pointer;
+    /* margin-bottom:110px; */    
+}
+
+/* Setting up the profile picture */
+
+.profile-picture {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top:100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border:3px solid rgba(0,0,0,0.5);
+}
+
+/* Setting up media icons, comments and reviews */
+
+#media {
+    margin-bottom:60px;
+}
+
+.flex {
+    display:flex;
+    align-items:center;
+    gap:2%;
+}
+
+.right {
+    float:right;
+}
+
+span {
+    text-shadow:1px 1px rgba(0,0,0,0.4);
+    font-weight:bolder;
+    color:lightseagreen;
+    font-size:larger;
+}
+.right span a {
+    font-weight:500;
+    color:rgba(0, 0, 0, 0.4);
+}
+/* Adjusting the profile information part (number of views, location, etc) */
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-wrap: wrap;
+    font-size: 20px;
+}
+.icons {
+    width:25px;
+    height:25px;
+}
+
+.icons2 {
+    width:40px;
+    height:40px;
+    cursor:pointer;
+    transition:300ms;
+}
+
+#profile-details p {
+    line-height:200%;
+}
+
+/* Displaying artworks just like in store */
+.store {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:5%;
+    text-align:center;
+}
+.store-images {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.4), 10px 10px 10px rgba(0,0,0,0.4);
+    width:300px;
+    height:300px;
+    transition:300ms;
+    width:100%;
+    /* border:5px solid;
+    border-image:url(images/frame.png) 10% round; */
+    margin-bottom:3%;
+    
+}
+ 
+/* Will probably adjust this more */
+.store-images:hover {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.2), 10px 10px 10px rgba(0,0,0,0.2);
+    border-width:30px; 
+    transition:300ms;
+    border-radius:10px;
+    /* border:3px solid;
+    border-image:url(images/frame.png) 10% round; */
+} 
+
+
+/* Messing with the style of whatever will be written*/
+.store figure {
+    font-size:18px;
+    margin:2%;
+}
+.store figure p {
+    padding:3%;
+}
+
+
+/* Messing with "Add to Cart */
+.cart-button {
+    color:black;
+    padding:3%;
+    background-color:cornsilk;
+    opacity:0;
+    transition:300ms;
+    
+}
+figure:hover .cart-button {
+    opacity:1;
+    transition:300ms;
+}
+.cart-button:hover {
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.3), 10px 10px 10px rgba(0,0,0,0.2);
+    cursor:pointer;
+}
+
+/* Adjusting "View More" and adding some effects */
+.view-more {
+    background-color:rgba(255,255,255,0.7); 
+    width:100%;
+    position:relative;
+    bottom:15%;
+    margin-bottom:-14%;
+    opacity:0;
+    transition:300ms;
+}
+figure:hover .view-more {
+    opacity:1;
+    cursor:pointer;
+    transition:300ms;
+}
+.view-more a {
+    text-decoration:none;
+    color:rgba(0,0,0,0.7);;
+}
+
+
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox img {
+    max-width: 80%;
+    max-height: 80%;
+}

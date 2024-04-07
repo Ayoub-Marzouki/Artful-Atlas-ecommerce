@@ -1,0 +1,77 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Details {% endblock title %}
+
+{% block cssFilename %} /static/artist-details-style.css {% endblock cssFilename %}
+
+{% block script %} /static/artist-details-js.js {% endblock script %}
+
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+    <header id="profile-artwork" style="background-image: url('{{ artist.profileArtworkImage.url }}');" data-image-url="{{ artist.profileArtworkImage.url }}">
+        <img class="profile-picture" src="{{ artist.image.url }}" alt="Profile picture">
+    </header>
+
+    <section id="media">
+        <br>
+        <section class="flex">
+            <span>Follow {{artist.name}}</span>
+            <img class="icons2" src="{% static 'images/icons/facebook-icon.png' %}" alt="">
+            <img class="icons2" src="{% static 'images/icons/instagram-icon.png' %}" alt="">
+        </section>
+        <section class="right">
+            <span>Comments & Reviews : <a href="#comments">x</a></span>
+        </section>
+    </section>
+
+    <h1 style="text-align:center"> {{artist.name}} </h1>
+    <br>
+    <section class="profile-info">
+        <p>69</p> &nbsp;
+        <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
+        &nbsp;&nbsp;
+        <p>{{artist.city}}</p> &nbsp;
+        <img class="icons" src="{% static 'images/icons/location.png' %}" alt="Location Icon">
+        &nbsp;&nbsp;
+        <p>Short Bio : &nbsp; </p>
+        <p>{{artist.shortBio}}</p>
+    </section>
+    <br>      
+    <br>
+    <section id="profile-details">
+        <h1>Biography</h1>
+        <br>
+        <p>{{artist.biography}}</p>
+        <br>
+
+        <h1>Description</h1>
+        <br>
+        <p>{{artist.description}}</p>
+        <br>
+        <h1 id="comments">Comments & Reviews</h1>
+        <br>
+        <p>Here goes the comments part</p>
+        <br>
+        <h1>Artworks</h1>
+        <section class="store">
+            {% for p in artist.product.all %}
+            {% if p.product_status == "published" %}
+                <figure>
+                    <a href="/storedetails/1.html">
+                        <img class="store-images" src="{{p.image.url}}" alt="">
+                    </a>
+                <p class="view-more"><a href="/storedetails/1.html" target="_blank">View More</a></p>
+                <p>Past...  The never ending story.</p>
+                <p>149.99 dh</p>
+                <p class="cart-button">Add To Cart</p>
+                </figure>
+            {% endif %}
+            {% endfor %}
+        </section>
+    </section>
+{% endblock content %}
