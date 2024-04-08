@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from django.db.models import Q
 from home.models import Technique, Style, Product, Artist
 
 
@@ -13,6 +14,18 @@ def product_list_view(request):
         "products":products
     }
     return render(request,'store/store.html', context)
+
+
+def product_detail_view(request, pid):
+    product = Product.objects.get(pid=pid)
+    product_images = product.product_images.all()
+    related_products = Product.objects.filter(Q(technique=product.technique) | Q(style=product.style)).exclude(pid=pid)[:10]
+    context = {
+        "product":product,
+        "product_images":product_images,
+        "related_products":related_products,
+    }
+    return render(request, "store/product-details.html",context)
 
 
 def artist_list_view(request):

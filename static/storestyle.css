@@ -21,15 +21,20 @@ main {
 }
 
 /* Making the nav bar stay right where it is */
-/* .sticky {
-    position:relative;
-} */
+.sticky {
+    z-index:9999999999999999999999999999;
+}
 
 /* Setting some space between "Artworks" and "Featured products " */
 h1 {
     margin-top:3%;
 }
-
+.store a {
+    color:black;
+}
+.store a:visited {
+    color:black;
+}
 /* Styling the cart icon and whatnot */
 .cart {
     display:flex;

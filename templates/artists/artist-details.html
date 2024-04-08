@@ -58,20 +58,20 @@
         <p>Here goes the comments part</p>
         <br>
         <h1>Artworks</h1>
-        <section class="store">
-            {% for p in artist.product.all %}
-            {% if p.product_status == "published" %}
-                <figure>
-                    <a href="/storedetails/1.html">
-                        <img class="store-images" src="{{p.image.url}}" alt="">
-                    </a>
-                <p class="view-more"><a href="/storedetails/1.html" target="_blank">View More</a></p>
-                <p>Past...  The never ending story.</p>
-                <p>149.99 dh</p>
-                <p class="cart-button">Add To Cart</p>
-                </figure>
-            {% endif %}
-            {% endfor %}
-        </section>
+    </section>
+    <section class="store">
+        {% for p in artist.product.all %}
+        {% if p.product_status == "published" %}
+            <figure>
+                <a href="{% url 'home:product-details' p.pid %}">
+                    <img class="store-images" src="{{p.image.url}}" alt="">
+                </a>
+            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+            <p>{{p.title}}</p>
+            <p>{{p.price}} dh</p>
+            <p class="cart-button">Add To Cart</p>
+            </figure>
+        {% endif %}
+        {% endfor %}
     </section>
 {% endblock content %}

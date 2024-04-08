@@ -1,0 +1,151 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Artwork's details {% endblock title %}
+
+{% block cssFilename %} /static/product-details-style.css {% endblock cssFilename %}
+
+{% block script %} /static/product-details-js.js {% endblock script %}
+
+{% block content %}
+    <header id="artwork-overview" class="flex">
+        <section id="artwork-images-container">
+            <img id="artwork-image" src="{{ product.image.url }}" alt="">
+            <div>
+                <img class="secondary-images" src="{{ product.image.url }}" alt="">
+                {% for p in product_images %}
+                    <img class="secondary-images" src="{{ p.images.url }}" alt="">
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section id="info">
+            <div class="info-sections">
+                <h1>Title : {{product.title}}</h1>
+                <br>
+            </div>
+
+            <div class="info-sections">
+            <h1>Details :</h1>
+                <br>
+                <ul id="artwork-info" class="flex">
+                    <div id="first-list">
+                        <li>Artist : <a href="">{{product.artist.name}}</a></li>
+                        <li>Execution date : {{product.date}}</li>
+                        <li>Availability : <strong>Available / SOLD</strong></li>
+                        <li>Reference : {{ product.pid|slice:"7:" }}</li>
+                    </div>
+                    <div>
+                        <li>Medium : Canvas</li>
+                        <li>Dimensions : a x b cm</li>
+                        <li>Technique : {{product.technique}}</li>
+                        <li>Style : {{product.style}}</li> 
+                    </div>
+                </ul>
+            </div>
+
+            <br>
+
+            <div class="info-sections price">
+                <h1>Price and Shipping</h1>
+                <br>
+                <h3>{{product.price}} dh</h3>
+                <br>
+                <p>Shipping : Free/NotFree Shipping</p>
+                <br>
+            </div>
+            <div class="button cart">
+                <img class="icons" src="{% static 'images/icons/cart.png' %}" alt="">
+                <span>Add to Cart</span>
+            </div>
+
+            <div class="button offer"> 
+                <img class="icons" src="{% static 'images/icons/bid.png' %}" alt="">
+                <span>Make an Offer!</span>
+            </div>
+
+            <div class="button wishlist"> 
+                <img class="icons" src="{% static 'images/icons/heart.png' %}" alt="">
+                <span>Add to Wish List</span>
+            </div>
+        </section>
+    </header>
+
+    <header id="extra" class="flex">
+        <div class="extra-info">
+            <img class="icons" src="{% static 'images/icons/signature.png' %}" alt="Signature"> <br>
+            <p>Artwork signed by the Artist</p>
+        </div>
+        <div class="extra-info">
+            <img class="icons" src="{% static 'images/icons/favorite.png' %}" alt="Wishlist box"> <br>
+            <p>This artwork is part of X wishlists</p>
+        </div>
+        <div class="extra-info">
+            <img class="icons" src="{% static 'images/icons/happiness.png' %}" alt="Happiness!"> <br>
+            <p>10-day return policy</p>
+        </div>
+        <div class="extra-info">
+            <img class="icons" src="{% static 'images/icons/box.png' %}" alt="Shipping"> <br>
+            <p>Shipping across Morocco</p>
+        </div>
+        <div class="extra-info"><img class="icons" src="{% static 'images/icons/credit-card.png' %}" alt="Secure transaction"> <br>
+            <p>100% secure transaction</p>
+        </div>
+        <div class="extra-info">
+            <img style="width:50px;height:50px;" src="{% static 'images/icons/returns.png' %}" alt="Returns"> <br>
+            <p>Free Returns</p>
+        </div>
+    </header>
+
+    <header>
+        <h1>Leave a comment!</h1> <br>
+        <p>Comments go here</p> <br>
+        <h1>About the author</h1> <br>
+        <section id="profile">
+            <div class="profile-info">
+                <figure>
+                    <img class="profile-pictures" src="{{product.artist.image.url}}" alt="Profile picture">
+                    <figcaption><a href="{% url 'home:artist-details' product.artist.aid %}">View profile</a></figcaption>
+                </figure>
+                &nbsp;
+                <a href="">{{product.artist.name}}</a>
+                &nbsp;&nbsp;
+                <p>69</p> &nbsp;
+                <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
+                &nbsp;&nbsp;
+                <p>{{product.artist.city}}</p> &nbsp;
+                <img class="icons" src="{% static 'images/icons/location.png' %}" alt="Location Icon">
+                &nbsp;&nbsp;
+                <p>Short Bio : {{product.artist.shortBio}}</p>
+            </div>
+            <h2>Biography</h2> <br>
+            <p>{{product.artist.biography}}</p>
+            <br>
+        </section>
+
+        <br>
+
+        <section>
+        {% if related_products %}
+            <h1>Discover more artworks of the same technique & style</h1> <br>  
+        {% endif %}
+        <header class="store">
+            {% for p in related_products %}
+                <figure>
+                    <a href="{% url 'home:product-details' p.pid %}">
+                        {% if p.image %}
+                            <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
+                        {% endif %}
+                    </a>
+                    <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+                    <p>{{ p.title }}</p>
+                    <p>{{ p.price }} dh</p>
+                    <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
+                    <p class="cart-button">Add To Cart</p>
+                </figure>
+            {% endfor %}
+        </header>
+        <br>
+    </header>
+{% endblock content %}

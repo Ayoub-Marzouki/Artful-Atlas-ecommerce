@@ -111,8 +111,8 @@ class Artist(models.Model):
     days_return = models.CharField(null = True, blank = True, max_length = 200, default ="100")
     warranty_period = models.CharField(max_length = 200)
 
-    technique = models.ManyToManyField(Technique, blank=True)
-    style = models.ManyToManyField(Style, blank=True)
+    technique = models.ForeignKey(Technique, on_delete=models.SET_NULL, null=True)
+    style = models.ForeignKey(Style, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     class Meta:
@@ -170,8 +170,8 @@ class Product(models.Model):
     # tags = models.ForeignKey(Tags, on_delete = models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
     artist = models.ForeignKey(Artist,on_delete=models.SET_NULL, null=True, related_name="product")
-    technique = models.ManyToManyField(Technique, blank=True)
-    style = models.ManyToManyField(Style, blank=True)
+    technique = models.ForeignKey(Technique, on_delete=models.SET_NULL, null=True)
+    style = models.ForeignKey(Style, on_delete=models.SET_NULL, null=True)
     
     # stock keeping unit; to keep track of stock levels
     sku = ShortUUIDField(unique = True, length = 4, max_length = 20, prefix="sku ", alphabet = "1234567890")
@@ -197,7 +197,7 @@ class Product(models.Model):
 
 class ProductImages(models.Model):
     images = models.ImageField(upload_to = "product/images")
-    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, related_name = "product_images", on_delete = models.SET_NULL, null=True)
     date = models.DateTimeField(auto_now_add = True)
 
     class Meta:

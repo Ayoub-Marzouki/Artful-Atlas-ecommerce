@@ -21,16 +21,15 @@
 <header class="store">
     {% for p in products %}
         <figure>
-            <a href="/storedetails/{{ p.pid }}.html">
+            <a href="{% url 'home:product-details' p.pid %}">
                 {% if p.image %}
                     <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
                 {% endif %}
             </a>
-            <p class="view-more"><a href="/storedetails/{{ p.pid }}.html" target="_blank">View More</a></p>
+            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
             <p>{{ p.title }}</p>
             <p>{{ p.price }} dh</p>
-            <p> By {{p.user}} </p>
-            <p>Technique : {{p.technique}} || Style : {{p.style}} </p>
+            <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
             <p class="cart-button">Add To Cart</p>
         </figure>
     {% endfor %}

@@ -93,7 +93,7 @@
             <img class="artworks landscape" src="{% static 'images/paintings/elderly-riad.png' %}" alt="">
             <img class="artworks portrait" src="{% static 'images/paintings/city1.jpg' %}" alt="">
             <img class="artworks portrait" src="{% static 'images/paintings/city1.jpg' %}" alt="">
-            <a href="#" class="artworks-link">{{ a.product.count }} artworks &gt;</a>
+            <a href="{% url 'home:artist-details' a.aid %}" class="artworks-link">{{ a.product.count }} artworks &gt;</a>
         </section>
         <br>
         {% endfor %}
