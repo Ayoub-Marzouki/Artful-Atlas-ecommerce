@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'sign-upstyle.css' %}">
     <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
     <script src="{% static 'messagesjs.js' %}" defer></script>
+    <script src="{% static 'sign-upjs.js' %}" defer></script>
     <link rel="icon" href="images/logos-images/logo.png" type="image/x-icon">
     <title>Sign up</title>
 </head>
@@ -27,6 +28,10 @@
         </div>
     {% endif %}
 
+    <div id="backgrounds">
+        <div class="background-image" id="background1"></div>
+        <div class="background-image" id="background2"></div>
+    </div>
     <main>
       <a href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt="Artful Atlas"></a>
         <header id="form">
@@ -41,8 +46,8 @@
                 {{form.passwordConfirmation}}
                 <p>Select one of the options :</p>
 
-                <p>+ I'm an Art Enthusiast</p>
-                <p>+ I'm an Artist</p>
+                <p id="customer">+ I'm an Art Enthusiast</p>
+                <p id="artist">+ I'm an Artist</p>
                 <br>
                 <button id="submit" type="submit">Submit & Register</button>
             </form>
