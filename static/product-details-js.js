@@ -58,5 +58,38 @@ function updateMainImage(imageUrl) {
     }, 1000); // Adjust the delay as needed
 }
 
+// Add reviews via Jquery and ajax
 
+// $("#addReview").submit(function(element) {
+//     element.preventDefault();
+
+//     $.ajax( {
+//         data:$(this).serialize(),
+//         method:$(this).attr("method"),
+//         url:$(this).attr("action"),
+//         dataType:"json",
+
+//         success:function(response) {
+//             if (response.bool == true) {
+//                 $("#review-message").html("Review added successfully. Thank you!")
+//                 $("#hide").hide()
+
+//                 var _html = `
+//                                 <div class="flex" id="review">
+//                                     <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">
+//                                     <h3>`+ response.context.user +`</h3> <br>
+//                                     <h3>{{r.get_rating_display}}</h3>
+//                                     <p>{{r.date|date:"F d, Y"}}</p> <br>
+//                                     <p>Average rating : {{average_rating.rating|floatformat}} out of 5</p>
+//                                 </div>
+//                                 <p> -` + response.context.review +`</p> <br>
+//                             `;
+
+//                 // $("#reviews").append(_html)
+
+//             }
+//         }
+//     })
+
+// })
 

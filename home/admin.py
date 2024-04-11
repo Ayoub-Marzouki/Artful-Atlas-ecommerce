@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from home.models import Technique, Style, Artist, Tags, Product, ProductImages, CartOrder, CartOrderItems, ProductReview, WishList, Address
+from home.models import Technique, Style, Artist, Tags, Product, ProductImages, CartOrder, CartOrderItems, ProductReview, WishList, Address, ArtistReview
 
 
 def display_image(obj):
@@ -36,6 +36,9 @@ class CartOrderItemsAdmin(admin.ModelAdmin):
 class ProductReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'product','review','rating']
 
+class ArtistReviewAdmin(admin.ModelAdmin):
+    list_display = ['user', 'artist', 'review', 'rating']
+
 class WishListAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'date']
 
@@ -50,5 +53,6 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(CartOrder, CartOrderAdmin)
 admin.site.register(CartOrderItems, CartOrderItemsAdmin)
 admin.site.register(ProductReview, ProductReviewAdmin)
+admin.site.register(ArtistReview, ArtistReviewAdmin)
 admin.site.register(WishList, WishListAdmin)
 admin.site.register(Address, AddressAdmin)

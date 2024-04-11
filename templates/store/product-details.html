@@ -32,7 +32,7 @@
                 <ul id="artwork-info" class="flex">
                     <div id="first-list">
                         <li>Artist : <a href="">{{product.artist.name}}</a></li>
-                        <li>Execution date : {{product.date}}</li>
+                        <li>Execution date : {{product.date|date:"F d, Y"}}</li>
                         <li>Availability : <strong>Available / SOLD</strong></li>
                         <li>Reference : {{ product.pid|slice:"7:" }}</li>
                     </div>
@@ -74,7 +74,7 @@
 
     <header>
         <h1>Artwork's story according to the artist</h1>
-        <p>tbon</p>
+        <p>Here goes the description of the artwork according to the artist.</p>
     </header>
 
     <header id="extra" class="flex">
@@ -104,8 +104,35 @@
     </header>
 
     <header>
-        <h1>Leave a comment!</h1> <br>
-        <p>Comments go here</p> <br>
+        <h1>Comments & reviews</h1> <br>
+        <section id="reviews">
+            <p style="text-align:end">Average rating : {{average_rating.rating|floatformat}} out of 5</p>
+            {% for r in reviews %}
+                <div class="flex" id="review">
+                    <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">
+                    <h3>{{r.user.username|title}}</h3> <br>
+                    <h3>{{r.get_rating_display}}</h3>
+                    <p>{{r.date|date:"F d, Y"}}</p> <br>
+                </div>
+                <p> - {{r.review}}</p> <br>
+            {% endfor %}
+
+            {% if make_review == True %}
+            {% if request.user.is_authenticated %}
+            <div id="hide">
+            <h3>Add a review</h3>
+                <form action="{% url 'home:add-product-review' product.id %}" id="addReview" method="post">
+                    {% csrf_token %}
+                    <p>{{review_form.review}}</p>
+                    <p>{{review_form.rating}}</p>
+                    <button class="button" id="submit" type="submit">Submit</button>
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+            <p id="review-message"></p>
+        </section>
+        <br>
         <h1>About the author</h1> <br>
         <section id="profile">
             <div class="profile-info">
@@ -114,7 +141,7 @@
                     <figcaption><a href="{% url 'home:artist-details' product.artist.aid %}">View profile</a></figcaption>
                 </figure>
                 &nbsp;
-                <a href="">{{product.artist.name}}</a>
+                <a href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist.name}}</a>
                 &nbsp;&nbsp;
                 <p>69</p> &nbsp;
                 <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">

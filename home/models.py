@@ -246,7 +246,7 @@ class ProductReview(models.Model):
     # User who wrote the review
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
     # The product being reviewed
-    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True)
+    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True, related_name="product_reviews")
     review = models.TextField()
     # Rating given by the user
     rating = models.IntegerField(choices = RATING, default=None)
@@ -258,6 +258,27 @@ class ProductReview(models.Model):
 
     def __str__(self):
         return self.product.title
+    
+    def get_rating(self):
+        return self.rating
+
+
+class ArtistReview(models.Model):
+    # User who wrote the review
+    user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
+    # The artist being reviewed
+    artist = models.ForeignKey(Artist, on_delete = models.SET_NULL, null = True, related_name="artist_reviews")
+    review = models.TextField()
+    # Rating given by the user
+    rating = models.IntegerField(choices = RATING, default=None)
+    # Date and time when the review was posted
+    date = models.DateTimeField(auto_now_add = True) 
+    
+    class Meta:
+        verbose_name_plural = "Artist Reviews"
+
+    def __str__(self):
+        return self.artist.name
     
     def get_rating(self):
         return self.rating
