@@ -25,6 +25,169 @@ main {
     z-index:9999999999999999999999999999;
 }
 
+
+/*                 Styling the filter section                */
+
+/* Making the 'Search for an artist' clickable visually */
+#filter-header {
+    transition:300ms;
+    padding:1%;
+    display:flex;
+    gap:1%;
+}
+#filter-header:hover {
+    cursor:pointer;
+    color:lightseagreen;
+    transition:300ms;
+}
+
+#search {
+    background-color:transparent;
+    border:0;
+    opacity:0;
+    transition:500ms;
+    cursor:pointer;
+}
+
+.search-results {
+    color:#008080;
+}
+
+/* Making the filters initially unvisible through max-height + overflow */
+#drop-content {
+    display:flex;
+    flex-wrap:wrap;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+/* Forcing the filters to take equal space */
+#drop-content div {
+    flex:1;
+}
+
+/* Adding some space to the container of the filter */
+#filter {
+    padding: 2%;
+    margin-bottom: 3%;
+}
+
+/* Styling "Search for an artist..." */
+
+#filter-header {
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    display:inline-block;
+}
+
+#filter-header:hover, #artists-link:hover {
+    color: #008080; /* Lightseagreen */
+}
+
+/* Making the filter box invisible through max-height + overflow */
+
+#drop-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+/* Styling the filters' types */
+
+#drop-content p {
+    color:lightseagreen;
+    font-weight: bold;
+    margin:2%;
+    text-align:center;
+}
+
+#artists-link {
+    color:black;
+    text-decoration:none;
+    transition: color 0.3s ease;
+}
+
+/* Stlying the input (Artist's name..) */
+
+#drop-content input[type="text"] {
+    border:10px solid skyblue;
+    background-color:skyblue;
+    width:90%;
+    height:40px;
+    border-radius:15px;
+    padding:2%;
+    margin:2%;
+}
+
+/* Stlying and Adding some space for the filters' names */
+
+#drop-content input[type="text"], #drop-content ul {
+    margin-bottom: 10px;
+}
+
+#drop-content ul li {
+    /* border-radius:10px; */
+    list-style: none;
+    padding:3%;
+    margin:2px;
+    text-align:center;
+    transition:300ms;
+    color:rgba(0,0,0,0.8);
+}
+
+#drop-content ul li:hover {
+    background-color:lightblue;
+    cursor: pointer;
+    transition:300ms;
+}
+/* Styling the location filter */
+#location-filter {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#location-input {
+    width: calc(100% - 20px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#selected-locations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.selected-location {
+    background-color: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.selected-location span {
+    margin-right: 5px;
+}
+
+.remove-location {
+    cursor: pointer;
+}
+
+/* Hiding the checkboxes since li tags will work as checkboxes */
+.checkbox-hidden {
+    display:none;
+}
+
+.icons {
+    width:25px;
+    height:25px;
+}
+
+
 /* Setting some space between "Artworks" and "Featured products " */
 h1 {
     margin-top:3%;
@@ -129,9 +292,13 @@ figure:hover .view-more {
     cursor:pointer;
     transition:300ms;
 }
-.view-more a {
+a .view-more {
     text-decoration:none;
-    color:rgba(0,0,0,0.7);;
+    color:rgba(0,0,0,0.7);
+}
+a .view-more:hover {
+    color:lightseagreen;
+    text-shadow:1px 1px rgba(0,0,0,0.7);
 }
 /* Showing a message whenever user clicks on "Add to Cart" */
 #message-container {

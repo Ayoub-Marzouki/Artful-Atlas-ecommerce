@@ -2,7 +2,7 @@
 
 {% load static %} 
 
-{% block title %} Gallery {% endblock title %}
+{% block title %} Artworks Search Results {% endblock title %}
 
 {% block cssFilename %} /static/storestyle.css {% endblock cssFilename %}
 
@@ -11,25 +11,64 @@
 {% block content %}
 <div id="message-container">Item added!</div>
 
-<h1>Featured Artworks</h1>
-<header class="store">
-    {% for p in products %}
-        {% if p.featured == True %}
-        <figure>
-            <a href="{% url 'home:product-details' p.pid %}">
-                {% if p.image %}
-                    <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
-                {% endif %}
-            </a>
-            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
-            <p>{{ p.title }}</p>
-            <p>{{ p.price }} dh</p>
-            <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
-            <p class="cart-button">Add To Cart</p>
-        </figure>
-        {% endif %}
-    {% endfor %}
-</header>
+<h1>Artworks Haven</h1>
+        <br>
+        <br>
+        <p> {% if not query and not selected_techniques and not selected_styles and not selected_subjects and not selected_philosophies %}
+            <p>No search filters provided. Listing all artworks.</p>
+        {% else %}
+            <p>Search results for:</p>
+            {% if query %}
+                <p>Artwork's title: <span class="search-results">{{ query }}</span></p>
+            {% endif %}
+            
+            {% if selected_techniques %}
+                <p>Selected Techniques:</p>
+                <ul class="search-filters">
+                    {% for technique in selected_techniques %}
+                        <li><span class="search-results">{{ technique.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_styles %}
+                <p>Selected Styles:</p>
+                <ul class="search-filters">
+                    {% for style in selected_styles %}
+                        <li><span class="search-results">{{ style.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_subjects %}
+                <p>Selected Subjects:</p>
+                <ul class="search-filters">
+                    {% for subject in selected_subjects %}
+                        <li><span class="search-results">{{ subject.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_philosophies %}
+                <p>Selected Philosophies:</p>
+                <ul class="search-filters">
+                    {% for philosophy in selected_philosophies %}
+                        <li><span class="search-results">{{ philosophy.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if selected_price_ranges %}
+                <p>Selected Price Ranges:</p>
+                <ul class="search-filters">
+                    {% for price_range in selected_price_ranges %}
+                        <li><span class="search-results">{{ price_range }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+        {% endif %}          
+        </p>
 
 <header id="filter">
     <form action="{% url 'home:product-search' %}" method="GET">
@@ -44,7 +83,7 @@
             <div>
                 <p>Techniques used</p>
                 <ul>
-                    {% for t in techniques %}
+                    {% for t in all_techniques %}
                     <li class="filter-item" data-category="techniques" data-id="{{ t.id }}">{{ t.title }}</li>
                     <input type="checkbox" class="checkbox-hidden" name="techniques" value="{{ t.id }}">
                     {% endfor %}
@@ -54,7 +93,7 @@
             <div>
                 <p>Styles used</p>
                 <ul>
-                    {% for s in styles %}
+                    {% for s in all_styles %}
                     <li class="filter-item" data-category="styles" data-id="{{ s.id }}">{{ s.title }}</li>
                     <input type="checkbox" class="checkbox-hidden" name="styles" value="{{ s.id }}">
                     {% endfor %}
@@ -64,7 +103,7 @@
             <div>
                 <p>Subject Matter</p>
                 <ul>
-                    {% for s in subjects %}
+                    {% for s in all_subjects %}
                     <li class="filter-item" data-category="subjects" data-id="{{ s.id }}">{{ s.title }}</li>
                     <input type="checkbox" class="checkbox-hidden" name="subjects" value="{{ s.id }}">
                     {% endfor %}
@@ -74,7 +113,7 @@
             <div>
                 <p>Artistic philosophy</p>
                 <ul>
-                    {% for p in philosophies %}
+                    {% for p in all_philosophies %}
                     <li class="filter-item" data-category="philosophies" data-id="{{ p.id }}">{{ p.title }}</li>
                     <input type="checkbox" class="checkbox-hidden" name="philosophies" value="{{ p.id }}">
                     {% endfor %}
@@ -102,9 +141,7 @@
                     <li class="filter-item" data-category="price_range" data-id="above_10000">Above 10000</li>
                     <input type="checkbox" class="checkbox-hidden" name="price_range" value="above_10000">
                 </ul>
-            </div>
-            
-            
+            </div>            
             
             </div>
         </section>
@@ -121,7 +158,6 @@
 
 <header class="store">
     {% for p in products %}
-        {% if p.featured == False %}
         <figure>
             <a href="{% url 'home:product-details' p.pid %}">
                 {% if p.image %}
@@ -134,7 +170,6 @@
             <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
             <p class="cart-button">Add To Cart</p>
         </figure>
-        {% endif %}
     {% endfor %}
 </header>
  

@@ -8,13 +8,13 @@ from userauths.models import User
 class Technique(models.Model):
     tid = ShortUUIDField(unique = True, length = 10, max_length = 30,prefix="Technique", alphabet = "abcdefgh123456")
     title = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to = "technique")
+    # image = models.ImageField(upload_to = "technique")
 
     class Meta:
         verbose_name_plural = "Techniques"
 
-    def technique_image(self):
-        return mark_safe('<img src="%s" alt="technique" />' % (self.image.url))
+    # def technique_image(self):
+    #     return mark_safe('<img src="%s" alt="technique" />' % (self.image.url))
     
     def __str__(self):
         return self.title
@@ -24,16 +24,33 @@ class Technique(models.Model):
 class Style(models.Model):
     sid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix = "Style", alphabet = "abcdefgh123456") 
     title = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to = "Style")
+    # image = models.ImageField(upload_to = "Style")
     class Meta:
         verbose_name_plural = "Styles"
 
-    def style_image(self):
-        return mark_safe('<img src="%s" alt="style" />' % (self.image.url))
+    # def style_image(self):
+    #     return mark_safe('<img src="%s" alt="style" />' % (self.image.url))
     
     def __str__(self):
         return self.title
     
+class SubjectMatter(models.Model):
+    suid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix = "SubjectMatter", alphabet = "abcdefgh123456") 
+    title = models.CharField(max_length = 200)
+    class Meta:
+        verbose_name_plural = "Subjects Matter"
+
+    def __str__(self):
+        return self.title
+    
+class Philosophy(models.Model):
+    phid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix = "Style", alphabet = "abcdefgh123456") 
+    title = models.CharField(max_length = 200)
+    class Meta:
+        verbose_name_plural = "Philosophies"
+
+    def __str__(self):
+        return self.title
     
 
 def user_directory_path(instance, filename):
@@ -113,6 +130,8 @@ class Artist(models.Model):
 
     technique = models.ForeignKey(Technique, on_delete=models.SET_NULL, null=True)
     style = models.ForeignKey(Style, on_delete=models.SET_NULL, null=True)
+    philosophy = models.ForeignKey(Philosophy, on_delete=models.SET_NULL, null=True, blank = True)
+    subject_matter = models.ForeignKey(SubjectMatter, on_delete=models.SET_NULL, null=True, blank = True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     class Meta:
@@ -172,6 +191,8 @@ class Product(models.Model):
     artist = models.ForeignKey(Artist,on_delete=models.SET_NULL, null=True, related_name="product")
     technique = models.ForeignKey(Technique, on_delete=models.SET_NULL, null=True)
     style = models.ForeignKey(Style, on_delete=models.SET_NULL, null=True)
+    philosophy = models.ForeignKey(Philosophy, on_delete=models.SET_NULL, null=True, blank = True)
+    subject_matter = models.ForeignKey(SubjectMatter, on_delete=models.SET_NULL, null=True, blank = True)
     
     # stock keeping unit; to keep track of stock levels
     sku = ShortUUIDField(unique = True, length = 4, max_length = 20, prefix="sku ", alphabet = "1234567890")

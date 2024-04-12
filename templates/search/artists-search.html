@@ -1,7 +1,7 @@
 {% extends 'partials/base.html' %}
 {% load static %}
 
-{% block title %} Artists {% endblock title %}
+{% block title %} Home {% endblock title %}
 
 {% block cssFilename %} /static/artistsstyle.css {% endblock cssFilename %}
 
@@ -12,7 +12,55 @@
         <h1>Artists Haven</h1>
         <br>
         <br>
-        <p>Taste the vibrant palette of Morocco with currently {{artists.count}} Moroccan artists! Immerse yourself in a world of color and creativity.</p>
+        <p> {% if not query and not location and not selected_techniques and not selected_styles and not selected_subjects and not selected_philosophies %}
+            <p>No search filters provided. Listing all artists.</p>
+        {% else %}
+            <p>Search results for:</p>
+            {% if query and not location %}
+                <p>Artist's name: <span class="search-results">{{ query }}</span></p>
+            {% elif not query and location %}
+                <p>Artist's location: <span class="search-results">{{ location }}</span></p>
+            {% elif query and location %}
+                <p>Artist's name: <span class="search-results">{{ query }}</span> and location: <span class="search-results">{{ location }}</span></p>
+            {% endif %}
+            
+            {% if selected_techniques %}
+                <p>Selected Techniques:</p>
+                <ul class="search-filters">
+                    {% for technique in selected_techniques %}
+                        <li><span class="search-results">{{ technique.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_styles %}
+                <p>Selected Styles:</p>
+                <ul class="search-filters">
+                    {% for style in selected_styles %}
+                        <li><span class="search-results">{{ style.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_subjects %}
+                <p>Selected Subjects:</p>
+                <ul class="search-filters">
+                    {% for subject in selected_subjects %}
+                        <li><span class="search-results">{{ subject.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if selected_philosophies %}
+                <p>Selected Philosophies:</p>
+                <ul class="search-filters">
+                    {% for philosophy in selected_philosophies %}
+                        <li><span class="search-results">{{ philosophy.title }}</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}          
+        </p>
     </header>
 
     <header id="filter">
@@ -28,7 +76,7 @@
                 <div>
                     <p>Techniques used</p>
                     <ul>
-                        {% for t in techniques %}
+                        {% for t in all_techniques %}
                         <li class="filter-item" data-category="techniques" data-id="{{ t.id }}">{{ t.title }}</li>
                         <input type="checkbox" class="checkbox-hidden" name="techniques" value="{{ t.id }}">
                         {% endfor %}
@@ -38,7 +86,7 @@
                 <div>
                     <p>Styles used</p>
                     <ul>
-                        {% for s in styles %}
+                        {% for s in all_styles %}
                         <li class="filter-item" data-category="styles" data-id="{{ s.id }}">{{ s.title }}</li>
                         <input type="checkbox" class="checkbox-hidden" name="styles" value="{{ s.id }}">
                         {% endfor %}
@@ -48,7 +96,7 @@
                 <div>
                     <p>Subject Matter</p>
                     <ul>
-                        {% for s in subjects %}
+                        {% for s in all_subjects %}
                         <li class="filter-item" data-category="subjects" data-id="{{ s.id }}">{{ s.title }}</li>
                         <input type="checkbox" class="checkbox-hidden" name="subjects" value="{{ s.id }}">
                         {% endfor %}
@@ -58,18 +106,16 @@
                 <div>
                     <p>Artistic philosophy</p>
                     <ul>
-                        {% for p in philosophies %}
+                        {% for p in all_philosophies %}
                         <li class="filter-item" data-category="philosophies" data-id="{{ p.id }}">{{ p.title }}</li>
                         <input type="checkbox" class="checkbox-hidden" name="philosophies" value="{{ p.id }}">
                         {% endfor %}
                     </ul>
                 </div>
-                
+
                 <div id="location-filter">
                     <p>Location</p>
                     <input type="text" id="location-input" placeholder="Search for a city..." name="location">
-                </div>
-                
                     <!-- <div id="selected-locations"></div> -->
                 </div>
             </section>

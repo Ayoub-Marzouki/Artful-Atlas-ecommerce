@@ -106,7 +106,7 @@
     <header>
         <h1>Comments & reviews</h1> <br>
         <section id="reviews">
-            <p style="text-align:end">Average rating : {{average_rating.rating|floatformat}} out of 5</p>
+            <p style="text-align:end">Average rating : {{average_rating.rating|floatformat}}  /5</p>
             {% for r in reviews %}
                 <div class="flex" id="review">
                     <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">

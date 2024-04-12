@@ -1,5 +1,5 @@
 from django.urls import path
-from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review
+from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view
 
 app_name = "home"
 
@@ -13,6 +13,8 @@ urlpatterns = [
     path("artists/<aid>/",artist_detail_view, name="artist-details"),
 
     path("add-product-review/<int:pid>/",add_product_review, name ="add-product-review"),
-    
     path("add-artist-review/<int:aid>/",add_artist_review, name ="add-artist-review"),
+
+    path("search/artists/", artist_search_view, name = "artist-search"),
+    path("search/artworks/", product_search_view, name= "product-search"),
 ]

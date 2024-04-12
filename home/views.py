@@ -1,8 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.db.models import Q, Avg
-from home.models import Technique, Style, Product, Artist, ProductReview, ArtistReview
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview
 from home.forms import ProductReviewForm, ArtistReviewForm
-from django.http import JsonResponse
 
 def index(request):
     return render(request,'home/index.html')
@@ -10,9 +9,17 @@ def index(request):
 
 def product_list_view(request):
     products = Product.objects.filter(product_status = "published")
+    techniques = Technique.objects.all().order_by('title')
+    styles = Style.objects.all().order_by('title')
+    subjects = SubjectMatter.objects.all().order_by('title')
+    philosophies = Philosophy.objects.all().order_by('title')
     
     context = {
-        "products":products
+        "products":products,
+        "techniques":techniques,
+        "styles":styles,
+        "subjects":subjects,
+        "philosophies":philosophies,
     }
     return render(request,'store/store.html', context)
 
@@ -52,8 +59,16 @@ def product_detail_view(request, pid):
 
 def artist_list_view(request):
     artists = Artist.objects.all()
+    techniques = Technique.objects.all().order_by('title')
+    styles = Style.objects.all().order_by('title')
+    subjects = SubjectMatter.objects.all().order_by('title')
+    philosophies = Philosophy.objects.all().order_by('title')
     context = {
         "artists": artists,
+        "techniques":techniques,
+        "styles":styles,
+        "subjects":subjects,
+        "philosophies":philosophies,
     }
     return render(request, "artists/artists.html",context)
 
@@ -169,6 +184,133 @@ def add_artist_review(request,aid):
     }
 
     return render(request, "artists/artist-details.html",context)
+
+
+
+
+def artist_search_view(request):
+    query = request.GET.get("q")
+    location = request.GET.get("location")
+    techniques_ids = request.GET.getlist("techniques")  
+    styles_ids = request.GET.getlist("styles")         
+    subjects_ids = request.GET.getlist("subjects") 
+    philosophies_ids = request.GET.getlist("philosophies")
+
+    artists = Artist.objects.all()
+    all_techniques = Technique.objects.all()
+    all_styles = Style.objects.all()
+    all_subjects = SubjectMatter.objects.all()
+    all_philosophies = Philosophy.objects.all()
+    
+    selected_techniques = Technique.objects.filter(pk__in=techniques_ids)
+    selected_styles = Style.objects.filter(pk__in=styles_ids)
+    selected_subjects = SubjectMatter.objects.filter(pk__in=subjects_ids)
+    selected_philosophies = Philosophy.objects.filter(pk__in=philosophies_ids)
+
+    if query and location:
+        artists = artists.filter(Q(name__icontains=query) & Q(city__icontains=location))
+    elif query:
+        artists = artists.filter(name__icontains=query)
+    elif location:
+        artists = artists.filter(city__icontains=location)
+
+    if techniques_ids:
+        artists = artists.filter(technique__in=selected_techniques)
+
+    if styles_ids:
+        artists = artists.filter(style__in=selected_styles)
+
+    if subjects_ids:
+        artists = artists.filter(subject_matter__in=selected_subjects)
+
+    if philosophies_ids:
+        artists = artists.filter(philosophy__in=selected_philosophies)
+    
+    context = {
+        "artists": artists,
+        "query": query,
+        "location": location,
+        "selected_techniques": selected_techniques,
+        "selected_styles": selected_styles,
+        "selected_subjects": selected_subjects,
+        "selected_philosophies": selected_philosophies,
+        "all_techniques": all_techniques,
+        "all_styles": all_styles,
+        "all_subjects": all_subjects,
+        "all_philosophies": all_philosophies,
+    }
+
+    return render(request, "search/artists-search.html", context)
+
+
+def product_search_view(request):
+    query = request.GET.get("q")
+    techniques_ids = request.GET.getlist("techniques")  
+    styles_ids = request.GET.getlist("styles")         
+    subjects_ids = request.GET.getlist("subjects") 
+    philosophies_ids = request.GET.getlist("philosophies")
+    price_range = request.GET.get("price_range")
+
+    products = Product.objects.all()
+    all_techniques = Technique.objects.all()
+    all_styles = Style.objects.all()
+    all_subjects = SubjectMatter.objects.all()
+    all_philosophies = Philosophy.objects.all()
+    
+    selected_techniques = Technique.objects.filter(pk__in=techniques_ids)
+    selected_styles = Style.objects.filter(pk__in=styles_ids)
+    selected_subjects = SubjectMatter.objects.filter(pk__in=subjects_ids)
+    selected_philosophies = Philosophy.objects.filter(pk__in=philosophies_ids)
+
+    selected_price_ranges = []
+
+    if query :
+        products = products.filter(title__icontains=query)
+    if techniques_ids:
+        products = products.filter(technique__in=selected_techniques)
+
+    if styles_ids:
+        products = products.filter(style__in=selected_styles)
+
+    if subjects_ids:
+        products = products.filter(subject_matter__in=selected_subjects)
+
+    if philosophies_ids:
+        products = products.filter(philosophy__in=selected_philosophies)
+    
+    if price_range:
+        selected_price_ranges.append(price_range)
+        if price_range == "under_500":
+            products = products.filter(price__lt=500)
+        elif price_range == "500_1000":
+            products = products.filter(price__range=(500, 1000))
+        elif price_range == "1000_2000":
+            products = products.filter(price__range=(1000, 2000)) 
+        elif price_range == "2000_5000":
+            products = products.filter(price__range=(2000, 5000)) 
+        elif price_range == "5000_10000":
+            products = products.filter(price__range=(5000, 10000)) 
+        elif price_range == "above_10000":
+            products = products.filter(price__gt=(10000)) 
+
+
+    context = {
+        "products": products,
+        "query": query,
+        "selected_techniques": selected_techniques,
+        "selected_styles": selected_styles,
+        "selected_subjects": selected_subjects,
+        "selected_philosophies": selected_philosophies,
+        "selected_price_ranges":selected_price_ranges,
+        "all_techniques": all_techniques,
+        "all_styles": all_styles,
+        "all_subjects": all_subjects,
+        "all_philosophies": all_philosophies,
+    }
+
+    return render(request, "search/products-search.html", context)
+
+
 
 
 

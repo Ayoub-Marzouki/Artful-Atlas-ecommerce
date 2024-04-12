@@ -28,6 +28,18 @@ main {
     transition:300ms;
 }
 
+#search {
+    background-color:transparent;
+    border:0;
+    opacity:0;
+    transition:500ms;
+    cursor:pointer;
+}
+
+.search-results {
+    color:#008080;
+}
+
 /* Making the filters initially unvisible through max-height + overflow */
 #drop-content {
     display:flex;
@@ -53,6 +65,7 @@ main {
     margin-bottom: 10px;
     cursor: pointer;
     transition: color 0.3s ease;
+    display:inline-block;
 }
 
 #filter-header:hover, #artists-link:hover {
@@ -101,9 +114,10 @@ main {
 }
 
 #drop-content ul li {
-    border-radius:10px;
+    /* border-radius:10px; */
     list-style: none;
     padding:3%;
+    margin:2px;
     text-align:center;
     transition:300ms;
     color:rgba(0,0,0,0.8);
@@ -148,6 +162,11 @@ main {
 
 .remove-location {
     cursor: pointer;
+}
+
+/* Hiding the checkboxes since li tags will work as checkboxes */
+.checkbox-hidden {
+    display:none;
 }
 
 
