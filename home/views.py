@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from django.db.models import Q, Avg
 from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview
 from home.forms import ProductReviewForm, ArtistReviewForm
+from django.template.loader import render_to_string
 
 def index(request):
     return render(request,'home/index.html')
@@ -25,6 +27,10 @@ def product_list_view(request):
 
 
 def product_detail_view(request, pid):
+    
+    current_url = request.build_absolute_uri()
+    next_url = request.GET.get('next')
+
     product = Product.objects.get(pid=pid)
     product_images = product.product_images.all()
     related_products = Product.objects.filter(Q(technique=product.technique) | Q(style=product.style)).exclude(pid=pid)[:10]
@@ -53,6 +59,8 @@ def product_detail_view(request, pid):
         "average_rating":average_rating,
         "related_products":related_products,
         "make_review":make_review,
+        "next_url": next_url,
+        "current_url":current_url,
     }
     return render(request, "store/product-details.html",context)
 
@@ -73,6 +81,13 @@ def artist_list_view(request):
     return render(request, "artists/artists.html",context)
 
 def artist_detail_view(request, aid):
+    current_url = request.build_absolute_uri()
+    next_url = request.GET.get('next')
+
+    print("next url",next_url)
+    print("current url ", current_url)
+
+
     artist = Artist.objects.get(aid=aid)
     reviews = ArtistReview.objects.filter(artist=artist).order_by("-date") # to show the latest reviews
 
@@ -96,6 +111,8 @@ def artist_detail_view(request, aid):
         "make_review":make_review,
         "review_form":review_form,
         "average_rating":average_rating,
+        "next_url": next_url,
+        "current_url":current_url,
     }
     return render(request, "artists/artist-details.html",context)
 
@@ -311,8 +328,57 @@ def product_search_view(request):
     return render(request, "search/products-search.html", context)
 
 
+def add_to_cart(request):
+    cart_product = {}
+    cart_product[str(request.GET['id'])] = {
+        'title': request.GET['title'],
+        'price': request.GET['price'],
+        'image':request.GET['image'],
+        'artist':request.GET['artist'],
+        'page':request.GET['page'],
+        'artistpage':request.GET['artistpage'],
+    }
+    if 'cart_data_object' in request.session:
+        if str(request.GET['id']) in request.session['cart_data_object']:
+            cart_data = request.session['cart_data_object']
+            cart_data[str(request.GET['id'])]['quantity'] = 1  # Always set quantity to 1
+            cart_data.update(cart_data)
+            request.session['cart_data_object'] = cart_data
+        else:
+            cart_data = request.session['cart_data_object']
+            cart_data.update(cart_product)
+            request.session['cart_data_object'] = cart_data
+    else:
+        request.session['cart_data_object'] = cart_product
+
+    return JsonResponse({"data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object'])})
 
 
+def cart_view(request):
+    total_price = 0
+    if 'cart_data_object' in request.session:
+        for product_id, item in request.session['cart_data_object'].items():
+            total_price += float(item['price'])  # Update total price for each item
+        return render(request, "home/cart.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price})
+    else:
+        return render(request, "home/cart.html", {"cart_data": '', 'totalCartItems': 0, 'total_price': total_price})
+
+def delete_item_from_cart(request):
+    product_id = str(request.GET['id'])
+    if 'cart_data_object' in request.session:
+        if product_id in request.session['cart_data_object']:
+            cart_data = request.session['cart_data_object']
+            del request.session['cart_data_object'][product_id]
+            request.session['cart_data_object'] = cart_data
+    
+    total_price = 0
+    if 'cart_data_object' in request.session:
+        for product_id, item in request.session['cart_data_object'].items():
+            total_price += float(item['price'])
+
+    context = render_to_string("home/updated-cart.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price})
+
+    return JsonResponse({"data":context, 'totalCartItems': len(request.session['cart_data_object'])})  
 
 # def technique_list_view(request):
 #     techniques = Technique.objects.all()

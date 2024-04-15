@@ -7,6 +7,7 @@ from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 def register_view(request):
+    next_page = request.GET.get('next')  # Get the value of 'next' parameter
     # Check if the request method is POST
     if request.method == "POST": 
         # Create a form instance with the data from the POST request
@@ -24,8 +25,10 @@ def register_view(request):
             new_user = authenticate(username=form.cleaned_data.get('email'), password=form.cleaned_data.get('password1'))
             # Log in the new user
             login(request, new_user) 
-            # Redirect the user to the home page
-            return redirect("home:index")
+            if next_page:
+                return redirect(next_page)
+            else:
+                return redirect("home:index")
         else:
             # If form validation fails, loop through form errors and display error messages
             for field, errors in form.errors.items():
@@ -38,7 +41,8 @@ def register_view(request):
     
     # Prepare the form context to pass to the template
     context = { 
-        'form': form
+        'form': form,
+        "next_page":next_page,
     }
     # Render the sign-up page with the form context
     return render(request, "userauths/sign-up.html", context)
@@ -50,32 +54,33 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect("home:index")
 
+    next_page = request.GET.get('next')  # Get the value of 'next' parameter
+
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
 
         try:
-            # Try to authenticate the user using the provided email and password
             user = authenticate(request, email=email, password=password)
             
-            # If authentication is successful and user is not None
             if user is not None:
-                # Log the user in
                 login(request, user)
-                # Display a success message
                 messages.success(request, "Success! You are logged in.")
-                # Redirect the user to the home page
-                return redirect("home:index")
+                if next_page:
+                    return redirect(next_page)
+                else:
+                    return redirect("home:index")
             else:
-                # If authentication fails, display a warning message
                 messages.warning(request, "User does not exist. Try signing up?")
                 
-        # Catch the specific exception when the user object does not exist
         except User.ObjectDoesNotExist:
-            # Display a warning message indicating that the user does not exist
             messages.warning(request, f"No user with {email} exists. Try again?")
             
-    return render(request, "userauths/login.html")
+    context = {
+        'next_page':next_page,
+    }
+    return render(request, "userauths/login.html", context)
+
 
 
 def logout_view(request):

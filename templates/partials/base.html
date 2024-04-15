@@ -12,10 +12,13 @@
     <link rel="stylesheet" href="{% block cssFilename %} {% endblock cssFilename %}">  <!--To include the specific style file-->
     <script defer src="{% block script %}{% endblock script %}"></script>
     <script src="{% static 'messagesjs.js' %}" defer></script>
+    <script src="{% static 'cart.js' %}" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>{% block title %} {% endblock title %} </title>
 </head>
 <body>
+    <div id="message-container">Item added!</div>
+
     <!-- Handling the login / sign-up / etc messages -->
     {% if messages %}
         <div id="messages">
@@ -49,6 +52,12 @@
                     <a href="{% url 'userauths:login' %}">Login</a>
                     {% endif %}
                 </div>
+            </div>
+            <div class="flexbox">
+                <a class="cart" href="{% url 'home:cart' %}">
+                    <img class="icons" src="{% static 'images/icons/cart.png' %}" alt="cart icon" width="25" height="25">
+                    <span id="cart-counter">{{request.session.cart_data_object|length}}</span>
+                </a>
             </div>
         </nav>
     </header>

@@ -9,22 +9,23 @@
 {% block script %} /static/storejs.js {% endblock script %}
 
 {% block content %}
-<div id="message-container">Item added!</div>
 
 <h1>Featured Artworks</h1>
 <header class="store">
-    {% for p in products %}
-        {% if p.featured == True %}
+    {% for product in products %}
+        {% if product.featured == True %}
         <figure>
-            <a href="{% url 'home:product-details' p.pid %}">
-                {% if p.image %}
-                    <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}">
+                {% if product.image %}
+                    <img class="store-images" src="{{ product.image.url }}" alt="{{ product.title }}">
                 {% endif %}
             </a>
-            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
-            <p>{{ p.title }}</p>
-            <p>{{ p.price }} dh</p>
-            <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+            <p>{{ product.title }}</p>
+            <p class="price">{{ product.price }}</p> <span>dh</span>
+            <p> By <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist}}</a> </p>
+            <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
+            <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
             <p class="cart-button">Add To Cart</p>
         </figure>
         {% endif %}
@@ -112,26 +113,22 @@
 </header>
 
 <h1>Artworks</h1>
-<div class="cart">
-    <img src="{% static 'images/icons/cart.png' %}" alt="cart icon" width="30" height="30">
-    <span class="cart-word">Cart</span>
-    <span id="cart-counter">0</span>
-</div>
-
 
 <header class="store">
-    {% for p in products %}
-        {% if p.featured == False %}
+    {% for product in products %}
+        {% if product.featured == False %}
         <figure>
-            <a href="{% url 'home:product-details' p.pid %}">
-                {% if p.image %}
-                    <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}">
+                {% if product.image %}
+                    <img class="store-images" src="{{ product.image.url }}" alt="{{ product.title }}">
                 {% endif %}
             </a>
-            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
-            <p>{{ p.title }}</p>
-            <p>{{ p.price }} dh</p>
-            <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+            <p>{{ product.title }}</p>
+            <p class="price">{{ product.price }}</p> <span>dh</span>
+            <p> By <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist}}</a> </p>
+            <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
+            <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
             <p class="cart-button">Add To Cart</p>
         </figure>
         {% endif %}

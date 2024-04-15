@@ -127,12 +127,26 @@ li {
 .button span {
     width:50%;
 }
-.cart {
+.cart-div {
     background-color:#212a2f;
 }
-.cart:hover {
+.cart-div:hover {
     background-color:black;
 }
+#cart-button {
+    background-color:#212a2f;
+    opacity:1;
+    font-size:20px;
+    font-family:monospace;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    width:100%;
+    text-align:center;
+    transition:300ms;
+    border:none;
+}
+
 .offer {
     background-color:lightseagreen;
 }
@@ -269,9 +283,9 @@ button:hover {
 
 /* Messing with "Add to Cart */
 .cart-button {
-    color:black;
+    color:whitesmoke;
     padding:3%;
-    background-color:cornsilk;
+    background-color:#212a2f;
     opacity:0;
     transition:300ms;
     
@@ -281,7 +295,7 @@ figure:hover .cart-button {
     transition:300ms;
 }
 .cart-button:hover {
-    box-shadow:-10px 10px 10px rgba(0,0,0,0.3), 10px 10px 10px rgba(0,0,0,0.2);
+    box-shadow:-5px 5px 10px rgba(0,0,0,0.3), 10px 10px 10px rgba(0,0,0,0.2);
     cursor:pointer;
 }
 

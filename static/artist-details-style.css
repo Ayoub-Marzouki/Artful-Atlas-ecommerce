@@ -60,6 +60,12 @@ span {
     font-weight:500;
     color:rgba(0, 0, 0, 0.4);
 }
+#currency {
+    color:black;
+    text-shadow:none;
+    font-weight:500;
+    font-size:medium;
+}
 /* Adjusting the profile information part (number of views, location, etc) */
 
 .profile-info {

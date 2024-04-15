@@ -3,6 +3,8 @@
     bottom: 20px;
     left: 20px;
     z-index: 99999999999999999999999999999999;
+    font-size:17px;
+    font-size:medium;
 }
 
 .message {
@@ -11,6 +13,7 @@
     margin-bottom: 10px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
+    font-size:17px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: black;
     opacity: 0;
@@ -22,7 +25,7 @@
 }
 
 .message[data-tags="success"] {
-    background-color: #77DD77;
+    background-color: #198754;;
 }
 
 .message[data-tags="info"] {

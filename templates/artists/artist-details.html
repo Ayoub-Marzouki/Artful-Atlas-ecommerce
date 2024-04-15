@@ -56,8 +56,13 @@
         <h1 id="comments">Comments & Reviews</h1>
         
         <section id="reviews">
-            <p style="text-align:end">Average rating : {{average_rating.rating|floatformat}}/5</p>
-            {% for r in reviews %}
+            {% if not reviews %}
+            <br>
+            <p>No reviews or comments yet.</p>
+            <br>
+            {% else %}
+                <p style="text-align:end">Average rating : {{average_rating.rating|floatformat}}  /5</p>
+                {% for r in reviews %}
                 <div class="flex" id="review">
                     <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">
                     <h3>{{r.user.username|title}}</h3> <br>
@@ -66,6 +71,7 @@
                 </div>
                 <p> - {{r.review}}</p> <br>
             {% endfor %}
+            {% endif %}
 
             {% if make_review == True %}
             {% if request.user.is_authenticated %}
@@ -81,21 +87,34 @@
             {% endif %}
             {% endif %}
             <p id="review-message"></p>
+            {% if not request.user.is_authenticated %}
+                <p>You must be logged in to be able to post a comment or a review. 
+                    <a href="{% url 'userauths:login' %}?next={{ current_url }}">Log in</a>
+                </p>
+                <br>
+                <p>Don't have an account yet? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>
+            {% endif %}
         </section>
         <br>
         <br>
         <h1>Artworks</h1>
     </section>
     <section class="store">
-        {% for p in artist.product.all %}
-        {% if p.product_status == "published" %}
+        {% if not artist.product.exists %}
+                <p>No Artworks yet.</p>
+        {% endif %}
+        {% for product in artist.product.all %}
+        {% if product.product_status == "published" %}
             <figure>
-                <a href="{% url 'home:product-details' p.pid %}">
-                    <img class="store-images" src="{{p.image.url}}" alt="">
+                <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}">
+                    <img class="store-images" src="{{product.image.url}}" alt="">
                 </a>
-            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
-            <p>{{p.title}}</p>
-            <p>{{p.price}} dh</p>
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+            <p>{{product.title}}</p>
+            <p class="price">{{ product.price }}</p> <span id="currency">dh</span>
+            <p> By <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist}}</a> </p>
+            <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
+            <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
             <p class="cart-button">Add To Cart</p>
             </figure>
         {% endif %}

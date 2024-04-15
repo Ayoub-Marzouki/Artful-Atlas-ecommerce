@@ -1,0 +1,50 @@
+{% load static %}
+<div id="updated-cart">
+    <header id="added-artworks">
+        <h1>Cart</h1>
+        
+        {% for product_id, item in cart_data.items %}
+            <section class="flex">
+                <figure>
+                    <a href="{{item.page}}"><img class="artwork-image" src="{{item.image}}" alt="">
+                    <figcaption class="artwork-title">{{item.title}}</figcaption>
+                    </a>
+                </figure>
+
+                <div>
+                    <h2>Artist</h2>
+                    <h3><a class="artwork-artist" href="{{item.artistpage}}">{{item.artist}}</a></h3>
+                </div>
+                <div>
+                    <h2 class="flex">Price  <span class="shipping">Shipping to Location Included</span></h2> 
+                    <h3>{{item.price}}</h3>
+                </div>
+                <button class="remove" data-product="{{product_id}}"><img class="icon" src="{% static 'images/icons/x-mark.png' %}" alt=""></button>
+            </section>
+
+            <br><br><br>
+            <hr>
+            <br><br><br>
+        {% endfor %}
+    </header>
+
+    <br><br><br><br>
+
+    {% if totalCartItems %}
+        <header id="checkout">
+            <section class="total">
+                <h3>Total (in dh)</h3>
+                <h2 id="total-price">{{total_price}}</h2>
+            </section>
+
+            <section class="checkout">
+                <button id="checkout-button">Checkout</button>
+                <p id="return-p">Buyer has 10 days to <a id="return-a" href="" title="Learn more about return policy">return</a> his purchase</p>
+            </section>
+        </header>
+    {% else %}
+        <h1>Your cart is empty for now.</h1>
+    {% endif %}
+
+    <br><br>
+</div>

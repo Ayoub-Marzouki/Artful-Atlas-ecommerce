@@ -52,6 +52,12 @@
                 {% endif %}
             </div>
         </div>
+        <div class="flexbox">
+            <a class="cart" href="{% url 'home:cart' %}">
+                <img class="icons" src="{% static 'images/icons/cart.png' %}" alt="cart icon" width="25" height="25">
+                <span id="cart-counter">{{request.session.cart_data_object|length}}</span>
+            </a>
+        </div>
     </nav>
 </header>
 
