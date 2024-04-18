@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.db.models import Q, Avg
 from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview
-from home.forms import ProductReviewForm, ArtistReviewForm
+from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm
 from django.template.loader import render_to_string
 
 def index(request):
@@ -379,6 +379,47 @@ def delete_item_from_cart(request):
     context = render_to_string("home/updated-cart.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price})
 
     return JsonResponse({"data":context, 'totalCartItems': len(request.session['cart_data_object'])})  
+
+
+def checkout_view(request):
+    total_price = 0
+    if 'cart_data_object' in request.session:
+        for product_id, item in request.session['cart_data_object'].items():
+            total_price += float(item['price'])
+
+    # checkout_form = CheckoutForm()
+    
+    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price,}) #'checkout_form':checkout_form
+
+
+
+def save_checkout_info(request):
+    total_price = 0
+
+    if request.method=="POST":
+        first_name = request.POST.get["first-name"] 
+        last_name = request.POST.get["last-name"]
+        address = request.POST.get["address"]
+        zip = request.POST.get["zip"]
+        country = request.POST.get["country"]
+        city = request.POST.get["city"]
+
+        request.session['first_name'] = first_name
+        request.session['last-name'] = last_name
+        request.session['address'] = address
+        request.session['zip'] = zip
+        request.session['country'] = country
+        request.session['city'] = city
+
+        if 'cart_data_object' in request.session:
+            for product_id, item in request.session['cart_data_object'].items():
+                total_price += float(item['price'])
+
+    # checkout_form = CheckoutForm()
+    
+    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price,}) #'checkout_form':checkout_form
+
+
 
 # def technique_list_view(request):
 #     techniques = Technique.objects.all()

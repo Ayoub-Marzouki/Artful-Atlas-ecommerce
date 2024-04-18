@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # custom apps where we'll put user authentication and whatnot
     'home',
     'userauths',
+    'cities_light',
 ]
 
 MIDDLEWARE = [

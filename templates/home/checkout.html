@@ -1,0 +1,85 @@
+{% extends 'partials/base.html' %}
+
+{% load static %} 
+
+{% block title %} Checkout & Place Order {% endblock title %}
+
+{% block cssFilename %} /static/checkoutstyle.css {% endblock cssFilename %}
+
+{% block content %}
+<div class="flex-main">
+    <header id="checkout">
+        <h1>Checkout</h1>
+        <p id="products-number">Currently : {% if totalCartItems == 1 %} {{totalCartItems}} product {%elif totalCartItems == 0%} No products {% else %} {{totalCartItems}} products {% endif %} in your cart.</p>
+        <br>
+        <p id="login">Already have an account? <a href="login.html">Login</a> for a faster checkout!</p>
+        <br>
+        <form method="post">
+            <label for="first-name">First name</label>
+            <input type="text" name="first-name" id="first-name" value="" placeholder="First name">
+            <br>
+            <label for="last-name">Last name</label>
+            <input type="text" name="last-name" id="last-name" value="" placeholder="Last name">
+            <br>
+            <label for="address">Address</label>
+            <input type="text" name="address" id="address" value="" placeholder="Address">
+            <br>
+            <label for="zip/postal-code">Zip/Postal Code</label>
+            <input type="text" name="zip" value="" id="zip/postal-code" placeholder="Zip / Postal code">
+            <br>
+            <label for="city">City:</label> <br>
+        <select id="city" name="city" required>
+            <option value="">Select a city...</option>
+            <option value="New York">New York</option>
+            <option value="London">London</option>
+            <option value="Tokyo">Tokyo</option>
+        </select> 
+        <br>       
+        <label for="city">Country:</label> <br>
+        <select id="country" name="country" required>
+            <option value="">Select a country...</option>
+            <option value="USA">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="Japan">Japan</option>
+        </select>
+            <button type="submit">Submit</button>
+        </form>
+        
+        
+        
+    </header>
+
+    <div id="cart-items">
+        <header id="added-artworks">
+            <h1>Artworks</h1>
+            <a href="{% url 'home:cart' %}">Back to cart</a>
+            <br>
+            <br>
+             {% for product_id, item in cart_data.items %}
+                <section class="flex">
+                    <figure>
+                        <img class="artwork-image" src="{{item.image}}" alt="Artwork Image">
+                        <figcaption class="artwork-title">{{item.title}}</figcaption>
+                    </figure>
+
+                    <h3>- {{item.artist}}</h3> 
+                </section>
+                <br><br><br>
+                <hr>
+                <br><br><br>
+            {% endfor %}
+        </header>
+    </div>
+</div>
+<br><br><br><br>
+<header id="place-order">
+    <section class="total">
+        <h3>Total (in dh)</h3>
+        <h2 id="total-price">{{total_price}}</h2>
+    </section>
+
+    <section class="place-order">
+        <button id="place-order-button">Place Order</button>
+    </section>
+</header>
+{% endblock content %}
