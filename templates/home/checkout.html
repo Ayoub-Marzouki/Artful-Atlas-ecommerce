@@ -79,7 +79,10 @@
     </section>
 
     <section class="place-order">
-        <button id="place-order-button">Place Order</button>
+        <!-- <button id="place-order-button">Place Order</button> -->
+        <div id="paypal-button">
+        {{paypal_payment_button.render}}
+        </div>
     </section>
 </header>
 {% endblock content %}

@@ -1,0 +1,63 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Payment Completed {% endblock title %}
+
+{% block cssFilename %} /static/payment-completed-style.css {% endblock cssFilename %}
+
+{% block content %}
+<div id="main">
+    <img id="happy-face" src="{% static 'images/icons/happiness.png' %}" alt="">
+    <h1>Payment Completed!</h1>
+    <br><br><br><br>
+    <section id="invoice" download>
+        <div class="flex">
+            <img class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas logo">
+            <div>
+                <h1>Invoice</h1>
+                <p>ID: 333333</p>
+            </div>
+        </div>
+        
+        <div class="product-details">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Artwork's details</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product_id, item in cart_data.items %}
+                        <tr>
+                            <td>{{item.title}} <br>SKU : 13eeefs3 (still static) <br> Reference : gergrge (still static)</td>
+                            <td>{{item.price}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br><br><br>
+        <div class="flex">
+            <div>
+                <h3>Invoice Info</h3>
+                <p class="invoice-info">Issue date : date</p>
+                <p class="invoice-info">Invoice recipient : {{request.user|title}} </p>
+                <p class="invoice-info">Swift Code : fsdfsd</p>
+            </div>
+            <div>
+                <p class="total">Total (in dh)</p>
+                <h3 style="text-align:center;">{{total_price}}</h3>
+            </div>
+        </div>
+        <hr class="divider">
+        <p id="note">Note : This is a computer generated receipt and does not require physical signature.</p>
+    </section>
+    <br><br>
+    <div id="buttons">
+        <button class="button" id="download">Download</button>
+    </div>
+</div>
+
+{% endblock content %}

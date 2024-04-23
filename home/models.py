@@ -151,7 +151,7 @@ class Tags(models.Model):
 
 # Defining the status of products. lowercase words are the words we'll use to add the necessary logic (backend), while uppercase words are the words that'll show up (frontend)
 STATUS_CHOICE = (
-    ("process","Processing"),
+    ("processing","Processing"),
     ("shipped","Shipped"),
     ("delivered","Delivered"),
 )

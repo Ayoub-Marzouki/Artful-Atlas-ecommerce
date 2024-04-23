@@ -53,7 +53,7 @@ label {
     font-weight: bold;
     text-align:center;
 }
-input, select {
+#checkout input, select {
     border:10px solid skyblue;
     background-color:skyblue;
     width:100%;

@@ -1,9 +1,14 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.db.models import Q, Avg
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems
 from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm
 from django.template.loader import render_to_string
+
+from django.urls import reverse
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
 
 def index(request):
     return render(request,'home/index.html')
@@ -382,6 +387,44 @@ def delete_item_from_cart(request):
 
 
 def checkout_view(request):
+
+    paypal_total_price = 0
+    cart_total_price = 0
+    if 'cart_data_object' in request.session:
+        for product_id, item in request.session['cart_data_object'].items():
+            paypal_total_price += float(item['price'])
+
+        order = CartOrder.objects.create(
+            user=request.user,
+            price = paypal_total_price,
+        )
+        # Cart 
+        for product_id, item in request.session['cart_data_object'].items():
+            cart_total_price += float(item['price'])
+            cart_order_items = CartOrderItems.objects.create(
+                order = order,
+                invoice_no = "INVOICE_NO-" + str(order.id),
+                #title = item['title'],
+                image = item['image'],
+                price = item['price'],
+                total = float(item['price'])
+            )
+
+
+    host = request.get_host()
+    paypal_dict = {
+        'business':settings.PAYPAL_RECEIVER_EMAIL,
+        'amount':cart_total_price,
+        'item_name':"Order-Item-No-" + str(order.id),
+        'invoice':"Invoice_No-" + str(order.id),
+        'currency_code':"MAD",
+        'notify_url':'http://{}{}'.format(host, reverse("home:paypal-ipn")),
+        'return_url':'http://{}{}'.format(host, reverse("home:payment-completed")),
+        'cancel_url':'http://{}{}'.format(host, reverse("home:payment-failed")),
+    }
+
+    paypal_payment_button = PayPalPaymentsForm(initial = paypal_dict)
+
     total_price = 0
     if 'cart_data_object' in request.session:
         for product_id, item in request.session['cart_data_object'].items():
@@ -389,7 +432,7 @@ def checkout_view(request):
 
     # checkout_form = CheckoutForm()
     
-    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price,}) #'checkout_form':checkout_form
+    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price, 'paypal_payment_button':paypal_payment_button}) #'checkout_form':checkout_form
 
 
 
@@ -418,6 +461,27 @@ def save_checkout_info(request):
     # checkout_form = CheckoutForm()
     
     return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price,}) #'checkout_form':checkout_form
+
+
+def payment_completed_view(request):
+    total_price = 0
+    if 'cart_data_object' in request.session:
+        for product_id, item in request.session['cart_data_object'].items():
+            total_price += float(item['price'])
+    
+    context = {
+        "cart_data": request.session['cart_data_object'],
+        'totalCartItems': len(request.session['cart_data_object']),
+        'total_price': total_price,
+    }
+    return render(request, 'home/payment/payment-completed.html', context)
+
+def payment_failed_view(request):
+    # context = {
+    #     'context':context,
+    # }
+    return render(request, 'home/payment/payment-failed.html')
+
 
 
 

@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Payment Failed {% endblock title %}
+
+{% block cssFilename %} /static/payment-failed-style.css {% endblock cssFilename %}
+
+{% block content %}
+<div id="main">
+    <header>
+        <img id="sad-face" src="{% static 'images/icons/sad-face.png' %}" alt="">
+        <h1>Payment Failed</h1>
+        <a href="">Try again?</a>
+        <a href="{% url 'home:index' %}">Back to home page</a>
+    </header>
+</div>
+{% endblock content %}

@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     # custom apps where we'll put user authentication and whatnot
     'home',
     'userauths',
     'cities_light',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +148,7 @@ JAZZMIN_SETTINGS = {
 }
 
 AUTH_USER_MODEL = 'userauths.User'
+
+PAYPAL_RECEIVER_EMAIL = 'sb-n6hkb29074012@business.example.com'
+
+PAYPAL_TEST = True
