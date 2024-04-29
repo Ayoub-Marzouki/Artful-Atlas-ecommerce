@@ -1,0 +1,153 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block cssFilename %} /static/dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/dashboardjs.js {% endblock script %}
+
+{% block content %}
+<section id="main">
+    <section id="secondary-nav">
+        <div class="flex tab" id="dashboard-tab">
+            <img class="icons" src="{% static 'images/icons/filter.png' %}" alt="">
+            <span>Dashboard</span>
+        </div>
+    
+        <div class="flex tab"  id="orders-tab">
+            <img class="icons" src="{% static 'images/icons/orders.png' %}" alt=""> 
+            <span>Orders</span>
+        </div>
+    
+        <!-- <div class="flex tab" id="track-orders-tab">
+            <img class="icons" src="{% static 'images/icons/cart.png' %}" alt=""> 
+            <span>Track your Order</span>
+        </div> -->
+    
+        <div class="flex tab" id="addresses-tab">
+            <img class="icons" src="{% static 'images/icons/location.png' %}" alt=""> 
+            <span>Addresses</span>
+        </div>
+    
+        <div class="flex tab" id="account-details-tab">
+            <img class="icons" src="{% static 'images/icons/account.png' %}" alt=""> 
+            <span>Account details</span>
+        </div>
+    
+        <div class="flex">
+            <img class="icons" src="{% static 'images/icons/logout.png' %}" alt=""> 
+            <a href="{% url 'userauths:logout' %}">Logout</a>
+        </div>
+    </section>
+    
+    
+    <section id="dashboard" class="content">
+        <h1>Hello {{ request.user|title }}!</h1>
+        <p>In your account dashboard, you can easily keep track of your recent <strong>orders</strong>, update your <strong>shipping and billing addresses</strong>, and manage <strong>your password and account settings </strong>hassle-free.</p>
+    </section>
+
+    <section id="orders" class="content flex-item">
+        <h1>Orders</h1>
+        {% if orders%}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Paid Status</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>INVOICE_NO-{{o.id}}</td>
+                            <td>{{o.order_date}}</td>
+                            <td>{{o.product_status}}</td>
+
+                            {% if paid_status == True %}
+                                <td><img class="icons" src="{% static 'images/icons/checked.png' %}" alt=""></td>
+                            {% else %}
+                                <td><img class="icons" src="{% static 'images/icons/unchecked.png' %}" alt=""></td>
+                            {% endif %}
+
+                            <td>{{o.price}}</td>
+                            <td><a href="{% url 'home:order-details' o.id %}">View</a></td>
+                            
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No orders yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- <section id="track-orders" class="content">
+        <h1>Track your orders</h1>
+        <p>simply by entering your OrderId w man3rf mhm tat3mer had tkherbi9</p>
+        <p>Track button</p>
+    </section> -->
+
+    <section id="addresses" class="content">
+        <form id="add-address-form" method="post">
+            {% csrf_token %}
+            <h3>- Add Address</h3>
+            <input required type="text" name="address" placeholder="Address">
+            <input required name="phone" placeholder="Phone">
+            <button id="add-address-button" class="button" name="submit" value="submit">Save Address</button>
+        </form> 
+        <br><br>
+         <!-- class="addresses-flex" was originally for shipping | billing addresses -->
+        <section>
+            <section>
+                <h1>Shipping & Billing address</h1>
+                {% if address %}
+                {% for a in address %}
+                <address id="address-{{a.id}}">
+                    <p>+ <strong>Address</strong> : {{ a.address }}</p>
+                    <p>+ <strong>Phone</strong> : {{ a.phone }}</p>
+                    
+                    <br>
+
+                    <section style="display:flex;align-items:center;">
+                        <span>Primary Address :</span>
+                        {% if a.address_status %}
+                            <img style="display:none;" data-address-id="{{a.id}}" class="icons uncheck uncheck{{a.id}}" src="{% static 'images/icons/unchecked.png' %}" alt="">
+                            <img data-address-id="{{a.id}}" class="icons check check{{a.id}}" src="{% static 'images/icons/checked.png' %}" alt="Primary address" title="Default address">
+                            <button data-address-id="{{a.id}}" class="button make-default btn btn{{a.id}} action_button" style="display:none;">Make default</button>
+                        {% else %}
+                            <img data-address-id="{{a.id}}" class="icons uncheck uncheck{{a.id}}" src="{% static 'images/icons/unchecked.png' %}" alt="">
+                            <img style="display:none;" data-address-id="{{a.id}}" class="icons check check{{a.id}}" src="{% static 'images/icons/checked.png' %}" alt="Primary address" title="Default address">
+                            <button data-address-id="{{a.id}}" class="button make-default btn btn{{a.id}} action_button">Make default</button>
+                        {% endif %}
+                    </section>
+                    <br> <br>
+                    <button data-address-id="{{ a.id }}" id="delete" class="button ">Delete</button>
+                </address>
+                <br>
+                <hr class="hr">
+                <br>
+                {% endfor %}
+                {% else %}
+                    <p>No addresses yet.</p>
+                {% endif %}
+
+            </section>
+            <!-- <section>  
+                <h1>Shipping address</h1>
+                <p>Address goes here</p>
+                <p>Edit button</p>
+            </section> -->
+        </section>
+    </section>
+
+    <section id="account-details" class="content">
+        <h1>Account details</h1>
+    </section>
+</section>
+{% endblock content %}

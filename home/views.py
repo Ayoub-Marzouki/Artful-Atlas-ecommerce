@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.db.models import Q, Avg
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address
 from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm
 from django.template.loader import render_to_string
 
@@ -10,8 +10,24 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from paypal.standard.forms import PayPalPaymentsForm
 
+from django.contrib.auth.decorators import login_required
+
+from django.contrib import messages
+
 def index(request):
-    return render(request,'home/index.html')
+    artists = Artist.objects.all()
+    products = Product.objects.all()
+    exclusive_products = Product.objects.filter(exclusive = True)
+    featured_products = Product.objects.filter(featured = True)
+    chosen_product = Product.objects.get(chosen = True)
+    context = {
+        'featured_products':featured_products,
+        'exclusive_products':exclusive_products,
+        'chosen_product':chosen_product,
+        'products':products,
+        'artists':artists,
+    }
+    return render(request,'home/index.html', context)
 
 
 def product_list_view(request):
@@ -404,10 +420,11 @@ def checkout_view(request):
             cart_order_items = CartOrderItems.objects.create(
                 order = order,
                 invoice_no = "INVOICE_NO-" + str(order.id),
-                #title = item['title'],
+                name = item['title'],
                 image = item['image'],
                 price = item['price'],
-                total = float(item['price'])
+                total = float(item['price']),
+                product_page = item['page']
             )
 
 
@@ -430,9 +447,21 @@ def checkout_view(request):
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
 
-    # checkout_form = CheckoutForm()
+    try:
+        active_address = Address.objects.get(user = request.user, address_status = True)
+    except:
+        messages.warning(request, "Multiple addresses are selected as default at once. Please select only one as a default address.")  
+        active_adress = None  
     
-    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price, 'paypal_payment_button':paypal_payment_button}) #'checkout_form':checkout_form
+    # checkout_form = CheckoutForm()
+    context = {
+        "cart_data": request.session['cart_data_object'],
+        'totalCartItems': len(request.session['cart_data_object']), 
+        'total_price': total_price, 'paypal_payment_button':paypal_payment_button,
+        "active_address":active_address,
+        #'checkout_form':checkout_form
+    }
+    return render(request, "home/checkout.html", context) 
 
 
 
@@ -481,6 +510,63 @@ def payment_failed_view(request):
     #     'context':context,
     # }
     return render(request, 'home/payment/payment-failed.html')
+
+
+@login_required
+def customer_dashboard(request):
+    orders = CartOrder.objects.filter(user = request.user).order_by("-id")
+    address = Address.objects.filter(user = request.user).order_by("-address_status")
+
+    if request.method == "POST":
+        address = request.POST.get("address")
+        phone = request.POST.get("phone")
+
+        new_address = Address.objects.create(
+            user = request.user,
+            address = address,
+            phone = phone
+        )
+        messages.success(request,"Address added successfully!")
+        return redirect("home:dashboard")
+
+    context = {
+        'orders':orders,
+        'address':address,
+    }
+    return render(request, 'home/dashboard.html', context)
+
+
+
+def update_address_status(request):
+    id = request.GET['id']
+    Address.objects.update(address_status = False)
+    Address.objects.filter(id = id).update(address_status = True)
+    return JsonResponse({"boolean": True})
+
+
+def delete_address(request):
+    if request.method == "GET":
+        address_id = request.GET.get("address_id")
+
+        try:
+            address_to_delete = Address.objects.get(id=address_id)
+            address_to_delete.delete()
+            return JsonResponse({"success": True})
+        except Address.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Address does not exist"}, status=400)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+
+def order_details(request, id):
+    order = CartOrder.objects.get(user = request.user, id = id)
+    order_items = CartOrderItems.objects.filter(order=order)
+    
+    context = {
+        'order':order,
+        'order_items':order_items,
+    }
+    return render(request, 'home/order-details.html', context)
 
 
 

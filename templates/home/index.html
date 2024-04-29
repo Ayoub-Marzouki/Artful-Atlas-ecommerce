@@ -21,14 +21,21 @@
     <img src="{% static 'images/paintings/elderly-riad.png' %}" alt="">
 </header>
 
-<header id="selection" class="first-header">
-    <!-- <h1 id="first-h1">Stare at her enough...</h1> -->
-    <!-- <img id="first" src="{% static 'images/images-testing/1most-beautiful.png' %}" alt="Image of a young lady"> -->
-    <!-- <h1 id="second-h1">And it starts to look Alive </h1> -->
-    <h1 id="third-h1">Selection of the month</h1>
-    <h1 id="fourth-h1">-Mehdi Ragani</h1>
-    <img id="down0" src="{% static 'images/arrows/down.png' %}" alt="Scroll-Down">
+<a href="{% url 'home:product-details' chosen_product.pid %}">
+    <header id="selection" class="first-header">
+        <!-- <h1 id="first-h1">Stare at her enough...</h1> -->
+        <!-- <img id="first" src="{% static 'images/images-testing/1most-beautiful.png' %}" alt="Image of a young lady"> -->
+        <!-- <h1 id="second-h1">And it starts to look Alive </h1> -->
+        <h1 id="third-h1">Selection of the month</h1>
+        <h1 id="fourth-h1">-{{chosen_product.artist}}</h1>
+        <img style="display:none;" id="down0" src="{% static 'images/arrows/down.png' %}" alt="Scroll-Down">
 </header>
+</a>
+<!-- We added this script because we want to handle the artwork of the month manually, but I have it as a css property, not an image tag, so I found a workaround -->
+<script>
+    var imageUrl = "{{chosen_product.image.url}}";
+    document.getElementById("selection").style.backgroundImage = "url(" + imageUrl + ")";
+</script>
 
 <header id="nav" class="sticky">
     <nav class="flexboxcontainer">
@@ -41,7 +48,7 @@
         <a class="flexbox" href="{% url 'home:artists' %}">Artists</a>
         <a class="flexbox" href="{% url 'home:store' %}">Store</a>
         <div class="flexbox dropdown">
-            <a>Account</a>
+            <a href="{% url 'home:dashboard' %}">Account</a>
             <div class="dropdown-content">
                 <a href="#">Profile</a>
                 <a href="#">Settings</a>
@@ -65,10 +72,20 @@
     <br><br>
     <h1>Exclusive Artworks</h1>
     <figure>
-      <img id="intro2" class="animate" src="{% static 'images/paintings/souq.jpg' %}" alt="">
+        {% for p in exclusive_products %}
+            {% if forloop.counter0 == 0 %}
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro2" class="animate" src="{{p.image.url}}" alt=""></a>
+            {% endif %}
+        {% endfor %}
       <span class="larger">Dive deeper into the world of art collecting with our <a href="store2.html">limited edition Exclusive Artworks</a>. Explore the depths of creativity and discover the perfect piece to elevate your space.</span>
-      <img id="intro3" class="animate" src="{% static 'images/paintings/souq2.png' %}" alt="">
-      <img id="intro4" class="animate" src="{% static 'images/paintings/city2.jpg' %}" alt="">
+        {% for p in exclusive_products %}
+            {% if forloop.counter0 == 1 %}
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro3" class="animate" src="{{p.image.url}}" alt=""></a>
+            {% endif %}
+            {% if forloop.counter0 == 2 %}
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro4" class="animate" src="{{p.image.url}}" alt=""></a>
+            {% endif %}
+        {% endfor %}
     </figure>
   </header>
 
@@ -81,18 +98,12 @@
     <h1>Featured Products</h1>
     <span class="larger">Enjoy our collection of standout <a href="store2.html">Featured Products</a>, each chosen for its exceptional quality and artistic merit. These handpicked pieces offer a touch of elegance for any space. Find your next statement artwork and elevate your surroundings with timeless beauty.</span>
     <section class="flex0">
+        {% for p in featured_products %}
         <div>
-            <span class="larger">- Artist Name</span>
-            <img class="featured-product" src="{% static 'images/paintings/door2.jpg' %}" alt="Front Door">
+            <span class="larger">- {{p.artist}}</span>
+            <img class="featured-product" src="{{p.image.url}}" alt="Front Door">
         </div>
-        <div>
-            <img class="featured-product" src="{% static 'images/paintings/city1.jpg' %}" alt="A view from the balcony">
-            <span class="larger">- Artist name</span>
-        </div>
-        <div>
-            <span class="larger">- Artist name</span>
-            <img class="featured-product" src="{% static 'images/paintings/home1.jpg' %}" alt="Home sweet home">
-        </div>
+        {% endfor %}
     </section>
     <br><br><br><br><br><br>
 </header>
@@ -101,11 +112,11 @@
     <header id="slider1" class="slider">
         <h1>Our Artists</h1>
         <div class="slider-images">
-            <img class="slider-image" src="{% static '/images/images-testing/2.jpg' %}" alt="Image 2">
-            <img class="slider-image" src="{% static '/images/images-testing/3.jpg' %}" alt="Image 3">
-            <img class="slider-image" src="{% static '/images/images-testing/4.jpg' %}" alt="Image 4">
-            <img class="slider-image" src="{% static '/images/images-testing/5.jpg' %}" alt="Image 5">
-            <img class="slider-image" src="{% static '/images/images-testing/6.webp' %}" alt="Image 6" width="600">
+            {% for p in products %}
+            <a href="{% url 'home:artist-details' p.artist.aid %}">
+                <img class="slider-image" src="{{p.artist.image.url}}" alt="Image 2">
+            {% endfor %}
+            </a>
         </div>
         <!-- <div class="slider-arrows">
             <img class="slider-arrow left-arrow" src="{% static '/images/arrows/left.png' %}" alt="Previous">
@@ -116,18 +127,11 @@
     <header id="slider2" class="slider">
         <h1>Their touch</h1>
         <div class="slider-images">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/1.jpeg' %}">                    
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/2.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/3.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/4.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/5.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/6.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/7.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/8.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/9.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/10.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/11.jpeg' %}">
-            <img class="slider2-image" src="{% static 'images/images-testing/second-type/12.jpeg' %}">
+            {% for p in products %}
+            <a href="{% url 'home:product-details' p.pid %}">
+                <img class="slider2-image" src="{{p.image.url}}">
+            </a>
+            {% endfor %}                    
         </div>
         <!-- <div class="slider-arrows">
             <img class="slider-arrow left-arrow" src="{% static '/images/arrows/left.png' %}" alt="Previous">

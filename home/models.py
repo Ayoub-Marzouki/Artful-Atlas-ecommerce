@@ -114,8 +114,8 @@ CITY_CHOICES = [
 class Artist(models.Model):
     aid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix="artist", alphabet = "abcdefgh123456")
     name = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to = user_directory_path, default="artist image")
-    profileArtworkImage = models.ImageField(upload_to = user_directory_path, default ="artwork image to be shown in your profile")
+    image = models.ImageField(upload_to = user_directory_path, default="artist-image.png")
+    profileArtworkImage = models.ImageField(upload_to = user_directory_path, default ="Image of your preferred artwork!.png")
     shortBio=models.TextField(max_length=50)
     description = models.TextField(max_length = 300, default = "With an unwavering passion for art, this dedicated enthusiasm aspires to illuminate and enrich the lives of others through the captivating power of creativity...")
     biography = models.TextField(max_length = 300, default ="Born in xxxx, at 'city', I was always eager to paint....")
@@ -180,10 +180,12 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=99999, decimal_places=2) # 99999,99
     # old_price = models.DecimalField(max_digits=99999,decimal_places=2, null=True) # b7al sold
     specifications = models.TextField(null=True, blank = True) 
-    product_status = models.CharField(choices = STATUS, max_length=10,default = "In review")
+    product_status = models.CharField(choices = STATUS, max_length=10,default = "in_review")
     status =models.BooleanField(default = True)
     in_stock = models.BooleanField(default = True)
     featured = models.BooleanField(default = False)
+    exclusive = models.BooleanField(default=False)
+    chosen = models.BooleanField(default = False)
 
     # The tags, the user, the technique and the style associated with the product
     # tags = models.ForeignKey(Tags, on_delete = models.SET_NULL, null=True)
@@ -240,12 +242,11 @@ class CartOrder(models.Model):
 
 
 class CartOrderItems(models.Model):
-     # Order the item belongs to
+    # Order the item belongs to
     order = models.ForeignKey(CartOrder, on_delete = models.CASCADE)
     product_status = models.CharField(max_length = 200)
-    # maybe we should replace this product_status with product_status = models.CharField(choices = STATUS_CHOICE, max_length=40,default = "Processing")
-     # Item name :
-    item = models.CharField(max_length = 200)
+    product_page = models.CharField(max_length = 200, default=None)
+    name = models.CharField(max_length = 200)
     image = models.CharField(max_length = 200)
     quantity = models.IntegerField(default = 0)
     price = models.DecimalField(max_digits=99999, decimal_places=2)
@@ -325,6 +326,7 @@ class Address(models.Model):
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
     address = models.CharField(max_length = 100, null = True)
     address_status = models.BooleanField(default = False)
+    phone = models.CharField(max_length = 100, null = True)
 
     class Meta:
         verbose_name_plural = "Addresses"

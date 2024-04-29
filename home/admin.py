@@ -16,7 +16,7 @@ class ProductImagesAdmin(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin]
-    list_display = ['user', 'title', display_image, 'price', 'featured', 'product_status']
+    list_display = ['user', 'title', display_image, 'price', 'featured', 'exclusive', 'chosen', 'product_status']
 
 class StyleAdmin(admin.ModelAdmin):
     list_display = ['title',]
@@ -38,7 +38,7 @@ class CartOrderAdmin(admin.ModelAdmin):
     list_display = ['user', 'price','paid_status','order_date', 'product_status']
 
 class CartOrderItemsAdmin(admin.ModelAdmin):
-    list_display = ['order', 'invoice_no','item','image', 'quantity', 'price', 'total']
+    list_display = ['order', 'invoice_no','name','image', 'price']
 
 class ProductReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'product','review','rating']
@@ -50,7 +50,8 @@ class WishListAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'date']
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['user', 'address','address_status']
+    list_editable = ['address','phone','address_status']
+    list_display = ['user', 'address', 'phone', 'address_status']
 
 # Register models with their corresponding admin classes
 admin.site.register(Technique, TechniqueAdmin)

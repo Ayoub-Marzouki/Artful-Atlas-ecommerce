@@ -1,0 +1,99 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block cssFilename %} /static/dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/order-detailsjs.js {% endblock script %}
+
+{% block content %}
+<section id="main">
+    <section id="secondary-nav">
+        <a style="text-decoration:none;color:black;" href="{% url 'home:dashboard' %}">
+            <div class="flex tab" id="dashboard-tab">
+                <img class="icons" src="{% static 'images/icons/filter.png' %}" alt="">
+                <span>Dashboard</span>
+            </div>
+        </a>
+    
+        <div class="flex tab"  id="orders-tab">
+            <img class="icons" src="{% static 'images/icons/orders.png' %}" alt=""> 
+            <span>Order details</span>
+        </div>
+    
+        <!-- <div class="flex tab" id="track-orders-tab">
+            <img class="icons" src="{% static 'images/icons/cart.png' %}" alt=""> 
+            <span>Track your Order</span>
+        </div> -->
+    
+        <div class="flex">
+            <img class="icons" src="{% static 'images/icons/logout.png' %}" alt=""> 
+            <a href="{% url 'userauths:logout' %}">Logout</a>
+        </div>
+    </section>
+    
+    
+    <section id="dashboard" class="content">
+        <h1>Hello {{ request.user|title }}!</h1>
+        <p>In your account dashboard, you can easily keep track of your recent <strong>orders</strong>, update your <strong>shipping and billing addresses</strong>, and manage <strong>your password and account settings </strong>hassle-free.</p>
+    </section>
+
+    <section id="orders" class="content flex-item">
+        <h1>Orders</h1>
+        {% if order_items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Related Order</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for o in order_items %}
+                        <tr>
+                            <td>INVOICE_NO-{{order.id}}</td>
+                            <td>{{o.name}}</td>
+                            <td><img id="order-image" src="{{o.image}}" alt=""></td>
+                            <td>{{o.price}}</td>
+                            <td><a href="{{o.product_page}}">View product's details</a></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No orders yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- <section id="track-orders" class="content">
+        <h1>Track your orders</h1>
+        <p>simply by entering your OrderId w man3rf mhm tat3mer had tkherbi9</p>
+        <p>Track button</p>
+    </section> -->
+
+    <section id="addresses" class="content">
+        <section class="addresses-flex">
+            <section>
+                <h1>Billing address</h1>
+                <p>Address goes here</p>
+                <p>Edit button</p>
+            </section>
+            <section>  
+                <h1>Shipping address</h1>
+                <p>Address goes here</p>
+                <p>Edit button</p>
+            </section>
+        </section>
+    </section>
+
+    <section id="account-details" class="content">
+        <h1>Account details</h1>
+    </section>
+</section>
+{% endblock content %}
+
