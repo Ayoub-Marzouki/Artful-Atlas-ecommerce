@@ -67,16 +67,15 @@
                     <span>Add to Cart</span>
                 </button>
             </div>
-            
 
             <div class="button offer"> 
                 <img class="icons" src="{% static 'images/icons/bid.png' %}" alt="">
                 <span>Make an Offer!</span>
             </div>
 
-            <div class="button wishlist"> 
+            <div class="button wishlist add-to-wishlist" data-product-item="{{product.id}}"> 
                 <img class="icons" src="{% static 'images/icons/heart.png' %}" alt="">
-                <span>Add to Wish List</span>
+                <span>Add to Wishlist</span>
             </div>
         </section>
     </header>
@@ -199,6 +198,8 @@
                     <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
                     <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
                     <p class="cart-button">Add To Cart</p>
+                    <br>
+                    <p class="add-to-wishlist wish-button" data-product-item="{{product.id}}">Add to Wishlist</p>
                 </figure>
             {% endfor %}
         </header>

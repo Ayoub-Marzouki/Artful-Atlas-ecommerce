@@ -1,0 +1,62 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Wishlist {% endblock title %}
+
+{% block cssFilename %} /static/wishliststyle.css {% endblock cssFilename %}
+
+
+{% block content %}
+<header id="added-artworks">
+    <h1>Wishlist</h1>
+    {% if wishlist %}
+        {% for w in wishlist %}
+    <section class="flex" id="wishlist-artworks" style="margin-bottom:3%;">
+        <figure>
+            <a href="{% url 'home:product-details' w.product.pid %}"><img class="artwork-image" src="{{w.product.image.url}}" alt="">
+            <figcaption style="margin-bottom:5%;" class="artwork-title">{{w.product.title}}</figcaption>
+            </a>
+        </figure>
+
+        <div>
+            <h2>Artist</h2>
+            <h3><a class="artwork-artist" href="{% url 'home:artist-details' w.product.artist.aid %}">{{w.product.artist}}</a></h3>
+        </div>
+        <div>
+            <h2>Price</h2> 
+            <h3 class="price" style="text-align:center;">{{w.product.price}}</h3>
+        </div>
+        <div>
+            <h2 class="flex">Availability</h2> 
+            <h3>Available / SOLD</h3>
+        </div>
+        <span>
+            <input type="hidden" class="product-id" value="{{w.product.id}}" name="" id="">
+        </span>
+        <input type="hidden" class="product-title" value="{{w.product.title}}" name="" id="">
+        <input type="hidden" id="product_page">
+        <a style="display:none;" data-product-url="{% url 'home:product-details' w.product.pid %}" href="{% url 'home:product-details' w.product.pid %}">
+                    </a>
+        <p class="cart-button">Add To Cart</p>
+        <p class="delete"><img style="width:40px;height:40px;" src="{% static 'images/icons/x-mark.png' %}" alt=""></p>
+        <hr>
+        <br><br><br>
+    </section>
+    
+    {% endfor %}
+
+    <br><br><br><br>
+    <!-- Used a different class so that "Item added!" message won't show up if this button is clicked -->
+    <p class="go-to-cart">
+        <a href="{% url 'home:cart' %}" class="cart-button-redirecter" id="go-to-cart">Go to Cart</a>
+    </p>
+    <br>
+    {% else %}
+        <div id="else-h2">
+            <h2 >There are no artworks in your wishlist yet.</h2>
+            <br><br>
+        </div>
+    {% endif %}
+
+{% endblock content %}

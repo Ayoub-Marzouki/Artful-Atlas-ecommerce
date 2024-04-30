@@ -48,9 +48,10 @@ a {
     text-shadow:none;
     text-decoration:none;
 }
-#cart-counter {
+#cart-counter, #wishlist-counter {
     padding:0 1%;
     border-radius:25%;
+    font-size:15px;
 }
 
 /* Showing a message whenever user clicks on "Add to Cart" */

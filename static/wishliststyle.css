@@ -1,0 +1,102 @@
+body {
+    font-size:larger;
+}
+a {
+    text-decoration:none;
+    color:black;
+}
+
+h1 {
+    text-align:center;
+    font-size:35px;
+}
+
+h2 {
+    font-size:30px;
+}
+
+main {
+    width:90%;
+    box-shadow:-10px 10px 10px rgba(0,0,0,0.4), 10px 10px 10px rgba(0,0,0,0.4);
+}
+
+
+.flex {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+
+.artwork-image {
+    width:300px;
+    height:300px;
+}
+
+.artwork-title, .artwork-artist {
+    font-size:19px;
+    font-weight:bolder;
+    transition:300ms;
+}
+.artwork-title {
+    padding:0 1%;
+}
+.artwork-artist {
+    font-weight:500;
+}
+
+.artwork-title:hover, .artwork-artist:hover, #return-a:hover {
+    text-shadow:1px 1px rgba(0,0,0,0.5);
+    color:lightseagreen;
+    transition:300ms;
+}
+
+.shipping {
+    color:rgba(0,0,0,0.5);
+    font-size:15px;
+    padding-left:10px;
+}
+
+.delete {
+    padding-right:10px;
+    cursor:pointer;
+}
+
+hr {
+    color:rgba(173, 216, 230, 0.2);
+    width:80%;
+    margin:auto;
+}
+
+
+
+
+
+.cart-button, .cart-button-redirecter {
+    color:whitesmoke;
+    background-color:#212a2f;
+    padding:20px 100px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:20px;
+    font-weight:bold;
+    font-family:monospace;
+    transition:300ms;
+}
+.go-to-cart {
+    text-align:center;
+}
+#go-to-cart {
+    display:inline-block;
+    padding:30px 200px;
+}
+.cart-button:hover, .cart-button-redirecter:hover {
+    background-color:black;
+    color:white;
+}
+
+#else-h2 {
+    margin:5% auto;
+    text-align:center;
+}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.db.models import Q, Avg
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList
 from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm
 from django.template.loader import render_to_string
 
@@ -569,22 +569,51 @@ def order_details(request, id):
     return render(request, 'home/order-details.html', context)
 
 
+def wishlist_view(request):
+    wishlist =WishList.objects.filter(user = request.user)
+    wishlist_count = WishList.objects.filter(user = request.user).count()
+    context = {
+        'wishlist':wishlist,
+        'wishlist_count':wishlist_count,
+    }
+    return render(request,"home/wishlist.html", context)
 
 
-# def technique_list_view(request):
-#     techniques = Technique.objects.all()
+def add_to_wishlist(request):
+    product_id = request.GET.get('id')
+    product = Product.objects.get(id=product_id)
+
+    # Check if the product is already in the wishlist
+    if WishList.objects.filter(product=product, user=request.user).exists():
+        is_added = False
+    else:
+        # Add the product to the wishlist
+        WishList.objects.create(product=product, user=request.user)
+        is_added = True
+
+    # Count the total number of wishlist items for the current user
+    wishlist_count = WishList.objects.filter(user=request.user).count()
+
+    # Construct the JSON response
+    response_data = {
+        "success": True,
+        "wishlist_count": wishlist_count,
+        "is_added": is_added
+    }
+
+    return JsonResponse(response_data)
+
+
+def delete_item_from_wishlist(request):
+    if request.method == 'GET':
+        product_id = request.GET.get('id')
+        try:
+            wishlist_item = WishList.objects.get(product_id=product_id, user=request.user)
+            wishlist_item.delete()
+            wishlist_count = WishList.objects.filter(user=request.user).count()
+            return JsonResponse({'wishlist_count': wishlist_count,'success': True, 'message': 'Item removed from wishlist'})
+        except WishList.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Item not found in wishlist'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
     
-#     context = {
-#         "techniques":techniques
-#     }
-#     return render(request,'home/')
-
-# def style_list_view(request):
-#     styles = Style.objects.all()
-    
-#     context = {
-#         "styles":styles
-#     }
-#     return render(request,'home/')
-
-

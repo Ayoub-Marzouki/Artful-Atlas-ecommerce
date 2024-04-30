@@ -17,7 +17,7 @@ addToCartButtons.forEach(button => {
 });
 
 
-//  Ajax
+//  Ajax for adding products to cart / wishlist
 
 $(".cart-button").on("click", function() {
     // Retrieve product details from the DOM relative to the clicked button
@@ -36,6 +36,14 @@ $(".cart-button").on("click", function() {
         artist_name = $(this).closest("#info").find("#artist-name").text().trim();
         artist_page = $(this).closest("#info").find("#artist-name").attr("href");
         product_page = $(this).closest("#info").find("a[data-product-url]").attr("href");
+    } else if ($(this).closest("#wishlist-artworks").length > 0) {
+        // For wishlist template
+        product_id = $(this).closest("#wishlist-artworks").find(".product-id").val();
+        product_price = $(this).closest("#wishlist-artworks").find(".price").text();
+        product_image = $(this).closest("#wishlist-artworks").find(".artwork-image").attr("src");
+        artist_name = $(this).closest("#wishlist-artworks").find(".artwork-artist").text().trim();
+        artist_page = $(this).closest("#wishlist-artworks").find(".artwork-artist").attr("href");
+        product_page = $(this).closest("#wishlist-artworks").find("a[data-product-url]").attr("href");
     } else {
         // For related products
         product_price = $(this).closest("figure").find(".price").text();

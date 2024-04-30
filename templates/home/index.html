@@ -65,6 +65,12 @@
                 <span id="cart-counter">{{request.session.cart_data_object|length}}</span>
             </a>
         </div>
+        <div class="flexbox">
+            <a class="cart" href="{% url 'home:wishlist' %}">
+                <img class="icons" src="{% static 'images/icons/heart.png' %}" alt="cart icon" width="25" height="25">
+                <span id="wishlist-counter">{{wishlist_count}}</span>
+            </a>
+        </div>
     </nav>
 </header>
 

@@ -238,19 +238,29 @@ h1 {
 }
 
 /* Messing with "Add to Cart */
-.cart-button {
-    color:black;
+.cart-button, .wish-button {
+    font-weight:bolder;
     padding:3%;
-    background-color:cornsilk;
     opacity:0;
     transition:300ms;
-    
 }
-figure:hover .cart-button {
+.cart-button {
+    color:white;
+    background-color:#212a2f;;
+}
+.wish-button {
+    color:rgb(255, 77, 112);
+    background-color: rgba(255, 182, 193, 0.7);
+}
+.wish-button:hover {
+    background-color:lightpink;
+}
+
+figure:hover .cart-button, figure:hover .wish-button {
     opacity:1;
     transition:300ms;
 }
-.cart-button:hover {
+.cart-button:hover, .wish-button:hover {
     box-shadow:-10px 10px 10px rgba(0,0,0,0.3), 10px 10px 10px rgba(0,0,0,0.2);
     cursor:pointer;
 }
