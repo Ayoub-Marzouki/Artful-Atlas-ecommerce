@@ -49,6 +49,36 @@ document.addEventListener('DOMContentLoaded', function() {
     if (defaultTab) {
         defaultTab.click();
     }
+
+    // Javascript charts for orders
+
+    const ctx = document.getElementById('myChart');
+    const labelsSpan = document.getElementById('labels');
+    const countSpan = document.getElementById('count');
+
+    // Retrieve the data from the data attributes
+    const labelsData = labelsSpan.getAttribute('data-month').split(',');
+    const countData = countSpan.getAttribute('data-total-orders').split(',');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labelsData,
+            datasets: [{
+                label: 'Number of Orders',
+                data: countData.map(Number), // Convert strings to numbers
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
 });
 
 

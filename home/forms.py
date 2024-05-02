@@ -1,5 +1,5 @@
 from django import forms
-from home.models import ProductReview, ArtistReview
+from home.models import ProductReview, ArtistReview, UserReview, UserRating
 from cities_light.models import Country, City
 
 class ProductReviewForm(forms.ModelForm):
@@ -16,6 +16,18 @@ class ArtistReviewForm(forms.ModelForm):
     class Meta:
         model = ArtistReview
         fields = ['review', 'rating']
+
+class UserReviewForm(forms.ModelForm):
+    review = forms.CharField(widget=forms.Textarea(attrs={'placeholder':"Write a testimonial"}))
+
+    class Meta:
+        model = UserReview
+        fields = ['review']
+
+class UserRatingForm(forms.ModelForm):
+    class Meta:
+        model = UserRating
+        fields = ['rating']
 
 
 class CheckoutForm(forms.Form):

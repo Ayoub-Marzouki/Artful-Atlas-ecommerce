@@ -1,0 +1,93 @@
+{% extends 'partials/base.html' %}
+
+{% load static %} 
+
+{% block title %} About {% endblock title %}
+
+{% block cssFilename %} /static/aboutstyle.css {% endblock cssFilename %}
+
+{% block content %}
+<!-- Obsolete -->
+
+<!-- <header class="intro">
+    <h1>A talent extracted purely from <span id="red">Moroccan</span> <span id="green">Atlas!</span></h1>
+    <img id="flag" src="{% static 'images/morocco-flag.png' %}" alt="">
+    <p> <q> Any person who paints whether as a profession or as a hobby is called an artist, and every artist has a special experience with art. <br>
+    When it comes to me, art was and still is the only method that grants me the ability to express things that the tongue cannot say. Drawing is a deep expression of what we feel, an expression of what we have experienced or are passing through in the present. Drawing is a friend in loneliness, a friend who understands you despite your silence. </q> <br> - Moroccan rising artist Mehdi Ragani
+</p>
+</header>  -->
+
+<!-- Current -->
+<header id="who">
+
+    <div id="who1">
+        <h1 id="who11">Who are we?</h1>
+        <img id="who12" class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas Logo">
+    </div>
+
+    <div id="who2">
+        <p>Artful Atlas is an online platform on the surface. Deep inside on the other hand, it's a vibrant community dedicated to showcasing the rich Moroccan artistry to the world. <br> <br> Our mission is to amplify the essence of Moroccan identity by spotlighting emerging talents who skillfully capture the essence of their heritage through their distinctive artistic expressions. <br> Ever pondered the possibility of communication transcending linguistic barriers? We've discovered a universal language; that is art. Through the powerful medium of artistic expression, we break down language barriers and connect individuals from diverse backgrounds on a profound level. <br> <br> Join us in celebrating the boundless communication and understanding fostered by the language of art. Through our curated selection of artwork, we aim to bridge cultures and foster a deeper appreciation for the beauty and diversity of Moroccan art. <br> <br> Our team is passionate about supporting young Moroccan artists on their journey to global recognition. We provide a platform for these talents to shine, offering them exposure and opportunities to showcase their work to a global audience. Join us on our journey as we celebrate the creativity, innovation, and cultural richness of Morocco, one masterpiece at a time.</p>
+    </div>
+</header>
+<header id="whosuite">
+    <h3>Meet the Team</h3>
+    
+    <div class="flex">
+        <img src="{% static 'images/images-testing/5.jpg' %}" alt="">
+        <p>Just me!</p>
+    </div>
+</header>
+
+<!-- <hr class="hr"> -->
+
+<header id="why">
+    <h1>Why us?</h1>
+
+    <ul>
+        <li><strong style="font-weight:900">Supporting young artists:</strong> We are passionate about supporting young Moroccan artists (and that is our top priority) on their journey to global recognition. We provide a platform for these talents to shine, offering exposure and opportunities to showcase their work to a global audience.</li>
+        <br>
+        <li><strong style="font-weight:900">Amplifying Moroccan identity:</strong> Our mission is to showcase the essence of Moroccan identity by highlighting rising talents who are able to make you taste heritage and traditions of Morocco simply through their painting brushes.</li>
+        <br>
+        <li><strong style="font-weight:900">Bridging cultures:</strong> Through our careful selection of artwork, we aim to bridge cultures and promote a deeper appreciation for the beauty and diversity of Moroccan art. Join us in celebrating the rich tapestry of Moroccan culture.</li>
+        <br>
+        <li><strong style="font-weight:900">Celebrating creativity and innovation:</strong> Join us on our journey as we celebrate the creativity, innovation, and cultural richness of Morocco, one masterpiece at a time. Together, let's explore the endless possibilities of Moroccan artistry.</li>
+    </ul>
+</header>
+
+<!-- <hr class="hr"> -->
+
+<header id="history">
+    <h1>Our history</h1>
+    <p>It all began with 2 close friends. The first one was an art admirer who kept on sharpening his art skills, bearing no attention whatsoever to recognition nor status. The second however, saw the talent in his friend and the fire w dakchi l mhm chi 9isa 7azina ala ti3sak. w moraha kanden chi image </p>
+    <img src="{% static 'images/slider0/morocco0.jpg' %}" alt="" width="800" height="500">
+</header>
+
+<!-- <hr class="hr"> -->
+
+<header id="mission">
+    <h1>Our mission and values</h1>
+    <p>Our mission is deeply rooted in promoting Moroccan artistry and cultural heritage to the world. We hold these core values close to our hearts:</p>
+    <br>
+    <ul>
+        <li><strong style="font-weight:900">Empowering artists:</strong> We empower artists by offering them exposure, opportunities, and resources to grow and thrive in their artistic journey, ensuring that their voices are heard and their talents are recognized globally.</li>
+        <br>
+        <li><strong style="font-weight:900">Celebrating Moroccan identity:</strong> We are committed to showcasing the diverse and vibrant artistic expressions that capture the essence of Moroccan culture and heritage.</li>
+        <br>
+        <li><strong style="font-weight:900">Fostering creativity and innovation:</strong> We believe in nurturing and supporting emerging talents, providing them with a platform to express their creativity and share their unique perspectives with the world.</li>
+        <br>
+        <li><strong style="font-weight:900">Promoting cultural exchange:</strong> Through our selection of artwork, we strive to foster cross-cultural dialogue and appreciation, bridging gaps and fostering understanding among individuals from diverse backgrounds.</li>
+        <br>
+        <li><strong style="font-weight:900">Community-driven approach:</strong> We believe in the power of community and collaboration. We aim to cultivate a supportive and inclusive community where artists and art enthusiasts come together to share their passion for art and creativity.</li>
+    </ul>
+</header>
+
+<hr class="hr">
+
+<h1>Testimonials</h1>
+
+<hr class="hr">
+
+<h1>Contact us!</h1>
+<div class="clear"></div>
+<br>
+{% endblock content %}

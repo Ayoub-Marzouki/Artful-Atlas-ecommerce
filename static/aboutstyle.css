@@ -1,0 +1,173 @@
+/* Obsolete style */
+/* main .intro {
+    width:60%;
+    height:20%;
+    margin-top:5%;
+    padding:5% 5% 5% 1%;
+    background-color:rgba(0,0,0,0.4);
+} 
+
+#red {
+    color:crimson;
+}
+#green {
+    color:rgb(166, 255, 166);
+}
+#flag {
+    width:50%;
+    float:right;
+    margin:1%;
+}
+.clear {
+    clear:both;
+}
+*/
+
+body {
+    /* The following concerns the obsolete version */
+    /* background-image:url(/images/background-images/test.jpg); */
+    background-attachment:scroll; 
+    /* background-size:cover;
+    background-position:center center; */
+    background-color:whitesmoke;
+    color:whitesmoke;
+    background-image:linear-gradient(to bottom,#212a2f,#00415a,#1E5162,#296E85,#ADD8E6);
+    /* 
+     This and size:cover can be used to adjust the image to fit the user's screen 
+    */
+}
+main {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Luci Sans Unicode', Geneva, Verdana, sans-serif;
+    width:100%;
+    font-size:21px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align:center;
+    margin:3%;
+}
+p, li {
+    font-size:18px;
+}
+
+.hr {
+    color:rgba(0,0,0,0.3);
+    margin:3%;
+}
+
+/* Adding some padding to all headers */
+#who, #why, #history, #mission {
+    padding:5%;
+}
+/* Styling who are we header */
+
+
+#who {
+    /* background-color:#212a2f; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+
+#who1 { 
+    grid-area: 1 / 1 / 2 / 2; 
+    display: grid;
+    align-items:center;
+}
+
+#who2 { grid-area: 1 / 2 / 2 / 4; }
+
+
+
+#who .logo {
+    display:block;
+    margin:auto;
+}
+
+
+/* Styling meet the team section */
+#whosuite {
+    /* background-color:#00415a; */
+}
+.flex {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#whosuite h3 {
+    padding:5%;
+    text-align:center;
+}
+
+#whosuite img {
+    margin:5%;
+    width:400px;
+    height:500px;
+    box-shadow:-40px -40px cadetblue;
+}
+
+
+
+/* Styling the "why us" header */
+
+#why {
+    /* background-color:#1E5162; */
+}
+
+li {
+    list-style-type:'\2713';
+    list-style-position:outside;
+}
+
+
+
+strong {
+    color:lightseagreen;
+    text-shadow:none;
+}
+
+/* Styling history header */
+#history {
+    /* background-color:#296E85; */
+}
+
+/* Styling the mission header */
+#mission {
+    /* background-color:#ADD8E6; */
+}
+
+/* Making the page mobile friendly */
+
+@media only screen and (max-width:600px) {
+    body {
+        font-size:16px;
+        background-attachment:fixed;
+        background-repeat:no-repeat;
+        background-size:cover;
+        background-position:center center;
+    }
+    main .intro {
+        display:block;
+        margin:auto;
+        text-align:center;
+        width:80%;
+        
+    }
+    #flag {
+        float:none;
+        width:75%;
+    }
+}
+@media only screen and (min-width:600px) and (max-width:1200px) {
+    body {
+        background-attachment:fixed;
+        background-repeat:no-repeat;
+        background-size:cover;
+        background-position:center center;
+    }
+}

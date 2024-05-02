@@ -1,0 +1,71 @@
+{% extends 'partials/base.html' %}
+
+{% load static %} 
+
+{% block title %} Services {% endblock title %}
+
+{% block cssFilename %} /static/servicesstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/servicesjs.js {% endblock script %}
+
+{% block content %}
+<h1>Want to see yourself in an artistic manner? <br> Perhaps a gift for your beloved ones too?</h1>
+<header class="slider header-overlay">
+    <img class="slider-image" src="{% static 'images/services/1.jpg' %}" alt="Services">
+    <img class="slider-image" src="{% static 'images/services/2.jpg' %}" alt="Services">
+    <img class="slider-image" src="{% static 'images/services/3.jpg' %}" alt="Services">
+    <img class="slider-image" src="{% static 'images/services/4.webp' %}" alt="Services">
+</header>
+<h2>We are at your services!</h2>
+<p>Browse our artists' styles to find your perfect match. From vibrant caricatures to elegant sketches, discover a range of options, choose your favorite style, and let us turn your photos into stunning art pieces.</p>
+<br>
+
+<header class="styles">
+    <div class="style-item">
+        <img class="styles-image left" src="{% static 'images/services/styles/1.png' %}" alt="Scumbling art" loading="lazy">
+        <p class="type-writer">a b c d e f g h i j k l </p>
+    </div>
+
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+
+    <div class="style-item">
+        <img class="styles-image right" src="{% static 'images/services/styles/2.png' %}" alt="" loading="lazy">
+        <p class="type-writer">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores molestias deleniti mollitia a odit dolorem eius excepturi ad molestiae tempore hic optio, animi sit odio labore. Alias magni numquam expedita.</p>
+    </div>
+
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+
+    <div class="style-item">
+        <img class="styles-image left" src="{% static 'images/services/styles/4.png' %}" alt="Hyperrealism" loading="lazy">
+        <p class="type-writer">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias laboriosam rerum voluptate incidunt nisi aut veritatis inventore velit, quos id vero error eligendi rem nemo eum voluptas quae eveniet dolore?</p>
+    </div>
+
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+
+    <div class="style-item">
+        <img class="styles-image right" src="{% static 'images/services/styles/5.jpeg' %}" alt="" loading="lazy">
+        <p class="type-writer">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi adipisci iste quibusdam iusto obcaecati velit sunt excepturi perferendis ducimus harum eaque, ea voluptate earum molestiae accusantium beatae vero enim consequuntur.</p>
+    </div>
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+    <div class="style-item">
+        <img class="styles-image left" src="{% static 'images/services/styles/6.png' %}" alt="" loading="lazy">
+        <p class="type-writer">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt laborum totam aut voluptatibus ea facilis ullam repellat veritatis non ducimus sequi dolorem pariatur reprehenderit, quo accusamus atque? Tempora, optio animi?</p>
+    </div>
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+    <div class="style-item">
+        <img class="styles-image right" src="{% static 'images/services/styles/7.jpeg' %}" alt="" loading="lazy">
+        <p class="type-writer">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur autem id optio saepe tempore ratione eius ipsam iste neque esse, quod nihil reiciendis et? Illum magnam suscipit rerum veniam qui?</p>
+    </div>
+    <header class="clear"></header>
+    <p class="choose">Choose</p>
+</header>
+<br>
+
+<!-- Capture moments. Give art. -->
+
+{% endblock content %}

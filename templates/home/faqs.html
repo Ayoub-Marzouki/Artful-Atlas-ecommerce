@@ -1,0 +1,80 @@
+{% extends 'partials/base.html' %}
+
+{% load static %} 
+
+{% block title %} Frequently Asked Questions {% endblock title %}
+
+{% block cssFilename %} /static/faqsstyle.css {% endblock cssFilename %}
+
+{% block content %}
+<header id="faqs">
+    <h1>Frequently Asked Questions</h1>
+    <aside>
+        <details title="Click to read the answer!" open>
+            <summary> How can I purchase artwork on your website? </summary>
+            <p>Simply go to the <a href="{% url 'home:store' %}">store</a> and start the journey! (pss, for a best user experience, you can <a href="{% url 'userauths:sign-up' %}">sign up</a> or <a href="{% url 'userauths:login' %}">login</a> if you already have an account!)</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>Do you offer custom artwork commissions?</summary>
+            <p>Certainly! <a href="{% url 'home:services' %}">Contact me here</a> and we'll discuss all the details. You are most welcomed.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>What types of artwork are available?</summary>
+            <p>Each artist has his own touch in his artworks, here are some of the types : Photorealism, Hyperrealism, Stippling, Hatching and Cross-Hatching, Scumbling and Scribble Art.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>How do I become a registered artist on your website?</summary>
+            <p>First you'll have to sign up, then go to <a href="sell.html">sell</a> page so that you can fill in all the necessary information.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>What are the benefits of creating an account on your website?</summary>
+            <p>We have got 2 scenarios here : If you're an art admirer, you can sign up and, as you browse through paintings, we'll work on suggesting you more artworks that match your interest. <br> <br> If you're an artist looking to sell your own artwork, this is also available via creating an account and providing us some necessary information!</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>What measures do you take to ensure the authenticity and quality of artworks?</summary>
+            <p>Before we even considered selling artworks, we've spoken to multiple printing houses and their corresponding paper expert. <br> <br> We've collected as much information as needed that are related to the quality of paper and how the very process of painting/printing on a specific type of paper is done. Next we've done some experiments on these types of papers to ensure that the given information were as accurate as they could be. <br> <br> Finally we've experimented with multiple painting brands, whether they are specified in acrylic paintings, oil paintings, gouache paintings or other types of paintings. <br>Thus, before adding an artwork to the website, we check these parameters, and, if they comply with our requirements, they are welcomed.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>How can I contact customer support for assistance?</summary>
+            <p>Visiting our <a href="{% url 'home:contact' %}">contact</a> page, you're going to find our emails that are specific to helping our customers. Feel free to ask about anything anytime! <br> Time response currently does not surpass 8 hours in worst cases.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>What is your return and refund policy?</summary>
+            <p> <strong style="font-weight:900">Return and Refund Policy</strong> <br> At Artful Atlas, we want you to be completely satisfied with your artwork purchase. If you're not entirely happy with your purchase, we're here to help. <br> <br> <strong style="font-weight:900">Returns</strong> <br> You may return any artwork within the day of receiving it for a full refund or exchange in the following cases : <br> + You've received the wrong artwork. <br> + The artwork is damaged (in some rare cases where the shipping medium stumbles.) <br> <br> To initiate a return, please contact our customer service team via <a href="{% url 'home:contact' %}">Contact</a> to request a return authorization. Returned artworks must be in their original condition, unused, and with all original packaging intact. <br> <br> <strong style="font-weight:900">Refunds</strong> <br> Once your return is received and inspected, we will send you an email to notify you that we have received your returned artwork. We will also notify you of the approval or rejection of your refund. <br> If approved, your refund will be processed, and a credit will automatically be applied to your original method of payment within 3 days. <br> <br><strong style="font-weight:900">Damaged or Defective Items</strong> <br> If your artwork arrives damaged or defective, please contact us immediately with photographic evidence. We will arrange for a replacement or refund as soon as possible. <br> <br> <strong style="font-weight:900">Shipping Costs</strong> <br> <br> <strong style="font-weight:900">Exchanges</strong><br> If you wish to exchange your artwork for a different piece, please contact us to arrange for an exchange. <br> <a href="{% url 'home:contact' %}">Contact Us</a> <br> If you have any questions about our return and refund policy, or if you need assistance with a return, please contact our customer service team via <a href="{% url 'home:contact' %}">contact</a>.</p>
+        </details>
+    </aside>
+    <aside>
+        <details>
+            <summary>Are there any fees associated with buying or selling artwork on your platform?</summary>
+            <p><strong style="font-weight:900">Buying artwork</strong> <br>The only fees associated with buying artwork is shipping fees, which vary depending on the artwork. (It could also be free, that, again, depending on the artwork!)</p>
+            <p><strong style="font-weight:900">Selling artwork</strong> <br>We ought to remind you dear reader that our main objective here is to encourage the young talents of Morocco to get to the stage and show themselves to the world. Thus if you are looking to be one of them, We assure you that fees are going to be the least of your concerns. (In other words, just hurry up and join us!)</p>
+        </details>
+    </aside>
+    <aside>
+        <details open>
+            <summary>How do I stay updated on new artworks, artists, and promotions?</summary>
+            <p>Simply enter your email <a href="{% url 'home:contact' %}">here</a> at the "Stay informed" section and you're going to receive emails regarding everything you want to know and stay updated to!</p>
+        </details>
+    </aside>
+    <br> <br>
+</header>
+<h1>Still have questions?</h1>
+<a href="{% url 'home:contact' %}" id="contact">Contact us here</a>
+<br><br>
+
+<hr class="hr">
+{% endblock content %}

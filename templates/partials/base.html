@@ -15,6 +15,7 @@
     <script src="{% static 'cart.js' %}" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'wishlistjs.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <title>{% block title %} {% endblock title %} </title>
 </head>
 <body>
@@ -36,10 +37,10 @@
         <nav class="flexboxcontainer">
             <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
             <a class="flexbox" href="{% url 'home:index' %}">Home</a>
-            <a class="flexbox" href="services.html">Services</a>
-            <a class="flexbox" href="contact.html">Contact</a>
+            <a class="flexbox" href="{% url 'home:services' %}">Services</a>
+            <a class="flexbox" href="{% url 'home:contact' %}">Contact</a>
             <a class="flexbox" href="sell.html">Sell</a>
-            <a class="flexbox" href="about.html">About</a>
+            <a class="flexbox" href="{% url 'home:about' %}">About</a>
             <a class="flexbox" href="{% url 'home:artists' %}">Artists</a>
             <a class="flexbox" href="{% url 'home:store' %}">Store</a>
             <div class="flexbox dropdown">

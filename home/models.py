@@ -305,6 +305,42 @@ class ArtistReview(models.Model):
     def get_rating(self):
         return self.rating
 
+class UserReview(models.Model): # For Testimonials section in home page
+    # User who wrote the review
+    user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
+    # his review
+    review = models.TextField()
+    # Date and time when the review was posted
+    date = models.DateTimeField(auto_now_add = True) 
+    
+    class Meta:
+        verbose_name_plural = "Users' Reviews"
+
+    def __str__(self):
+        return self.user.get_full_name()
+    
+    def get_rating(self):
+        return self.rating
+    
+class UserRating(models.Model): # For Ratings section in home page
+    # User who wrote the review
+    user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
+    # his rating
+    rating = models.IntegerField(choices = RATING, default=None)
+    # Date and time when the review was posted
+    date = models.DateTimeField(auto_now_add = True) 
+    
+    class Meta:
+        verbose_name_plural = "Users' Ratings"
+
+    def __str__(self):
+        return self.user.get_full_name()
+    
+    def get_rating(self):
+        return self.rating
+
+
+
 
 class WishList(models.Model):
     # User who added the product to the wish list

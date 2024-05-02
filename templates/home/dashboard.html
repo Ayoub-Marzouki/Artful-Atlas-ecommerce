@@ -46,6 +46,14 @@
     <section id="dashboard" class="content">
         <h1>Hello {{ request.user|title }}!</h1>
         <p>In your account dashboard, you can easily keep track of your recent <strong>orders</strong>, update your <strong>shipping and billing addresses</strong>, and manage <strong>your password and account settings </strong>hassle-free.</p>
+        <span id="labels" data-month="{{ month|join:',' }}"></span>
+        <span id="count" data-total-orders="{{ total_orders_of_month|join:',' }}"></span>
+        <br>
+        <canvas id="myChart"></canvas>
+        
+        {% if orders|length == 0 %}
+            <h3>You haven't ordered anything yet.</h3>
+        {% endif %}
     </section>
 
     <section id="orders" class="content flex-item">

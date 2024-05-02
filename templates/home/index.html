@@ -41,10 +41,10 @@
     <nav class="flexboxcontainer">
         <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
         <a class="flexbox" href="{% url 'home:index' %}">Home</a>
-        <a class="flexbox" href="services.html">Services</a>
-        <a class="flexbox" href="contact.html">Contact</a>
+        <a class="flexbox" href="{% url 'home:services' %}">Services</a>
+        <a class="flexbox" href="{% url 'home:contact' %}">Contact</a>
         <a class="flexbox" href="sell.html">Sell</a>
-        <a class="flexbox" href="about.html">About</a>
+        <a class="flexbox" href="{% url 'home:about' %}">About</a>
         <a class="flexbox" href="{% url 'home:artists' %}">Artists</a>
         <a class="flexbox" href="{% url 'home:store' %}">Store</a>
         <div class="flexbox dropdown">
@@ -76,20 +76,20 @@
 
 <header id="intro1">
     <br><br>
-    <h1>Exclusive Artworks</h1>
+    <h1 title="Unique artworks (no copies)">Exclusive Artworks</h1>
     <figure>
         {% for p in exclusive_products %}
             {% if forloop.counter0 == 0 %}
-                <a href="{% url 'home:product-details' p.pid %}"><img id="intro2" class="animate" src="{{p.image.url}}" alt=""></a>
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro2" class="animate-trigger" src="{{p.image.url}}" alt=""></a>
             {% endif %}
         {% endfor %}
       <span class="larger">Dive deeper into the world of art collecting with our <a href="store2.html">limited edition Exclusive Artworks</a>. Explore the depths of creativity and discover the perfect piece to elevate your space.</span>
         {% for p in exclusive_products %}
             {% if forloop.counter0 == 1 %}
-                <a href="{% url 'home:product-details' p.pid %}"><img id="intro3" class="animate" src="{{p.image.url}}" alt=""></a>
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro3" class="animate-trigger" src="{{p.image.url}}" alt=""></a>
             {% endif %}
             {% if forloop.counter0 == 2 %}
-                <a href="{% url 'home:product-details' p.pid %}"><img id="intro4" class="animate" src="{{p.image.url}}" alt=""></a>
+                <a href="{% url 'home:product-details' p.pid %}"><img id="intro4" class="animate-trigger" src="{{p.image.url}}" alt=""></a>
             {% endif %}
         {% endfor %}
     </figure>
@@ -101,13 +101,13 @@
 
 <header id="featured-products">
     <br><br>
-    <h1>Featured Products</h1>
+    <h1 title="Popular artworks">Featured Artworks</h1>
     <span class="larger">Enjoy our collection of standout <a href="store2.html">Featured Products</a>, each chosen for its exceptional quality and artistic merit. These handpicked pieces offer a touch of elegance for any space. Find your next statement artwork and elevate your surroundings with timeless beauty.</span>
     <section class="flex0">
         {% for p in featured_products %}
         <div>
-            <span class="larger">- {{p.artist}}</span>
-            <img class="featured-product" src="{{p.image.url}}" alt="Front Door">
+            <a class="larger" style="text-decoration:underline;" href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a>
+            <a href="{% url 'home:product-details' p.pid %}"><img class="featured-product" src="{{p.image.url}}" alt="Artwork"></a>
         </div>
         {% endfor %}
     </section>
@@ -151,10 +151,90 @@
     <h1 id="h1-artists">More about our  <a href="artists.html">artists</a></h1>
 </header>
 
-<br><br>
-<hr>
+<br><br><br><br>
+
 <h1>Testimonials!</h1>
-<hr>
-<h1>Ratings</h1>
-<hr>
+<section id="reviews">
+    {% if not reviews %}
+    <br>
+    <span class="larger">No testimonials yet.</span>
+    <br>
+    {% else %}
+        {% for r in reviews %}
+        <div class="flex" id="review">
+            <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">
+            <h3>{{r.user.username|title}}</h3> <br>
+            <p>{{r.date|date:"F d, Y"}}</p> <br>
+        </div>
+        <p style="text-align:start;"> - {{r.review}}</p> <br>
+    {% endfor %}
+    {% endif %}
+    
+    {% if make_review == True %}
+    {% if request.user.is_authenticated %}
+    <div id="hide">
+        <h3>Add a testimonial</h3>
+        <form action="{% url 'home:index' %}" id="addReview" method="post">
+            {% csrf_token %}
+            <p>{{review_form.review}}</p>
+            <input type="hidden" name="action" value="review">
+            <button class="button" id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+    {% endif %}
+    <br><br>
+    <p id="review-message"></p>
+    {% if not request.user.is_authenticated %}
+        <p>You must be logged in to be able to post a comment or a review. 
+            <a href="{% url 'userauths:login' %}?next={{ current_url }}">Log in</a>
+        </p>
+        <br>
+        <p>Don't have an account yet? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>
+    {% endif %}
+</section>
+
+<br><br><br>
+
+<h1>Customer Ratings</h1>
+<section id="ratings">
+    {% if not ratings %}
+    <br>
+    <span class="larger">No ratings yet.</span>
+    <br>
+    {% else %}
+        {% if rating_count == 1  %} 
+        <p>1 User rating.</p>
+        {% else  %}
+        <p>{{rating_count}} Users ratings</p>
+        {% endif %}
+
+        <br>
+        <h2>Current Score : {{average_rating.rating|floatformat}}  /5</h2>
+    {% endif %}
+
+    {% if make_rating == True %}
+    {% if request.user.is_authenticated %}
+    <div>
+    <h3>Rate us!</h3>
+        <form action="{% url 'home:index' %}" id="addReview" method="post">
+            {% csrf_token %}
+            <p>{{rating_form.rating}}</p>
+            <input type="hidden" name="action" value="rating">
+            <button class="button" id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+    {% endif %}
+    <p id="review-message"></p>
+    <br><br>
+    {% if not request.user.is_authenticated %}
+        <p>You must be logged in to be able to post a comment or a review. 
+            <a href="{% url 'userauths:login' %}?next={{ current_url }}">Log in</a>
+        </p>
+        <br>
+        <p>Don't have an account yet? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>
+    {% endif %}
+</section>
+<br><br><br>
 {% endblock content %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from home.models import Technique, Style, Artist, Tags, Product, ProductImages, CartOrder, CartOrderItems, ProductReview, WishList, Address, ArtistReview, SubjectMatter, Philosophy
+from home.models import Technique, Style, Artist, Tags, Product, ProductImages, CartOrder, CartOrderItems, ProductReview, WishList, Address, ArtistReview, SubjectMatter, Philosophy, UserReview, UserRating
 
 
 def display_image(obj):
@@ -53,6 +53,13 @@ class AddressAdmin(admin.ModelAdmin):
     list_editable = ['address','phone','address_status']
     list_display = ['user', 'address', 'phone', 'address_status']
 
+
+class UserReviewAdmin(admin.ModelAdmin):
+    list_display = ['user','review']
+
+class UserRatingAdmin(admin.ModelAdmin):
+    list_display = ['user','rating']
+
 # Register models with their corresponding admin classes
 admin.site.register(Technique, TechniqueAdmin)
 admin.site.register(Style, StyleAdmin)
@@ -66,3 +73,5 @@ admin.site.register(ProductReview, ProductReviewAdmin)
 admin.site.register(ArtistReview, ArtistReviewAdmin)
 admin.site.register(WishList, WishListAdmin)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(UserReview, UserReviewAdmin)
+admin.site.register(UserRating, UserRatingAdmin)

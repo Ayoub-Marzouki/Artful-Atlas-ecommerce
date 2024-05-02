@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
-from django.db.models import Q, Avg
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList
-from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm
+from django.db.models import Q, Avg, Count
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList, UserReview, UserRating
+from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm, UserReviewForm, UserRatingForm
 from django.template.loader import render_to_string
 
 from django.urls import reverse
@@ -14,21 +14,117 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
+import calendar
+from django.db.models.functions import ExtractMonth
+
 def index(request):
     artists = Artist.objects.all()
     products = Product.objects.all()
     exclusive_products = Product.objects.filter(exclusive = True)
     featured_products = Product.objects.filter(featured = True)
     chosen_product = Product.objects.get(chosen = True)
-    context = {
+
+    # Add user reviews / ratings :
+
+    reviews = UserReview.objects.all().order_by("-date") # to show the latest reviews
+    ratings = UserRating.objects.all().order_by("-date")
+
+    
+
+    
+    user_rating = UserRating()
+    user_review = UserReview()
+
+    if request.method == 'POST':
+        if request.POST.get('action') == 'review': 
+            user_review = UserReview.objects.create(
+            user=request.user,
+            review=request.POST['review']
+        )
+        elif request.POST.get('action') == 'rating':  
+            user_rating = UserRating.objects.create(
+            user=request.user,
+            rating=request.POST['rating']
+        )
+
+    # User review form
+    review_form = UserReviewForm()
+    rating_form = UserRatingForm()
+    
+    # Allow only 1 review per user
+    make_review = True
+    make_rating = True
+    
+    rating_count = UserRating.objects.all().count()
+    
+    if request.user.is_authenticated:
+        user_review_count = UserReview.objects.filter(user=request.user).count()
+        user_rating_count = UserRating.objects.filter(user=request.user).count()
+
+        if user_review_count > 0:
+            make_review = False
+        if user_rating_count > 0:
+            make_rating = False
+    
+
+    average_rating = UserRating.objects.all().aggregate(rating=Avg("rating"))
+
+    if request.user.is_authenticated:
+        user = request.user # to get the current user
+        context = {
         'featured_products':featured_products,
         'exclusive_products':exclusive_products,
         'chosen_product':chosen_product,
         'products':products,
         'artists':artists,
+
+        'user':user.username,
+        'review':user_review.review,
+        'reviews':reviews,
+        'ratings':ratings,
+        'review_form':review_form,
+        'rating_form':rating_form,
+        'make_review':make_review,
+        'make_rating':make_rating,
+        'rating':user_rating.rating,
+        "average_rating":average_rating,
+        'rating_count':rating_count,
+    }
+    else:
+        context = {
+        'featured_products':featured_products,
+        'exclusive_products':exclusive_products,
+        'chosen_product':chosen_product,
+        'products':products,
+        'artists':artists,
+
+        'review':user_review.review,
+        'reviews':reviews,
+        'ratings':ratings,
+        'review_form':review_form,
+        'rating_form':rating_form,
+        # 'make_review':make_review,
+        'rating':user_rating.rating,
+        "average_rating":average_rating,
+        'rating_count':rating_count,
     }
     return render(request,'home/index.html', context)
 
+def services_view(request):
+
+    return render(request, 'home/services.html')
+
+def contact_view(request):
+    
+    return render(request,'home/contact.html')
+
+def about_view(request):
+    
+    return render(request,'home/about.html')
+
+def faqs_view(request):
+    
+    return render(request,'home/faqs.html')
 
 def product_list_view(request):
     products = Product.objects.filter(product_status = "published")
@@ -449,9 +545,8 @@ def checkout_view(request):
 
     try:
         active_address = Address.objects.get(user = request.user, address_status = True)
-    except:
-        messages.warning(request, "Multiple addresses are selected as default at once. Please select only one as a default address.")  
-        active_adress = None  
+    except:  
+        active_address = None  
     
     # checkout_form = CheckoutForm()
     context = {
@@ -517,6 +612,15 @@ def customer_dashboard(request):
     orders = CartOrder.objects.filter(user = request.user).order_by("-id")
     address = Address.objects.filter(user = request.user).order_by("-address_status")
 
+    orders_chart = CartOrder.objects.annotate(month = ExtractMonth("order_date")).values("month").annotate(count = Count("id")).values("month", "count")
+    month = []
+    total_orders_of_month = []
+
+    for o in orders_chart:
+        month.append(calendar.month_name[o["month"]])
+        total_orders_of_month.append(o["count"])
+
+
     if request.method == "POST":
         address = request.POST.get("address")
         phone = request.POST.get("phone")
@@ -532,6 +636,9 @@ def customer_dashboard(request):
     context = {
         'orders':orders,
         'address':address,
+        'orders_chart':orders_chart,
+        'month':month,
+        'total_orders_of_month':total_orders_of_month,
     }
     return render(request, 'home/dashboard.html', context)
 

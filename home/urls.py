@@ -1,10 +1,14 @@
 from django.urls import path, include
-from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, checkout_view, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist
+from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, checkout_view, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist, services_view, contact_view, about_view, faqs_view
 
 app_name = "home"
 
 urlpatterns = [
     path("",index, name="index"),
+    path("services/", services_view, name = "services"),
+    path("contact/", contact_view, name = "contact"),
+    path("about/", about_view, name = "about"),
+    path("faqs/", faqs_view, name = "faqs"),
 
     path("store/",product_list_view, name="store"),
     path("store/<pid>/",product_detail_view, name="product-details"),

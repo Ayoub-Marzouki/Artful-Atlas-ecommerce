@@ -142,16 +142,16 @@ main {
     display:inline-block;
 }
 #intro2 {
-    animation: SlideInFromLeft 4s forwards;
+    animation: SlideInFromBottom 2s forwards;
     width:100%;
     height:100%;
 }
 #intro3 {
-    animation: InfadeCenter 4s forwards;
+    animation: InfadeCenter 2s forwards;
     width:40%;
 }
 #intro4 {
-    animation: SlideInFromRight 4s forwards;
+    animation: SlideInFromBottom 2s forwards;
     width:40vw;
 }
 #intro2, #intro3, #intro4 {
@@ -173,28 +173,18 @@ main {
     transition:500ms;
 }
 
-@keyframes SlideInFromRight {
+@keyframes SlideInFromBottom {
     0% {
         opacity:0;
-        transform:translateX(100%);
+        transform:translateY(20%);
     }
     100% {
         opacity:1;
-        transform:translateX(0%);
+        transform:translateY(0%);
     }
 
 }
-@keyframes SlideInFromLeft {
-    0% {
-        opacity:0;
-        transform:translateX(-100%);
-    }
-    100% {
-        opacity:1;
-        transform:translateX(0%);
-    }
 
-}
 @keyframes InfadeCenter {
     0% {
         opacity:0;

@@ -1,0 +1,150 @@
+body {
+    /* Old background image */
+    /* background-image:url(/images/background-images/contact2.png); */
+    background-attachment:fixed;
+    background-size:cover;
+    font-size:20px;
+    color:rgba(0,0,0,0.7);
+    font-family:monospace;
+    background-color:whitesmoke;
+    background-attachment:scroll;
+}
+
+/* Old style */
+/* main {
+    width:50%;
+    margin-left:1%;
+} */
+
+summary, p {
+    font-weight:900;
+    margin:3% 0;
+}
+summary {
+    color:black;
+    font-size:27px;
+}
+
+summary:hover {
+    cursor:pointer;
+    color:#212a2f;
+}
+
+details {
+    border-bottom:1px solid rgba(0,0,0,0.4);
+}
+
+
+
+
+/* Modifying the border of google maps */
+iframe {
+    border-radius:1%;
+    width:600px;
+    height:450px;
+    display:block;
+    margin:auto;
+    
+}
+.icons {
+    display:flex;
+    justify-content:center;
+    gap:3%;
+}
+/* Transition isn't working for some reason. Double check when you're up*/
+.icons a img {
+    width:100%;
+    transition:300ms;
+}
+.icons a img:hover {
+    width:110%;
+    transition:300ms;
+}
+.footer2 p {
+    margin:0;
+    padding:0;
+    color:white;
+    font-weight:100;
+}
+
+/* Making the page mobile friendly */
+
+@media only screen and (max-width:600px) {
+    iframe {
+        width:80vw;
+        height:50vh;
+    }
+}
+@media only screen and (min-width:600px) {
+    iframe {
+        width:80vw;
+        height:50vh;
+    }
+}
+@media only screen and (min-width:1200px) {
+    iframe {
+        width:40vw;
+        height:50vh;
+    }
+}
+
+.contact-container {
+    padding-right:5%;
+}
+
+/* Style form labels */
+.contact-container label {
+    font-weight:900;
+    display: block; /* Make labels display as block elements */
+    margin-bottom: 2%; /* Add margin bottom for spacing */
+}
+
+/* Style form inputs and buttons */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+textarea {
+    width: 100%; /* Make inputs and buttons fill their container */
+    height:4vh;
+    margin-bottom:2%; /* Add margin bottom for spacing */
+}
+.contact-container textarea {
+    height:auto;
+}
+
+.button {
+    display:block;
+    color:white;
+    font-weight:900;
+    font-size:17px;
+    width:18%;
+    background-color:#212a2f;
+    margin:auto;
+    padding:1.5% 0;
+    text-align:center;
+    transition:300ms;
+}
+
+.button:hover {
+    cursor:pointer;
+    font-size:18px;
+    width:23%;
+    transition:300ms;
+}
+
+/* Adjust form select */
+select {
+    width: 100%; /* Make select fill its container */
+    height:4vh;
+    margin-bottom:3%;
+}
+
+/* Style newsletter section */
+#newsletter-signup {
+    margin-top: 20px; /* Add margin top for spacing */
+}
+
+/* Style social media links */
+#find-us {
+    margin-top: 20px; /* Add margin top for spacing */
+}

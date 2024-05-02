@@ -1,0 +1,87 @@
+main {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width:80%;
+    font-size:21px;
+}
+
+/* Stlying help header */
+#contact {
+    background-color:#212a2f;
+}
+#help h1 {
+    font-size:50px;
+    margin-top:0;
+    padding:3%;
+    color:white;
+}
+
+#help a {
+    font-size:larger;
+    padding:3%;
+}
+
+/* Styling faqs header */
+aside {
+    width:80%;
+    margin:auto;
+}
+details {
+    font-weight:900;
+    font-family:monospace;
+    cursor:pointer;
+    padding:1%;
+    border-bottom:1px solid rgba(0,0,0,0.3);
+}
+
+summary {
+    font-size:22px;
+    margin:1%;
+}
+
+p, li {
+    font-weight:100;
+    margin:2% 5%;
+    font-size:18px;
+    color:rgb(39, 39, 39);
+}
+
+p:hover {
+    cursor:auto;
+}
+
+main a {
+    text-decoration:none;
+    font-weight:900;
+    color:lightseagreen;
+    transition:300ms;
+}
+a:hover {
+    text-shadow:1px 1px rgba(0,0,0,0.4);
+}
+
+#contact {
+    font-size:17px;
+    display:block;
+    color:white;
+    font-weight:900;
+    width:18%;
+    margin:auto;
+    padding:1.5% 0;
+    text-align:center;
+    transition:300ms;
+    border-radius:10px;
+}
+
+#contact:hover {
+    transition:300ms;
+    background-color:black;
+}
+
+.hr {
+    color:rgba(0,0,0,0.3);
+}
+
+h1 , #faqs h3 {
+    text-align:center;
+    margin:3%;
+}
