@@ -1,7 +1,10 @@
 body {
-    font-family:sans-serif;
+    font-family:monospace;
     text-align:center;
     background-image:linear-gradient(to bottom,#212a2f,#00415a,#1E5162,#296E85);
+}
+button {
+    font-family:monospace;
 }
 
 

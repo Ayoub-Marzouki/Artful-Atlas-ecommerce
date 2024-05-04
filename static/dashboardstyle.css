@@ -78,6 +78,16 @@ table th, table td {
 
 /* Styling the Track-Order tab */
 
+/* Styling the profile section */
+#user-image {
+    border:3px solid rgba(0, 0, 0, 0.5);
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    display:block;
+    margin:auto;
+}
+
 
 /* Styling addresses tab */
 
@@ -127,11 +137,11 @@ table th, table td {
     background-color:rgb(192, 17, 52);
 }
 
-#addresses input {
+#addresses input, #profile input {
     border:10px solid skyblue;
     background-color:skyblue;
     width:100%;
-    height:40px;
+    height:70px;
     border-radius:15px;
     padding:2%;
     margin:2%;

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
     <script src="{% static 'messagesjs.js' %}" defer></script>
     <script src="{% static 'sign-upjs.js' %}" defer></script>
-    <link rel="icon" href="images/logos-images/logo.png" type="image/x-icon">
+    <link rel="icon" href="/static/images/logos-images/logo.png" type="image/x-icon">
     <title>Sign up</title>
 </head>
 
@@ -43,13 +43,13 @@
                 {{form.username}}
                 {{form.email}}
                 {{form.password1}}
-                {{form.passwordConfirmation}}
-                <p>Select one of the options :</p>
-
-                <p id="customer">+ I'm an Art Enthusiast</p>
-                <p id="artist">+ I'm an Artist</p>
+                {{form.password2}}
+                
+                <h2>Select user type</h2>
+                {% csrf_token %}
+                {{form.user_type}}
                 <br>
-                <button id="submit" type="submit">Submit & Register</button>
+                <button class="button" id="submit" type="submit">Submit & Register</button>
             </form>
             
             <br>

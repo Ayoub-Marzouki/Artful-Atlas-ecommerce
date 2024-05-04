@@ -16,16 +16,10 @@
         <details>
             <summary>Have Feedback or an Issue? Let Us Know!</summary>
             <section id="feedback">
-                <form id="feedback-form">
-                    <label for="inquiry-type">Inquiry Type *</label>
-                    <select name="inquiry" id="inquiry-type">
-                        <option value="problem">Problem</option>
-                        <option value="comment">Comment</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <label for="message">Your Message *</label>
-                    <textarea id="message" name="message" cols="4" rows="8"></textarea>
-                    <p class="button">Submit</p>
+                <form id="feedback-form" method="post" action="{% url 'home:contact' %}">
+                    {% csrf_token %}
+                    {{contact_form.as_p}}
+                    <button class="button" type="submit">Send Message</button>
                 </form>
                 <br>
                 <p>(Or contact us via our email : test@gmail.com)</p>
@@ -60,10 +54,10 @@
             <summary>Stay Informed with Our Newsletter</summary>
             <section id="newsletter-signup">
                 <p>Get the latest on new artworks, artist features, and exclusive offers.</p>
-                <form id="newsletter-form">
-                    <label for="newsletter-email">Your Email</label>
-                    <input type="email" id="newsletter-email" name="newsletter-email">
-                    <p class="button">Sign up</p>
+                <form id="newsletter-form" method="post">
+                    {% csrf_token %}
+                    {{newsletter_form.as_p}}
+                    <button class="button" type="submit">Submit</button>
                 </form>
             </section>
             <br><br>

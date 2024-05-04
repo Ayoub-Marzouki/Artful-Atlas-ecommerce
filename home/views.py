@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.db.models import Q, Avg, Count
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList, UserReview, UserRating
-from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm, UserReviewForm, UserRatingForm
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList, UserReview, UserRating, Profile
+from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm, UserReviewForm, UserRatingForm, ContactForm, NewsletterSubscriptionForm, ProfileForm
 from django.template.loader import render_to_string
 
 from django.urls import reverse
@@ -115,8 +115,32 @@ def services_view(request):
     return render(request, 'home/services.html')
 
 def contact_view(request):
+    if request.method == 'POST':
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            contact_form.save()
+            messages.success(request,"Message sent! Thank you for your feedback.")
+            return redirect("home:contact")
+    else:
+        contact_form = ContactForm()
     
-    return render(request,'home/contact.html')
+
+    # Handling the subscription to NewsLetter
+    if request.method == 'POST':
+        newsletter_form = NewsletterSubscriptionForm(request.POST)
+        if newsletter_form.is_valid():
+            newsletter_form.save()
+            messages.success(request,"Subscribed!")
+            return redirect("home:contact")
+    else:
+        newsletter_form = NewsletterSubscriptionForm()
+
+    context = {
+        'contact_form':contact_form,
+        'newsletter_form':newsletter_form,
+    } 
+    return render(request,'home/contact.html', context)
+
 
 def about_view(request):
     
@@ -609,6 +633,10 @@ def payment_failed_view(request):
 
 @login_required
 def customer_dashboard(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except:
+        profile = Profile()
     orders = CartOrder.objects.filter(user = request.user).order_by("-id")
     address = Address.objects.filter(user = request.user).order_by("-address_status")
 
@@ -621,7 +649,7 @@ def customer_dashboard(request):
         total_orders_of_month.append(o["count"])
 
 
-    if request.method == "POST":
+    if request.method == "POST" and "add-address-button-name" in request.POST:
         address = request.POST.get("address")
         phone = request.POST.get("phone")
 
@@ -633,12 +661,28 @@ def customer_dashboard(request):
         messages.success(request,"Address added successfully!")
         return redirect("home:dashboard")
 
+
+    if request.method == "POST" and "profile" in request.POST:
+        # Check if the request is for editing profile
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if profile_form.is_valid():
+            profile_instance = profile_form.save(commit=False)
+            profile_instance.user = request.user
+            profile_instance.save()
+            messages.success(request, "Your profile has been updated.")
+            return redirect("home:dashboard")
+    else:
+        profile_form = ProfileForm(instance=profile)
+
+
     context = {
         'orders':orders,
         'address':address,
         'orders_chart':orders_chart,
         'month':month,
         'total_orders_of_month':total_orders_of_month,
+        'profile':profile,
+        'profile_form':profile_form,
     }
     return render(request, 'home/dashboard.html', context)
 

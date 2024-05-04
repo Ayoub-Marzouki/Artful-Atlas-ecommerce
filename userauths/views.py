@@ -4,6 +4,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.conf import settings
 
+from home.models import Profile
+
 User = settings.AUTH_USER_MODEL
 
 def register_view(request):
@@ -17,6 +19,8 @@ def register_view(request):
         if form.is_valid():
             # Save the form data to create a new user
             new_user = form.save()
+            # Create a profile instance for the new user
+            Profile.objects.create(user=new_user)
             # Get the username from the form data
             username = form.cleaned_data.get("username") 
             # Display a success message indicating that the account was created

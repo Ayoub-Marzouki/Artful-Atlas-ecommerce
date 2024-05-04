@@ -10,6 +10,14 @@ body {
     background-attachment:scroll;
 }
 
+a {
+    transition:300ms;
+}
+a:hover {
+    color:lightseagreen;
+    text-shadow:1px 1px rgba(0,0,0,0.4);
+}
+
 /* Old style */
 /* main {
     width:50%;
@@ -19,6 +27,9 @@ body {
 summary, p {
     font-weight:900;
     margin:3% 0;
+}
+p {
+    margin:1%;
 }
 summary {
     color:black;
@@ -96,7 +107,7 @@ iframe {
 .contact-container label {
     font-weight:900;
     display: block; /* Make labels display as block elements */
-    margin-bottom: 2%; /* Add margin bottom for spacing */
+    margin-bottom: 1%; /* Add margin bottom for spacing */
 }
 
 /* Style form inputs and buttons */
@@ -106,7 +117,6 @@ input[type="url"],
 textarea {
     width: 100%; /* Make inputs and buttons fill their container */
     height:4vh;
-    margin-bottom:2%; /* Add margin bottom for spacing */
 }
 .contact-container textarea {
     height:auto;
@@ -119,16 +129,16 @@ textarea {
     font-size:17px;
     width:18%;
     background-color:#212a2f;
-    margin:auto;
+    margin:2% auto;
     padding:1.5% 0;
     text-align:center;
     transition:300ms;
+    border-radius:10px;
 }
 
 .button:hover {
     cursor:pointer;
-    font-size:18px;
-    width:23%;
+    background-color:black;
     transition:300ms;
 }
 

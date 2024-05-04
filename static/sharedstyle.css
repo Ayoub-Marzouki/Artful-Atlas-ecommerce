@@ -128,15 +128,6 @@ a {
     width:100%;
 }
 
-/* Deleting the effect for the cart  */
-.flexbox:last-child::after {
-    width:0;
-}
-
-.flexbox:first-child:hover::after{
-    width:0;
-}
-
 /* Account's other links */
 .dropdown {
     position: relative;
@@ -271,6 +262,14 @@ button:hover {
 
 #reviews, #ratings {
     font-size:x-large;
+}
+
+/* Inputs of all pages on click get a blue border, we'll delete that */
+input:focus {
+    outline:3px solid lightseagreen;
+}
+input[type="radio"] {
+    outline:none;
 }
 
 /* Changing the display of footer2 to grid */

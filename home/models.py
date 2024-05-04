@@ -2,7 +2,7 @@ from django.db import models
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from userauths.models import User
-
+from django.db.models.signals import post_save
 
 
 class Technique(models.Model):
@@ -344,7 +344,7 @@ class UserRating(models.Model): # For Ratings section in home page
 
 class WishList(models.Model):
     # User who added the product to the wish list
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # Product added to the wish list
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     # Date and time when the product was added to the wish list
@@ -359,7 +359,7 @@ class WishList(models.Model):
 
 class Address(models.Model):
     # User who owns the address
-    user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
     address = models.CharField(max_length = 100, null = True)
     address_status = models.BooleanField(default = False)
     phone = models.CharField(max_length = 100, null = True)
@@ -367,3 +367,37 @@ class Address(models.Model):
     class Meta:
         verbose_name_plural = "Addresses"
 
+
+class Contact(models.Model):
+    full_name = models.CharField(max_length = 50)
+    email = models.CharField(max_length = 50)
+    phone = models.CharField(max_length = 50)
+    subject = models.CharField(max_length = 50)
+    message = models.TextField()
+
+    class Meta:
+        verbose_name = "Contact Message"
+        verbose_name_plural = "Contact Messages"
+   
+    def __str__(self):
+        return self.full_name
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True)
+    image = models.ImageField(upload_to = "Profile images")
+    full_name = models.CharField(max_length = 50)
+    bio = models.CharField(max_length = 200, blank = True)
+    phone = models.CharField(max_length = 50)
+    verified = models.BooleanField(default = False)
+
+    def __str__(self):
+        try:
+            return self.full_name
+        except AttributeError:
+            return self.user.username

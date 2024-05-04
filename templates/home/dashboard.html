@@ -15,6 +15,11 @@
             <img class="icons" src="{% static 'images/icons/filter.png' %}" alt="">
             <span>Dashboard</span>
         </div>
+
+        <div class="flex tab" id="profile-tab">
+            <img class="icons" src="{% static 'images/icons/profile.png' %}" alt="">
+            <span>Profile</span>
+        </div>
     
         <div class="flex tab"  id="orders-tab">
             <img class="icons" src="{% static 'images/icons/orders.png' %}" alt=""> 
@@ -54,6 +59,37 @@
         {% if orders|length == 0 %}
             <h3>You haven't ordered anything yet.</h3>
         {% endif %}
+    </section>
+
+    <section id="profile" class="content">
+        <div style="display:none;">
+            {% if user.profile.full_name %}
+            <span id="full_name">{{user.profile.full_name}}</span>
+            {% endif %}
+            {% if user.profile.bio %}
+            <span id="bio">{{user.profile.bio}}</span>
+            {% endif %}
+            {% if user.profile.phone %}
+            <span id="phone">{{user.profile.phone}}</span>
+            {% endif %}
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if user.profile.image %}
+                <img src="{{user.profile.image.url}}" id="user-image" alt="Profile image">
+                <br>
+                {{profile_form.image}}
+            {% else %}
+                {{profile_form.image}}
+            {% endif %}
+
+            {{profile_form.full_name}}
+            <br>
+            {{profile_form.bio}}
+            <br>
+            {{profile_form.phone}}
+            <button class="button" type="submit" name="profile">Edit your Profile</button>
+        </form>
     </section>
 
     <section id="orders" class="content flex-item">
@@ -107,7 +143,7 @@
             <h3>- Add Address</h3>
             <input required type="text" name="address" placeholder="Address">
             <input required name="phone" placeholder="Phone">
-            <button id="add-address-button" class="button" name="submit" value="submit">Save Address</button>
+            <button id="add-address-button" class="button" name="add-address-button-name" value="submit">Save Address</button>
         </form> 
         <br><br>
          <!-- class="addresses-flex" was originally for shipping | billing addresses -->
@@ -146,16 +182,17 @@
                 {% endif %}
 
             </section>
-            <!-- <section>  
-                <h1>Shipping address</h1>
-                <p>Address goes here</p>
-                <p>Edit button</p>
-            </section> -->
         </section>
     </section>
 
     <section id="account-details" class="content">
         <h1>Account details</h1>
+        {% if user.user_type == 'art_enthusiast' %}
+            <p>User type : Art Enthusiast</p>
+        {% else %}
+            <p>User type : Artist</p>
+        {% endif %}
+
     </section>
 </section>
 {% endblock content %}

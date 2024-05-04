@@ -1,5 +1,5 @@
 from django import forms
-from home.models import ProductReview, ArtistReview, UserReview, UserRating
+from home.models import ProductReview, ArtistReview, UserReview, UserRating, Contact, NewsletterSubscriber, Profile
 from cities_light.models import Country, City
 
 class ProductReviewForm(forms.ModelForm):
@@ -34,3 +34,21 @@ class CheckoutForm(forms.Form):
     country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="Select a country")
     city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Select a city")
 
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['full_name', 'email', 'phone', 'subject', 'message']
+
+class NewsletterSubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = NewsletterSubscriber
+        fields = ['email']
+
+class ProfileForm(forms.ModelForm):
+    full_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Full name"}))
+    bio = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Bio"}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Phone number"}))
+    
+    class Meta:
+        model = Profile
+        fields = ['full_name', 'image', 'bio', 'phone']

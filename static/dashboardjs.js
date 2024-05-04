@@ -79,6 +79,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    var fullNameSpan = document.getElementById('full_name');
+    var bioSpan = document.getElementById('bio');
+    var phoneSpan = document.getElementById('phone');
+
+    if (fullNameSpan && bioSpan && phoneSpan) {
+        var fullNameValue = fullNameSpan.innerHTML.trim();
+        var bioValue = bioSpan.innerHTML.trim();
+        var phoneValue = phoneSpan.innerHTML.trim();
+
+        if (fullNameValue) {
+            var fullNameInput = document.getElementById('id_full_name');
+            if (fullNameInput) {
+                fullNameInput.placeholder = fullNameValue;
+            }
+        }
+
+        if (bioValue) {
+            var bioInput = document.getElementById('id_bio');
+            if (bioInput) {
+                bioInput.placeholder = bioValue;
+            }
+        }
+
+        if (phoneValue) {
+            var phoneInput = document.getElementById('id_phone');
+            if (phoneInput) {
+                phoneInput.placeholder = phoneValue;
+            }
+        }
+    }
+
 });
 
 

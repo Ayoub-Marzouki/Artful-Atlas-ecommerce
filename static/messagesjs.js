@@ -6,6 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
         setTimeout(function() {
             message.style.opacity = 0;
-        }, 3000);
+        }, 4000);
     });
 });
