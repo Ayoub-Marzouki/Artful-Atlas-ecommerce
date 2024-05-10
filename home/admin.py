@@ -50,8 +50,8 @@ class WishListAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'date']
 
 class AddressAdmin(admin.ModelAdmin):
-    list_editable = ['address','phone','address_status']
-    list_display = ['user', 'address', 'phone', 'address_status']
+    list_editable = ['address', 'address_status']
+    list_display = ['user', 'address', 'address_status']
 
 
 class UserReviewAdmin(admin.ModelAdmin):
@@ -69,7 +69,7 @@ class NewsletterSubscriberAdmin(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'full_name', display_image, 'verified']
+    list_display = ['user', 'first_name', 'last_name', display_image, 'verified']
 
 
 

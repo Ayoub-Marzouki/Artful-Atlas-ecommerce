@@ -6,20 +6,38 @@
 
 {% block cssFilename %} /static/checkoutstyle.css {% endblock cssFilename %}
 
+{% block script %} /static/checkoutjs.js {% endblock script %}
+
 {% block content %}
 <div class="flex-main">
     <header id="checkout">
         <h1>Checkout</h1>
+        <br>
         <p id="products-number">Currently : {% if totalCartItems == 1 %} {{totalCartItems}} product {%elif totalCartItems == 0%} No products {% else %} {{totalCartItems}} products {% endif %} in your cart.</p>
         <br>
+        {% if not user.is_authenticated %}
         <p id="login">Already have an account? <a href="login.html">Login</a> for a faster checkout!</p>
         <br>
-        <form method="post">
-            <label for="first-name">First name</label>
-            <input type="text" name="first-name" id="first-name" value="" placeholder="First name">
+        {% endif %}
+
+        <div style="display:none;">
+            <span id="first-name">{{user.profile.first_name}}</span>
+            <span id="last-name">{{user.profile.last_name}}</span>
+            <span id="address">{{active_address.address}}</span>
+            <span id="user-email">{{user.email}}</span>
+            <span id="user-phone"></span>
+        </div>
+
+        <!-- <form action = "" method="post">
+            {% csrf_token %}
+            <label for="full-name">Full name</label>
+            <input type="text" name="full-name" id="full-name" value="{{user.profile.full_name}}" placeholder="Full name">
             <br>
-            <label for="last-name">Last name</label>
-            <input type="text" name="last-name" id="last-name" value="" placeholder="Last name">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone" value="{{user.profile.phone}}" placeholder="Phone">
+            <br>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email">
             <br>
             <label for="address">Address</label>
             <input type="text" name="address" id="address" value="{{active_address.address}}" placeholder="Address">
@@ -42,16 +60,16 @@
             <option value="UK">United Kingdom</option>
             <option value="Japan">Japan</option>
         </select>
-            <button type="submit">Submit</button>
-        </form>
-        
-        
-        
+            <button class="button" type="submit">Proceed to Payment</button>
+        </form> -->
+        <br>
+        <div id="credit-card-button"></div>
     </header>
 
     <div id="cart-items">
         <header id="added-artworks">
             <h1>Artworks</h1>
+            <h3 style="text-align:center;margin:2%;">Total : {{order.price}} dh</h3>
             <a href="{% url 'home:cart' %}">Back to cart</a>
             <br>
             <br>
@@ -72,17 +90,156 @@
     </div>
 </div>
 <br><br><br><br>
-<header id="place-order">
-    <section class="total">
-        <h3>Total (in dh)</h3>
-        <h2 id="total-price">{{total_price}}</h2>
-    </section>
 
-    <section class="place-order">
-        <!-- <button id="place-order-button">Place Order</button> -->
-        <div id="paypal-button">
-        {{paypal_payment_button.render}}
-        </div>
-    </section>
-</header>
+<script src="https://www.paypal.com/sdk/js?client-id=AaShEi9SjYv17pc6_bU_8F03VYsa-GUVhLBO891m_UiRBACp-3-VJ6VQGr0i0Hx3aDZQAwQWMCRE6CHZ"></script>
+
+{% if user.email and active_address.address and user.profile.first_name and user.profile.last_name and user.profile.phone %}
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: "{{order.price}}"
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href= "/payment/payment-completed/{{order.oid}}";
+            });
+        },
+        // onError: function(err) {
+        //     // Redirect to payment failed page
+        //     window.location.href= "/payment/payment-failed/";
+        // },
+        onClick: function() {
+            // This function will be called when the PayPal button is clicked
+            console.log("PayPal button clicked");
+        },
+        onInit: function(data, actions) {
+            // This function will be called when the PayPal button is initialized
+            console.log("PayPal button initialized");
+        }
+    }).render('#paypal-buttons');
+
+    paypal.Buttons({
+        enableStandardCardFields: true,
+        style: {
+            layout: 'vertical',
+            color: 'black',
+            shape: 'rect',
+            label: 'pay'
+        },
+        createOrder: function(data, actions) {
+                // Function to create order
+                return actions.order.create({
+                    intent: 'CAPTURE',
+                    payment_source: {
+                        paypal: {
+                            email_address: '{{user.email}}',
+                            address_line_1: '{{active_address.address}}',
+                            name: {
+                                given_name: '{{user.profile.first_name}}',
+                                surname: '{{user.profile.last_name}}'
+                            },
+                            phone: {
+                                phone_type: 'MOBILE',
+                                phone_number: {
+                                    national_number: '{{user.profile.phone}}',
+                                }
+                            },
+                            address: {
+                                address_line_1: '{{active_address.address}}',
+                                country_code: 'MA',
+                            }
+                        }
+                    },
+                    purchase_units: [{
+                        amount: {
+                            value: '{{order.price}}',
+                            currency_code: 'USD'
+                        },
+                    }]
+                });
+            },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href= "/payment/payment-completed/{{order.oid}}";
+            });
+        },
+        // onError: function(err) {
+        //     // Redirect to payment failed page
+        //     window.location.href= "/payment/payment-failed/";
+        // },
+    }).render('#credit-card-button');
+
+</script>
+
+{% else %}
+
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: "{{order.price}}"
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href= "/payment/payment-completed/{{order.oid}}";
+            });
+        },
+        // onError: function(err) {
+        //     // Redirect to payment failed page
+        //     window.location.href= "/payment/payment-failed/";
+        // },
+        onClick: function() {
+            // This function will be called when the PayPal button is clicked
+            console.log("PayPal button clicked");
+        },
+        onInit: function(data, actions) {
+            // This function will be called when the PayPal button is initialized
+            console.log("PayPal button initialized");
+        }
+    }).render('#paypal-buttons');
+
+    paypal.Buttons({
+        enableStandardCardFields: true,
+        style: {
+            layout: 'vertical',
+            color: 'black',
+            shape: 'rect',
+            label: 'pay'
+        },
+        createOrder: function(data, actions) {
+                return actions.order.create({
+                    intent: 'CAPTURE',
+                    purchase_units: [{
+                        amount: {
+                            value: '{{order.price}}',
+                            currency_code: 'USD'
+                        },
+                    }]
+                });
+            },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href= "/payment/payment-completed/{{order.oid}}";
+            });
+        },
+        // onError: function(err) {
+        //     // Redirect to payment failed page
+        //     window.location.href= "/payment/payment-failed/";
+        // },
+    }).render('#credit-card-button');
+
+</script>
+
+{% endif %}
 {% endblock content %}

@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'userauths',
     'cities_light',
     'paypal.standard.ipn',
+    'corsheaders',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'atlas.urls'
@@ -153,3 +156,6 @@ AUTH_USER_MODEL = 'userauths.User'
 PAYPAL_RECEIVER_EMAIL = 'sb-n6hkb29074012@business.example.com'
 
 PAYPAL_TEST = True
+
+# Force the paypal popup to work
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'

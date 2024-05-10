@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
-import calendar
+import calendar, stripe
 from django.db.models.functions import ExtractMonth
 
 def index(request):
@@ -504,6 +504,7 @@ def cart_view(request):
     else:
         return render(request, "home/cart.html", {"cart_data": '', 'totalCartItems': 0, 'total_price': total_price})
 
+
 def delete_item_from_cart(request):
     product_id = str(request.GET['id'])
     if 'cart_data_object' in request.session:
@@ -522,93 +523,112 @@ def delete_item_from_cart(request):
     return JsonResponse({"data":context, 'totalCartItems': len(request.session['cart_data_object'])})  
 
 
-def checkout_view(request):
-
-    paypal_total_price = 0
-    cart_total_price = 0
-    if 'cart_data_object' in request.session:
-        for product_id, item in request.session['cart_data_object'].items():
-            paypal_total_price += float(item['price'])
-
-        order = CartOrder.objects.create(
-            user=request.user,
-            price = paypal_total_price,
-        )
-        # Cart 
-        for product_id, item in request.session['cart_data_object'].items():
-            cart_total_price += float(item['price'])
-            cart_order_items = CartOrderItems.objects.create(
-                order = order,
-                invoice_no = "INVOICE_NO-" + str(order.id),
-                name = item['title'],
-                image = item['image'],
-                price = item['price'],
-                total = float(item['price']),
-                product_page = item['page']
-            )
-
-
-    host = request.get_host()
-    paypal_dict = {
-        'business':settings.PAYPAL_RECEIVER_EMAIL,
-        'amount':cart_total_price,
-        'item_name':"Order-Item-No-" + str(order.id),
-        'invoice':"Invoice_No-" + str(order.id),
-        'currency_code':"MAD",
-        'notify_url':'http://{}{}'.format(host, reverse("home:paypal-ipn")),
-        'return_url':'http://{}{}'.format(host, reverse("home:payment-completed")),
-        'cancel_url':'http://{}{}'.format(host, reverse("home:payment-failed")),
-    }
-
-    paypal_payment_button = PayPalPaymentsForm(initial = paypal_dict)
-
+def checkout(request):
     total_price = 0
+    cart_total_price = 0
+    
+    order = CartOrder()
+
     if 'cart_data_object' in request.session:
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
+
+    # if request.method=="POST":
+    #     full_name = request.POST.get("full-name") 
+    #     address = request.POST.get("address")
+    #     zip = request.POST.get("zip")
+    #     country = request.POST.get("country")
+    #     city = request.POST.get("city")
+    #     email = request.POST.get("email")
+    #     phone = request.POST.get("phone")
+
+    #     request.session['full_name'] = full_name
+    #     request.session['email'] = email
+    #     request.session['phone'] = phone
+    #     request.session['address'] = address
+    #     request.session['zip'] = zip
+    #     request.session['country'] = country
+    #     request.session['city'] = city
+
+
+    #     order = CartOrder.objects.create(
+    #     user=request.user,
+    #     full_name = full_name,
+    #     email = email,
+    #     phone = phone,
+    #     address = address,
+    #     zip = zip,
+    #     country = country,
+    #     city = city,
+    #     price = total_price,
+    #     )
+    #     del request.session['full_name']
+    #     del request.session['email'] 
+    #     del request.session['phone']
+    #     del request.session['address']
+    #     del request.session['zip']
+    #     del request.session['country'] 
+    #     del request.session['city']
+
+    #     for product_id, item in request.session['cart_data_object'].items():
+    #         cart_total_price += float(item['price'])
+    #         total_price += float(item['price'])
+            
+    #         cart_order_items = CartOrderItems.objects.create(
+    #         order = order,
+    #         invoice_no = "INVOICE_NO-" + str(order.id),
+    #         name = item['title'],
+    #         image = item['image'],
+    #         price = item['price'],
+    #         total = float(item['price']),
+    #         product_page = item['page']
+    #     )
+    #     return redirect("home:payment", order.oid)
+
+        order.user = request.user
+        order.price = total_price
+        order.save()
+        
+        for product_id, item in request.session['cart_data_object'].items():
+            cart_total_price += float(item['price'])
+            total_price += float(item['price'])
+            
+            cart_order_items = CartOrderItems.objects.create(
+            order = order,
+            invoice_no = "INVOICE_NO-" + str(order.id),
+            name = item['title'],
+            image = item['image'],
+            price = item['price'],
+            total = float(item['price']),
+            product_page = item['page']
+        )
 
     try:
         active_address = Address.objects.get(user = request.user, address_status = True)
     except:  
         active_address = None  
-    
-    # checkout_form = CheckoutForm()
+
     context = {
-        "cart_data": request.session['cart_data_object'],
+        "cart_data": request.session['cart_data_object'], 
         'totalCartItems': len(request.session['cart_data_object']), 
-        'total_price': total_price, 'paypal_payment_button':paypal_payment_button,
-        "active_address":active_address,
-        #'checkout_form':checkout_form
+        'total_price': total_price,
+        'active_address':active_address,
+        'order':order,
     }
-    return render(request, "home/checkout.html", context) 
-
-
-
-def save_checkout_info(request):
-    total_price = 0
-
-    if request.method=="POST":
-        first_name = request.POST.get["first-name"] 
-        last_name = request.POST.get["last-name"]
-        address = request.POST.get["address"]
-        zip = request.POST.get["zip"]
-        country = request.POST.get["country"]
-        city = request.POST.get["city"]
-
-        request.session['first_name'] = first_name
-        request.session['last-name'] = last_name
-        request.session['address'] = address
-        request.session['zip'] = zip
-        request.session['country'] = country
-        request.session['city'] = city
-
-        if 'cart_data_object' in request.session:
-            for product_id, item in request.session['cart_data_object'].items():
-                total_price += float(item['price'])
-
-    # checkout_form = CheckoutForm()
     
-    return render(request, "home/checkout.html", {"cart_data": request.session['cart_data_object'], 'totalCartItems': len(request.session['cart_data_object']), 'total_price': total_price,}) #'checkout_form':checkout_form
+    return render(request, "home/checkout.html", context)
+
+
+def payment(request, oid):
+    order = CartOrder.objects.get(oid = oid)
+    order_items = CartOrderItems.objects.filter(order = order)
+
+    context = {
+        "order":order,
+        "order_items":order_items,
+    }
+    return render(request, "home/payment.html", context) 
+    
 
 
 def payment_completed_view(request):
@@ -616,11 +636,18 @@ def payment_completed_view(request):
     if 'cart_data_object' in request.session:
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
+
+    # order = CartOrder.objects.get(oid = oid)
+    # if order.paid_status == False:
+    #     order.paid_status = True
+    #     order.save()
+    
     
     context = {
         "cart_data": request.session['cart_data_object'],
         'totalCartItems': len(request.session['cart_data_object']),
         'total_price': total_price,
+        # 'order':order,
     }
     return render(request, 'home/payment/payment-completed.html', context)
 
@@ -637,10 +664,14 @@ def customer_dashboard(request):
         profile = Profile.objects.get(user=request.user)
     except:
         profile = Profile()
+
     orders = CartOrder.objects.filter(user = request.user).order_by("-id")
     address = Address.objects.filter(user = request.user).order_by("-address_status")
 
-    orders_chart = CartOrder.objects.annotate(month = ExtractMonth("order_date")).values("month").annotate(count = Count("id")).values("month", "count")
+    orders_chart = CartOrder.objects.filter(user=request.user).annotate(
+    month=ExtractMonth("order_date")).values("month").annotate(
+    count=Count("id")).values("month", "count")
+
     month = []
     total_orders_of_month = []
 
@@ -651,12 +682,10 @@ def customer_dashboard(request):
 
     if request.method == "POST" and "add-address-button-name" in request.POST:
         address = request.POST.get("address")
-        phone = request.POST.get("phone")
 
         new_address = Address.objects.create(
             user = request.user,
             address = address,
-            phone = phone
         )
         messages.success(request,"Address added successfully!")
         return redirect("home:dashboard")

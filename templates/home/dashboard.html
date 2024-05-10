@@ -62,17 +62,6 @@
     </section>
 
     <section id="profile" class="content">
-        <div style="display:none;">
-            {% if user.profile.full_name %}
-            <span id="full_name">{{user.profile.full_name}}</span>
-            {% endif %}
-            {% if user.profile.bio %}
-            <span id="bio">{{user.profile.bio}}</span>
-            {% endif %}
-            {% if user.profile.phone %}
-            <span id="phone">{{user.profile.phone}}</span>
-            {% endif %}
-        </div>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% if user.profile.image %}
@@ -83,7 +72,9 @@
                 {{profile_form.image}}
             {% endif %}
 
-            {{profile_form.full_name}}
+            {{profile_form.first_name}}
+            <br>
+            {{profile_form.last_name}}
             <br>
             {{profile_form.bio}}
             <br>
@@ -109,11 +100,11 @@
                 <tbody>
                         {% for o in orders %}
                         <tr>
-                            <td>INVOICE_NO-{{o.id}}</td>
+                            <td>INVOICE_NO-{{o.oid}}</td>
                             <td>{{o.order_date}}</td>
                             <td>{{o.product_status}}</td>
 
-                            {% if paid_status == True %}
+                            {% if o.paid_status == True %}
                                 <td><img class="icons" src="{% static 'images/icons/checked.png' %}" alt=""></td>
                             {% else %}
                                 <td><img class="icons" src="{% static 'images/icons/unchecked.png' %}" alt=""></td>
@@ -142,7 +133,6 @@
             {% csrf_token %}
             <h3>- Add Address</h3>
             <input required type="text" name="address" placeholder="Address">
-            <input required name="phone" placeholder="Phone">
             <button id="add-address-button" class="button" name="add-address-button-name" value="submit">Save Address</button>
         </form> 
         <br><br>
@@ -154,8 +144,7 @@
                 {% for a in address %}
                 <address id="address-{{a.id}}">
                     <p>+ <strong>Address</strong> : {{ a.address }}</p>
-                    <p>+ <strong>Phone</strong> : {{ a.phone }}</p>
-                    
+
                     <br>
 
                     <section style="display:flex;align-items:center;">

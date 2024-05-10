@@ -259,6 +259,9 @@ a {
 button:hover {
     background-color:black;
 }
+.remove:hover {
+    background:none;
+}
 
 #reviews, #ratings {
     font-size:x-large;

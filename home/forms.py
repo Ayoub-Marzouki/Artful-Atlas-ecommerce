@@ -45,10 +45,11 @@ class NewsletterSubscriptionForm(forms.ModelForm):
         fields = ['email']
 
 class ProfileForm(forms.ModelForm):
-    full_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Full name"}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "First name"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Last name"}))
     bio = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Bio"}))
-    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Phone number"}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder" : "Phone number (You don't have to specify which region)"}))
     
     class Meta:
         model = Profile
-        fields = ['full_name', 'image', 'bio', 'phone']
+        fields = ['first_name', 'last_name', 'image', 'bio', 'phone']

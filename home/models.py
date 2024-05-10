@@ -4,6 +4,7 @@ from django.utils.html import mark_safe
 from userauths.models import User
 from django.db.models.signals import post_save
 
+import uuid
 
 class Technique(models.Model):
     tid = ShortUUIDField(unique = True, length = 10, max_length = 30,prefix="Technique", alphabet = "abcdefgh123456")
@@ -152,7 +153,7 @@ class Tags(models.Model):
 # Defining the status of products. lowercase words are the words we'll use to add the necessary logic (backend), while uppercase words are the words that'll show up (frontend)
 STATUS_CHOICE = (
     ("processing","Processing"),
-    ("shipped","Shipped"),
+    ("shipping","Shipping"),
     ("delivered","Delivered"),
 )
 
@@ -229,13 +230,29 @@ class ProductImages(models.Model):
 
 
 class CartOrder(models.Model):
+    oid = ShortUUIDField(default = uuid.uuid4, unique = True, length = 10, max_length = 30, alphabet = "123456789") 
     # User who placed the order
     user = models.ForeignKey(User, on_delete = models.CASCADE)
+    full_name = models.CharField(max_length = 100, null = True, blank = True)
+    email = models.CharField(max_length = 100, null = True, blank = True)
+    phone = models.CharField(max_length = 100, null = True, blank = True)
+
+    address = models.CharField(max_length = 100, null = True, blank = True)
+    country = models.CharField(max_length = 100, null = True, blank = True)
+    city = models.CharField(max_length = 100, null = True, blank = True)
+    zip = models.CharField(max_length = 100, null = True, blank = True)
+
+    shipping_method = models.CharField(max_length = 100, null = True, blank = True)
+    tracking_id = models.CharField(max_length = 100, null = True, blank = True)
+    tracking_website_address = models.CharField(max_length = 100, null = True, blank = True)
+
     price = models.DecimalField(max_digits=99999, decimal_places=2)
     # Whether or not the order has been paid for
     paid_status = models.BooleanField(default = False)
     order_date = models.DateTimeField(auto_now_add = True)
     product_status = models.CharField(choices = STATUS_CHOICE, max_length=40,default = "Processing")
+
+    stripe_payment_intent = models.CharField(max_length = 1000, null = True, blank = True)
 
     class Meta:
         verbose_name_plural = "Cart Orders"
@@ -361,8 +378,9 @@ class Address(models.Model):
     # User who owns the address
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     address = models.CharField(max_length = 100, null = True)
+
+    # Whether or not the address is the main one
     address_status = models.BooleanField(default = False)
-    phone = models.CharField(max_length = 100, null = True)
 
     class Meta:
         verbose_name_plural = "Addresses"
@@ -391,7 +409,8 @@ class NewsletterSubscriber(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True)
     image = models.ImageField(upload_to = "Profile images")
-    full_name = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 50, default = "")
+    last_name = models.CharField(max_length = 50)
     bio = models.CharField(max_length = 200, blank = True)
     phone = models.CharField(max_length = 50)
     verified = models.BooleanField(default = False)

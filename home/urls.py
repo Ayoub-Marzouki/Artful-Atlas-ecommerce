@@ -1,5 +1,5 @@
 from django.urls import path, include
-from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, checkout_view, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist, services_view, contact_view, about_view, faqs_view
+from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, payment, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist, services_view, contact_view, about_view, faqs_view, checkout
 
 app_name = "home"
 
@@ -26,10 +26,12 @@ urlpatterns = [
     path("cart/",cart_view, name="cart"),
     path("delete-from-cart/",delete_item_from_cart, name="delete-from-cart"),
 
-    path("checkout/", checkout_view, name ="checkout"),
+    path("payment/<oid>/", payment, name ="payment"),
+
+    path("checkout/", checkout, name = "checkout"),
 
     path("paypal/", include('paypal.standard.ipn.urls')), 
-    path("payment/payment-completed/", payment_completed_view, name = "payment-completed"),
+    path("payment/payment-completed/<oid>/", payment_completed_view, name = "payment-completed"),
     path("payment/payment-failed/", payment_failed_view, name = "payment-failed"),
 
     path("dashboard/", customer_dashboard, name="dashboard"),
