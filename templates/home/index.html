@@ -21,6 +21,7 @@
     <img src="{% static 'images/paintings/elderly-riad.png' %}" alt="">
 </header>
 
+{% if chosen_product %}
 <a href="{% url 'home:product-details' chosen_product.pid %}">
     <header id="selection" class="first-header">
         <!-- <h1 id="first-h1">Stare at her enough...</h1> -->
@@ -31,6 +32,7 @@
         <img style="display:none;" id="down0" src="{% static 'images/arrows/down.png' %}" alt="Scroll-Down">
 </header>
 </a>
+{% endif %}
 <!-- We added this script because we want to handle the artwork of the month manually, but I have it as a css property, not an image tag, so I found a workaround -->
 <script>
     var imageUrl = "{{chosen_product.image.url}}";
@@ -74,6 +76,7 @@
     </nav>
 </header>
 
+{% if exclusive_products %}
 <header id="intro1">
     <br><br>
     <h1 title="Unique artworks (no copies)">Exclusive Artworks</h1>
@@ -93,12 +96,13 @@
             {% endif %}
         {% endfor %}
     </figure>
-  </header>
+</header>
+{% endif %}
 
 <!-- <header id="explore">
     <h1>And so, we leave you to explore our <span style="color:lightskyblue">Artful Atlas!</span></h1>
 </header> -->
-
+{% if featured_products %}
 <header id="featured-products">
     <br><br>
     <h1 title="Popular artworks">Featured Artworks</h1>
@@ -113,6 +117,7 @@
     </section>
     <br><br><br><br><br><br>
 </header>
+{% endif %}
 
 <header class="flex">
     <header id="slider1" class="slider">

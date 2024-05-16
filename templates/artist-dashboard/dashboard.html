@@ -1,0 +1,75 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/artist-dashboardjs.js {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+<header class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+    <section id="overview" class="content">
+        <h1>Overview</h1>
+        <section class="overview-flex">
+            <section class="overview-flex2">
+                <img class="icons" src="{% static 'images/icons/revenue.png' %}" alt="">
+                <h3 title="Moroccan Dirham">MAD</h3>
+                <div>
+                    <h3>Revenue</h3>
+                    <p id="revenue">{{revenue}}</p> 
+                </div>
+            </section>
+            <section class="overview-flex2">
+                <img class="icons" src="{% static 'images/icons/orders.png' %}" alt="">
+                <div>
+                    <h3>Orders</h3>
+                    <p>{{total_orders_count}}</p>
+                </div>
+            </section> 
+        </section>
+        <section class="overview-flex">
+            <section class="overview-flex2">
+                <img class="icons" src="{% static 'images/icons/artwork.png' %}" alt="">
+                <div>
+                    <h3>Artworks</h3>
+                    <p>{{artworks_number}}</p>
+                </div>
+            </section>
+            <section class="overview-flex2">
+                <img class="icons" src="{% static 'images/icons/monthly-revenue.png' %}" alt="">
+                <div>
+                    <h3>Monthly Earning</h3>
+                    <p>{{monthly_revenue}}</p>
+                </div>
+            </section>
+        </section>
+
+        <canvas id="myChart"></canvas>
+        <div style="display:none;">
+            <span id="month">{{this_month}}</span>
+        </div>
+    </section>
+</header>
+
+{% endblock content %}

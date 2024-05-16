@@ -1,0 +1,84 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+<header class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+    
+    <section id="orders" class="content flex-item">
+        <h1>Orders</h1>
+        {% if order_items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Related Order</th>
+                        <th>Artwork Status</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for o in order_items %}
+                        <tr>
+                            <td>INVOICE_NO-{{order.oid}}</td>
+                            <td>
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    {{ form.product_status }}
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="button" style="width:100%;height:40px;">Update Status</button>
+                                </form>
+                            </td>
+                            <td>{{o.name}}</td>
+                            <td style="padding:1%;"><img id="order-image" src="{{o.image}}" alt=""></td>
+                            <td>{{o.price}}</td>
+                            <td><a href="{{o.product_page}}">View artwork's details</a></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <h1>Information of the buyer :</h1>
+            <p>Full name : {{order.first_name}} {{order.last_name}}</p>
+            <br>
+            <p>Email : {{order.email}}</p>
+            <br>
+            <p>Shipping address : {{order.address}}</p>
+            <br>
+            <p>Country and city : {{order.country}}, {{order.city}}</p>
+            <br>
+            <p>Zip code : {{order.zip}}</p>
+        {% else %}
+            <p>No orders yet.</p>
+        {% endif %}
+    </section>
+</header>
+
+{% endblock content %}

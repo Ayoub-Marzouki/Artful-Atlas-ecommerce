@@ -1,0 +1,91 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+<header class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+
+    <section id="reviews" class="content">
+        <h1>Reviews</h1>
+        <h3>Reviews about you</h3>
+        <br><br>
+        {% if not artist_reviews %}
+            <br>
+            <p>No reviews about you yet.</p>
+            <br>
+            {% else %}
+                {% for a in artist_reviews %}
+                <div class="flex" class="review" style="width:600px;">
+                    {% if user.profile.image %}
+                    <img id="user-profile-picture" src="{{user.profile.image}}" alt="">
+                    {% else %}
+                    <img id="user-profile-picture" src="{% static 'images/icons/account.png' %}" alt="">
+                    {% endif %}
+                    <h3>{{a.user.username|title}}</h3> <br>
+                    <h3>{{a.get_rating_display}}</h3>
+                    <p>{{a.date|date:"F d, Y"}}</p> <br>
+                </div>
+                <p> - {{a.review}}</p> <br>
+                <p>User email :  {{a.user.email}}</p> <br>
+                <br>
+                <hr>
+                <br>
+            {% endfor %}
+            {% endif %}
+
+        <br><br><br>
+
+        <h3>Reviews about your artworks</h3>
+        <br><br>
+        {% if not product_reviews %}
+            <br>
+            <p>No reviews about your artworks yet.</p>
+            <br>
+            {% else %}
+                {% for p in product_reviews %}
+                <div class="flex" class="review" style="width:600px;">
+                    {% if user.profile.image %}
+                    <img id="user-profile-picture" src="{{user.profile.image}}" alt="">
+                    {% else %}
+                    <img id="user-profile-picture" src="{% static 'images/icons/account.png' %}" alt="">
+                    {% endif %}
+                    <h3>{{p.user.username|title}}</h3> <br>
+                    <h3>{{p.get_rating_display}}</h3>
+                    <p>{{p.date|date:"F d, Y"}}</p>
+                </div>
+                <p> - {{p.review}}</p> <br>
+                <p>User email :  {{p.user.email}}</p> <br>
+                <br>
+                <hr>
+                <br>
+            {% endfor %}
+            {% endif %}        
+    </section>
+</header>
+
+{% endblock content %}

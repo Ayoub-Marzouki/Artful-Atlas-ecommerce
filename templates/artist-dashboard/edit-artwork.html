@@ -1,0 +1,89 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} /static/edit-artworkjs.js {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+<header class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+
+    <section id="artworks" class="content">
+        <h1>Edit Artwork</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button type="submit" name="edit-artwork-button-name" class="button">Edit Artwork</button>
+        </form>
+
+        <br><br><br>
+        
+        <h1>Artworks</h1>
+
+        {% for a in artworks %}
+        <section class="artwork-flex">
+            <figure>
+                <img class="artwork-image" src="{{a.image.url}}" alt="">
+                <figcaption class="artwork-title">{{a.title}}</figcaption>
+                </a>
+            </figure>
+
+            {% if a.available %}
+            <h5>Available</h5>
+            {% else %}
+            <h5>Sold</h5>
+            {% endif %}
+
+            <h5>{{a.price}}</h5>
+
+            <h5>{{a.product_status|title}}</h5>
+
+            <h5>{{a.date|date:"F d, Y"}}</h5>
+
+            <div class="buttons">
+                <a href="{% url 'artist-dashboard:edit-artwork' a.pid %}">
+                    <button type="submit" class="button" name="edit-artwork-button-name">Edit</button>
+                </a>
+                
+                <div style="display:none;">
+                    <span id="remove-url">
+                        {% url 'artist-dashboard:delete-artwork' a.pid %}
+                    </span>
+                </div>
+
+                <a href="#" class="delete-button" data-pid="{{ a.pid }}">
+                    <button type="submit" class="button" name="remove-artwork-button-name">Remove</button>
+                </a>
+            </div>
+        </section>
+
+        <br><br><br>
+        <hr>
+        <br><br><br>
+        {% endfor %}
+    </section>
+</header>
+
+{% endblock content %}

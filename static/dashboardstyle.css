@@ -72,8 +72,8 @@ table th, table td {
     border: 3px solid rgba(0, 0, 0, 0.2);
     padding:2%;
 }
-table th, table td {
-    width:500px;
+#main table th, #main table td {
+    width:200px;
 }
 
 /* Styling the Track-Order tab */
@@ -155,6 +155,6 @@ table th, table td {
 
 /* Styling order-details */
 #order-image {
-    width:200px;
-    height:100px;
+    width:150px;
+    height:150px;
 }

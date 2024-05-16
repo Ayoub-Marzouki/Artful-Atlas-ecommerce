@@ -1,5 +1,5 @@
 from django.urls import path, include
-from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, payment, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist, services_view, contact_view, about_view, faqs_view, checkout
+from home.views import index, product_list_view, artist_list_view, artist_detail_view, product_detail_view, add_product_review, add_artist_review, artist_search_view, product_search_view, add_to_cart, cart_view, delete_item_from_cart, payment, payment_completed_view, payment_failed_view, customer_dashboard, order_details, update_address_status, delete_address, wishlist_view, add_to_wishlist, delete_item_from_wishlist, services_view, contact_view, about_view, faqs_view, checkout, update_order
 
 app_name = "home"
 
@@ -33,6 +33,7 @@ urlpatterns = [
     path("paypal/", include('paypal.standard.ipn.urls')), 
     path("payment/payment-completed/<oid>/", payment_completed_view, name = "payment-completed"),
     path("payment/payment-failed/", payment_failed_view, name = "payment-failed"),
+    path("update-order/", update_order, name = "update_order"),
 
     path("dashboard/", customer_dashboard, name="dashboard"),
     path("dashboard/order/<int:id>", order_details, name="order-details"),

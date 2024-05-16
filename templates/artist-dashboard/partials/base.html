@@ -1,0 +1,49 @@
+{% load static %}
+<section id="secondary-nav">
+    <a href="{% url 'artist-dashboard:artist-dashboard' %}">
+        <div class="flex tab" id="overview-tab" style="background-color:lightblue;">
+            <img class="icons" src="{% static 'images/icons/overview.png' %}" alt="">
+            <span>Overview</span>
+        </div>
+    </a>
+
+    <a href="{% url 'artist-dashboard:update-profile' artist.aid %}">
+        <div class="flex" id="edit-profile-tab">
+            <img class="icons" src="{% static 'images/icons/edit.png' %}" alt=""> 
+            <span>View & Edit Profile</span>
+        </div>
+    </a>
+
+    <a href="{% url 'artist-dashboard:artworks' %}">
+        <div class="flex tab" id="artworks-tab">
+            <img class="icons" src="{% static 'images/icons/artwork.png' %}" alt=""> 
+            <span>Artworks</span>
+        </div>
+    </a>
+    <a href="{% url 'artist-dashboard:orders' %}">
+        <div class="flex tab"  id="orders-tab">
+            <img class="icons" src="{% static 'images/icons/orders.png' %}" alt=""> 
+            <span>Orders</span>
+        </div>
+    </a>
+
+    <a href="{% url 'artist-dashboard:reviews' %}">
+        <div class="flex tab" id="reviews-tab">
+            <img class="icons" src="{% static 'images/icons/review.png' %}" alt=""> 
+            <span>Reviews</span>
+        </div>
+    </a>
+    
+    <a href="{% url 'artist-dashboard:account-details' %}">
+        <div class="flex tab" id="account-details-tab">
+            <img class="icons" src="{% static 'images/icons/account.png' %}" alt=""> 
+            <span>Account details</span>
+        </div>
+    </a>
+    <a href="{% url 'userauths:logout' %}">
+        <div class="flex">
+            <img class="icons" src="{% static 'images/icons/logout.png' %}" alt=""> 
+            <span>Logout</span>
+        </div>
+    </a>
+</section>

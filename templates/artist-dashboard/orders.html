@@ -1,0 +1,66 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+<header class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <div class="flexbox dropdown">
+            <a>Account</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+
+    
+    <section id="orders" class="content flex-item">
+        <h1>Orders</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Artwork Status</th>
+                    <th>Paid Status</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in orders %}
+                <tr>
+                    <td>{{o.oid}}</td>
+                    <td>{{o.order_date}}</td>
+                    <td>{{o.product_status|title}}</td>
+                    {% if o.paid_status == True %}
+                        <td><img class="icons" src="{% static 'images/icons/checked.png' %}" alt=""></td>
+                    {% else %}
+                        <td><img class="icons" src="{% static 'images/icons/unchecked.png' %}" alt=""></td>
+                    {% endif %}
+                    <td>{{o.price}}</td>
+                    <td><a href="{% url 'artist-dashboard:order-details' o.id %}">View Order details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</header>
+
+{% endblock content %}

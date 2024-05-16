@@ -33,12 +33,14 @@
                     <div id="first-list">
                         <li>Artist : <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist.name}}</a></li>
                         <li>Execution date : {{product.date|date:"F d, Y"}}</li>
-                        <li>Availability : <strong>Available / SOLD</strong></li>
+                        <li>Availability : <strong>{% if product.available %} Available {% else %} SOLD {% endif %}</strong></li>
                         <li>Reference : {{ product.pid|slice:"7:" }}</li>
                     </div>
                     <div>
-                        <li>Medium : Canvas</li>
-                        <li>Dimensions : a x b cm</li>
+                        {% if not product.medium == other %}
+                        <li>Medium :  {{product.medium}}</li>
+                        {% endif %}
+                        <li>Dimensions : {{product.width}} W x {{product.height}} H x {{product.depth}} D cm</li>
                         <li>Technique : {{product.technique}}</li>
                         <li>Style : {{product.style}}</li> 
                     </div>
@@ -52,7 +54,7 @@
                 <br>
                 <h3 style="display:inline-block;margin-bottom:10px;" class="price">{{product.price}}</h3> <span>dh</span>
                 <br>
-                <p>Shipping : Free/NotFree Shipping</p>
+                <p>Shipping : {{product.shipping|title}}</p>
                 <br>
             </div>
             <div class="cart-div">
@@ -79,20 +81,39 @@
             </div>
         </section>
     </header>
-
+    <br><br>
+    {% if product.specifications %}
     <header>
-        <h1>Artwork's story according to the artist</h1>
-        <p>Here goes the description of the artwork according to the artist.</p>
+        <h1>Artworks's specifications</h1>
+        <br>
+        <p>{{product.specifications}}</p>
     </header>
+    {% endif %}
+    <br><br>
+    {% if product.description %}
+    <header>
+        <h1>Artwork's description according to the artist</h1>
+        <br>
+        <p>{{product.description}}</p>
+    </header>
+    {% endif %}
 
     <header id="extra" class="flex">
         <div class="extra-info">
             <img class="icons" src="{% static 'images/icons/signature.png' %}" alt="Signature"> <br>
+            {% if signed_by_artist %}
             <p>Artwork signed by the Artist</p>
+            {% else %}
+            <p>Artwork Not signed by the Artist</p>
+            {% endif %}
         </div>
         <div class="extra-info">
             <img class="icons" src="{% static 'images/icons/favorite.png' %}" alt="Wishlist box"> <br>
-            <p>This artwork is part of X wishlists</p>
+            {% if product_wishlist_count > 0 %}
+            <p>This artwork is part of {{product_wishlist_count}} wishlists</p>
+            {% else %}
+            <p>This artwork is not part of any wishlist just yet</p>
+            {% endif %}
         </div>
         <div class="extra-info">
             <img class="icons" src="{% static 'images/icons/happiness.png' %}" alt="Happiness!"> <br>
@@ -100,7 +121,7 @@
         </div>
         <div class="extra-info">
             <img class="icons" src="{% static 'images/icons/box.png' %}" alt="Shipping"> <br>
-            <p>Shipping across Morocco</p>
+            <p>Shipping across the world</p>
         </div>
         <div class="extra-info"><img class="icons" src="{% static 'images/icons/credit-card.png' %}" alt="Secure transaction"> <br>
             <p>100% secure transaction</p>

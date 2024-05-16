@@ -1,0 +1,60 @@
+#space-around-flex {
+    display:flex;
+    justify-content:space-around;
+}
+.button {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    background-color:#212a2f;
+    color:whitesmoke;
+    font-weight:600;
+    cursor:pointer;
+    width:300px;
+    padding:1%;
+    margin-top:5px;
+    text-align:center;
+    transition:300ms;
+    border:1px solid rgba(0, 0, 0, 0.4);
+    border-radius:10px;
+}
+.button:hover {
+    background-color:black;
+}
+
+#artist-name {
+    margin-top:50px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="select"], select {
+    border: 10px solid skyblue;
+    background-color: skyblue;
+    width: 50%;
+    height: 40px;
+    border-radius: 15px;
+    padding: 2%;
+    margin: 2%;
+}
+#id_shortBio, #id_city {
+    width:400px;
+    height:40px;
+}
+textarea {
+    width:50%;
+    display:block;
+    margin:auto;
+    border:10px solid skyblue;
+    background-color:skyblue;
+    border-radius:15px;
+    padding:2%;
+}
+select {
+    padding:0;
+}
+option {
+    margin:2%;
+}
+input[type="file"] {
+    padding:0;
+}

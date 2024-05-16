@@ -26,7 +26,26 @@ SECRET_KEY = 'django-insecure-or@13ouxpm8d3axm((#c)6y#m+y!#0erk7ljb0=q7r7$8-!hy9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    #ngrok host to be able to test paypal's webhook (no longer using webhook)
+    'localhost', 
+    '127.0.0.1', 
+    '.ngrok-free.app',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost',
+    'http://127.0.0.1',
+    'https://.ngrok-free.app',
+    'https://224d-196-74-147-19.ngrok-free.app',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost',
+    'http://127.0.0.1',
+    'https://.ngrok-free.app',
+]
+
 
 
 # Application definition
@@ -48,6 +67,7 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'corsheaders',
     'phonenumber_field',
+    'artist_dashboard',
 ]
 
 MIDDLEWARE = [

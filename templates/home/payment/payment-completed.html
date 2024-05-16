@@ -16,7 +16,7 @@
             <img class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas logo">
             <div>
                 <h1>Invoice</h1>
-                <p>ID: 333333</p>
+                <p>ID: {{order.oid}}</p>
             </div>
         </div>
         
@@ -29,10 +29,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product_id, item in cart_data.items %}
+                    {% for item in cart_order_items %}
                         <tr>
-                            <td>{{item.title}} <br>SKU : 13eeefs3 (still static) <br> Reference : gergrge (still static)</td>
-                            <td>{{item.price}}</td>
+                            <td>Artwork's title : {{item.product.title}} <br>SKU : {{item.product.sku}} <br> Reference : {{item.product.pid|slice:"7:"}}</td>
+                            <td>{{item.product.price}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -42,9 +42,9 @@
         <div class="flex">
             <div>
                 <h3>Invoice Info</h3>
-                <p class="invoice-info">Issue date : date</p>
+                <p class="invoice-info">Issue date : {{order.order_date}}</p>
                 <p class="invoice-info">Invoice recipient : {{request.user|title}} </p>
-                <p class="invoice-info">Swift Code : fsdfsd</p>
+                <!-- <p class="invoice-info">Swift Code : fsdfsd</p> -->
             </div>
             <div>
                 <p class="total">Total (in dh)</p>

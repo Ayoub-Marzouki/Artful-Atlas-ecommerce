@@ -26,11 +26,6 @@
             <span>Orders</span>
         </div>
     
-        <!-- <div class="flex tab" id="track-orders-tab">
-            <img class="icons" src="{% static 'images/icons/cart.png' %}" alt=""> 
-            <span>Track your Order</span>
-        </div> -->
-    
         <div class="flex tab" id="addresses-tab">
             <img class="icons" src="{% static 'images/icons/location.png' %}" alt=""> 
             <span>Addresses</span>
@@ -51,8 +46,11 @@
     <section id="dashboard" class="content">
         <h1>Hello {{ request.user|title }}!</h1>
         <p>In your account dashboard, you can easily keep track of your recent <strong>orders</strong>, update your <strong>shipping and billing addresses</strong>, and manage <strong>your password and account settings </strong>hassle-free.</p>
-        <span id="labels" data-month="{{ month|join:',' }}"></span>
-        <span id="count" data-total-orders="{{ total_orders_of_month|join:',' }}"></span>
+
+        <div style="display:none;">
+            <span id="month">{{this_month}}</span>
+            <span id="orders-length">{{orders|length}}</span>
+        </div>
         <br>
         <canvas id="myChart"></canvas>
         
@@ -83,7 +81,7 @@
         </form>
     </section>
 
-    <section id="orders" class="content flex-item">
+    <section id="orders" class="content">
         <h1>Orders</h1>
         {% if orders%}
             <table>

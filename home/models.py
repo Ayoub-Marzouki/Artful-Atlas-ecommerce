@@ -128,12 +128,15 @@ class Artist(models.Model):
     authentic_rating = models.CharField(null = True, blank = True, max_length = 100, default ="Good")
     days_return = models.CharField(null = True, blank = True, max_length = 200, default ="100")
     warranty_period = models.CharField(max_length = 200)
+    facebook = models.CharField(max_length = 200, null = True, blank = True)
+    instagram = models.CharField(max_length = 200, null = True, blank = True)
 
     technique = models.ForeignKey(Technique, on_delete=models.SET_NULL, null=True)
     style = models.ForeignKey(Style, on_delete=models.SET_NULL, null=True)
     philosophy = models.ForeignKey(Philosophy, on_delete=models.SET_NULL, null=True, blank = True)
     subject_matter = models.ForeignKey(SubjectMatter, on_delete=models.SET_NULL, null=True, blank = True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
+
 
     class Meta:
         verbose_name_plural = "Artists"
@@ -161,7 +164,7 @@ STATUS = (
     ("draft","Draft"),
     ("disabled","Disabled"),
     ("rejected","Rejected"),
-    ("in_review","In review"),
+    ("in review","In review"),
     ("published","Published")
 )
 
@@ -172,17 +175,34 @@ RATING = (
     (4,"★★★★☆"),
     (5,"★★★★★"),
 )
+MEDIUM = (
+    ("canvas", "Canvas"),
+    ("paper", "Fine Art Paper"),
+    ("wood_panel", "Wood Panel"),
+    ("other", "Other")
+)
+SHIPPING = (
+    ("free", "Free"),
+    ("not included", "Not Included")
+)
 
 class Product(models.Model):
     pid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix="product", alphabet = "abcdefgh123456")
     title = models.CharField(max_length = 200)
     image = models.ImageField(upload_to = user_directory_path)
-    description = models.TextField(null = True, blank = True)
+    description = models.TextField(null = True, blank = True, default="Description | Story | Meaning of the artwork according to the artist.")
     price = models.DecimalField(max_digits=99999, decimal_places=2) # 99999,99
     # old_price = models.DecimalField(max_digits=99999,decimal_places=2, null=True) # b7al sold
-    specifications = models.TextField(null=True, blank = True) 
-    product_status = models.CharField(choices = STATUS, max_length=10,default = "in_review")
-    status =models.BooleanField(default = True)
+    specifications = models.TextField(null=True, blank = True, default = "A more detailed description of the tools used to paint the artwork.") 
+    product_status = models.CharField(choices = STATUS, max_length=30,default = "in review")
+    medium = models.CharField(choices = MEDIUM, max_length=40,default = "canvas")
+    height = models.IntegerField(default = 0)
+    width = models.IntegerField(default = 0)
+    depth = models.IntegerField(default = 0)
+    signed_by_artist = models.BooleanField(default = True)
+    shipping = models.CharField(choices = SHIPPING, max_length=40)
+
+    available =models.BooleanField(default = True)
     in_stock = models.BooleanField(default = True)
     featured = models.BooleanField(default = False)
     exclusive = models.BooleanField(default=False)
@@ -233,10 +253,11 @@ class CartOrder(models.Model):
     oid = ShortUUIDField(default = uuid.uuid4, unique = True, length = 10, max_length = 30, alphabet = "123456789") 
     # User who placed the order
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    full_name = models.CharField(max_length = 100, null = True, blank = True)
+
+    first_name = models.CharField(max_length = 100, null = True, blank = True)
+    last_name = models.CharField(max_length = 100, null = True, blank = True)
     email = models.CharField(max_length = 100, null = True, blank = True)
     phone = models.CharField(max_length = 100, null = True, blank = True)
-
     address = models.CharField(max_length = 100, null = True, blank = True)
     country = models.CharField(max_length = 100, null = True, blank = True)
     city = models.CharField(max_length = 100, null = True, blank = True)
@@ -252,7 +273,6 @@ class CartOrder(models.Model):
     order_date = models.DateTimeField(auto_now_add = True)
     product_status = models.CharField(choices = STATUS_CHOICE, max_length=40,default = "Processing")
 
-    stripe_payment_intent = models.CharField(max_length = 1000, null = True, blank = True)
 
     class Meta:
         verbose_name_plural = "Cart Orders"
@@ -261,6 +281,9 @@ class CartOrder(models.Model):
 class CartOrderItems(models.Model):
     # Order the item belongs to
     order = models.ForeignKey(CartOrder, on_delete = models.CASCADE)
+    # Which artwork we're talking about
+    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True)
+
     product_status = models.CharField(max_length = 200)
     product_page = models.CharField(max_length = 200, default=None)
     name = models.CharField(max_length = 200)
@@ -363,7 +386,7 @@ class WishList(models.Model):
     # User who added the product to the wish list
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # Product added to the wish list
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     # Date and time when the product was added to the wish list
     date = models.DateTimeField(auto_now_add=True)
 

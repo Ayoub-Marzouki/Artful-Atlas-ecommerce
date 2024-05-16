@@ -53,20 +53,58 @@ document.addEventListener('DOMContentLoaded', function() {
     // Javascript charts for orders
 
     const ctx = document.getElementById('myChart');
-    const labelsSpan = document.getElementById('labels');
-    const countSpan = document.getElementById('count');
+    const ordersLength = document.getElementById('orders-length').innerHTML;
+    const current_month = document.getElementById('month').innerHTML;
+    let monthly_orders = [0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    // Retrieve the data from the data attributes
-    const labelsData = labelsSpan.getAttribute('data-month').split(',');
-    const countData = countSpan.getAttribute('data-total-orders').split(',');
+    switch (parseInt(current_month)) {
+        case 1:
+            monthly_orders[0] = ordersLength;
+            break;
+        case 2:
+            monthly_orders[1] = ordersLength;
+            break;
+        case 3:
+            monthly_orders[2] = ordersLength;
+            break;
+        case 4:
+            monthly_orders[3] = ordersLength;
+            break;
+        case 5:
+            monthly_orders[4] = ordersLength;
+            break;
+        case 6:
+            monthly_orders[5] = ordersLength;
+            break;
+        case 7:
+            monthly_orders[6] = ordersLength;
+            break;
+        case 8:
+            monthly_orders[7] = ordersLength;
+            break;
+        case 9:
+            monthly_orders[8] = ordersLength;
+            break;
+        case 10:
+            monthly_orders[9] = ordersLength;
+            break;
+        case 11:
+            monthly_orders[10] = ordersLength;
+            break;
+        case 12:
+            monthly_orders[11] = ordersLength;
+            break;
+        default:
+            break;
+    }
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labelsData,
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: [{
                 label: 'Number of Orders',
-                data: countData.map(Number), // Convert strings to numbers
+                data: monthly_orders, 
                 borderWidth: 1
             }]
         },

@@ -4,51 +4,48 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.conf import settings
 
-from home.models import Profile
+from home.models import Profile, Artist
 
 User = settings.AUTH_USER_MODEL
 
 def register_view(request):
-    next_page = request.GET.get('next')  # Get the value of 'next' parameter
-    # Check if the request method is POST
+    next_page = request.GET.get('next')  
+    
     if request.method == "POST": 
-        # Create a form instance with the data from the POST request
         form = UserRegisterForm(request.POST or None)
 
-        # Check if the form data is valid
         if form.is_valid():
-            # Save the form data to create a new user
             new_user = form.save()
-            # Create a profile instance for the new user
+            
             Profile.objects.create(user=new_user)
-            # Get the username from the form data
+
             username = form.cleaned_data.get("username") 
-            # Display a success message indicating that the account was created
+
+            if new_user.user_type == 'artist':
+                Artist.objects.create(user=new_user, name=new_user.username)
+            
             messages.success(request, f"Welcome {username}! Your account has been created successfully.")
-            # Authenticate the new user
+            
             new_user = authenticate(username=form.cleaned_data.get('email'), password=form.cleaned_data.get('password1'))
-            # Log in the new user
+
             login(request, new_user) 
             if next_page:
                 return redirect(next_page)
             else:
                 return redirect("home:index")
-        else:
-            # If form validation fails, loop through form errors and display error messages
+            
+        else:   
             for field, errors in form.errors.items():
                 for error in errors:
-                    # Display error messages for each field
                     messages.error(request, f"{field.capitalize()}: {error}")
-    else:
-        # If the request method is not POST, create an empty form instance
-        form = UserRegisterForm()
     
-    # Prepare the form context to pass to the template
+    else:
+        form = UserRegisterForm()
+ 
     context = { 
         'form': form,
         "next_page":next_page,
     }
-    # Render the sign-up page with the form context
     return render(request, "userauths/sign-up.html", context)
 
 

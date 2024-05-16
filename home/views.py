@@ -17,12 +17,22 @@ from django.contrib import messages
 import calendar, stripe
 from django.db.models.functions import ExtractMonth
 
+from django.core.exceptions import ObjectDoesNotExist
+
+import datetime, json
+
 def index(request):
     artists = Artist.objects.all()
     products = Product.objects.all()
-    exclusive_products = Product.objects.filter(exclusive = True)
-    featured_products = Product.objects.filter(featured = True)
-    chosen_product = Product.objects.get(chosen = True)
+    
+    try:
+        chosen_product = Product.objects.get(chosen=True)
+        exclusive_products = Product.objects.filter(exclusive = True)
+        featured_products = Product.objects.filter(featured = True)
+    except ObjectDoesNotExist:
+        chosen_product = None
+        exclusive_products = None
+        featured_products = None
 
     # Add user reviews / ratings :
 
@@ -173,6 +183,7 @@ def product_detail_view(request, pid):
     next_url = request.GET.get('next')
 
     product = Product.objects.get(pid=pid)
+    product_wishlist_count = product.wishlist_set.count()
     product_images = product.product_images.all()
     related_products = Product.objects.filter(Q(technique=product.technique) | Q(style=product.style)).exclude(pid=pid)[:10]
 
@@ -189,8 +200,13 @@ def product_detail_view(request, pid):
     if request.user.is_authenticated:
         user_review_count = ProductReview.objects.filter(user=request.user, product=product).count()
 
-        if user_review_count > 0:
-            make_review = False
+    # Check if the logged-in user is the artist themselves
+    if request.user == product.artist.user:
+        make_review = False
+        
+    elif user_review_count > 0:
+        make_review = False
+
 
     context = {
         "product":product,
@@ -202,6 +218,7 @@ def product_detail_view(request, pid):
         "make_review":make_review,
         "next_url": next_url,
         "current_url":current_url,
+        'product_wishlist_count':product_wishlist_count,
     }
     return render(request, "store/product-details.html",context)
 
@@ -243,7 +260,10 @@ def artist_detail_view(request, aid):
     if request.user.is_authenticated:
         user_review_count = ArtistReview.objects.filter(user=request.user, artist=artist).count()
 
-        if user_review_count > 0:
+        if request.user == artist.user:
+            make_review = False
+            
+        elif user_review_count > 0:
             make_review = False
     
     context = {
@@ -529,6 +549,11 @@ def checkout(request):
     
     order = CartOrder()
 
+    try:
+        active_address = Address.objects.get(user = request.user, address_status = True)
+    except:  
+        active_address = None  
+
     if 'cart_data_object' in request.session:
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
@@ -586,14 +611,19 @@ def checkout(request):
     #     return redirect("home:payment", order.oid)
 
         order.user = request.user
+        order.email = request.user.email
+        if request.user.profile.phone:
+            order.phone = request.user.profile.phone
         order.price = total_price
+        order.address = active_address.address
         order.save()
         
         for product_id, item in request.session['cart_data_object'].items():
             cart_total_price += float(item['price'])
             total_price += float(item['price'])
-            
+            product = Product.objects.get(id=product_id)
             cart_order_items = CartOrderItems.objects.create(
+            product = product,
             order = order,
             invoice_no = "INVOICE_NO-" + str(order.id),
             name = item['title'],
@@ -603,10 +633,6 @@ def checkout(request):
             product_page = item['page']
         )
 
-    try:
-        active_address = Address.objects.get(user = request.user, address_status = True)
-    except:  
-        active_address = None  
 
     context = {
         "cart_data": request.session['cart_data_object'], 
@@ -631,23 +657,31 @@ def payment(request, oid):
     
 
 
-def payment_completed_view(request):
+def payment_completed_view(request, oid):
+    # Retrieve the CartOrder instance
+    order = CartOrder.objects.get(oid=oid)
+
+    # Calculate the total price of the cart items
     total_price = 0
     if 'cart_data_object' in request.session:
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
 
-    # order = CartOrder.objects.get(oid = oid)
-    # if order.paid_status == False:
-    #     order.paid_status = True
-    #     order.save()
-    
-    
+    # Update the paid_status of the order if necessary
+    if not order.paid_status:
+        order.paid_status = True
+        order.save()
+
+    # Access the associated CartOrderItems instances directly from the CartOrder instance
+    cart_order_items = order.cartorderitems_set.all()
+
+
     context = {
-        "cart_data": request.session['cart_data_object'],
-        'totalCartItems': len(request.session['cart_data_object']),
+        "cart_data": request.session.get('cart_data_object', {}),
+        'totalCartItems': len(request.session.get('cart_data_object', {})),
         'total_price': total_price,
-        # 'order':order,
+        'order': order,
+        'cart_order_items': cart_order_items,
     }
     return render(request, 'home/payment/payment-completed.html', context)
 
@@ -665,19 +699,10 @@ def customer_dashboard(request):
     except:
         profile = Profile()
 
-    orders = CartOrder.objects.filter(user = request.user).order_by("-id")
     address = Address.objects.filter(user = request.user).order_by("-address_status")
 
-    orders_chart = CartOrder.objects.filter(user=request.user).annotate(
-    month=ExtractMonth("order_date")).values("month").annotate(
-    count=Count("id")).values("month", "count")
-
-    month = []
-    total_orders_of_month = []
-
-    for o in orders_chart:
-        month.append(calendar.month_name[o["month"]])
-        total_orders_of_month.append(o["count"])
+    this_month = datetime.datetime.now().month
+    orders = CartOrder.objects.filter(user = request.user).order_by("-id")
 
 
     if request.method == "POST" and "add-address-button-name" in request.POST:
@@ -707,9 +732,7 @@ def customer_dashboard(request):
     context = {
         'orders':orders,
         'address':address,
-        'orders_chart':orders_chart,
-        'month':month,
-        'total_orders_of_month':total_orders_of_month,
+        'this_month':this_month,
         'profile':profile,
         'profile_form':profile_form,
     }
@@ -797,3 +820,40 @@ def delete_item_from_wishlist(request):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method'})
     
+
+
+@csrf_exempt
+def update_order(request):
+    if request.method == 'POST':
+        # Retrieve data from the AJAX request
+        order_oid = request.POST.get('order_oid')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        zip_code = request.POST.get('zip')
+
+        # Retrieve the order object
+        try:
+            order = CartOrder.objects.get(oid=order_oid)
+        except CartOrder.DoesNotExist:
+            return JsonResponse({'error': 'Order not found'}, status=404)
+
+        # Update the order object with the retrieved data
+        order.first_name = first_name
+        order.last_name = last_name
+        order.address = address
+        order.city = city
+        order.country = country
+        order.zip = zip_code
+
+        # Save the updated order object
+        order.save()
+
+        # Return a JSON response indicating success
+        return JsonResponse({'message': 'Order updated successfully'})
+
+    else:
+        # If the request method is not POST, return an error response
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

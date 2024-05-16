@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'sharedstyle.css' %}">
     <link rel="icon" href="/static/images/logos-images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="{% block cssFilename %} {% endblock cssFilename %}">  <!--To include the specific style file-->
+    {% block moreCssFiles %} {% endblock moreCssFiles %}
     <script defer src="{% block script %}{% endblock script %}"></script>
     <script src="{% static 'messagesjs.js' %}" defer></script>
     <script src="{% static 'cart.js' %}" defer></script>
@@ -83,25 +84,25 @@
         <div class="parent">
             <div class="div1">
                 <h3 class="gridbox">How may we help you?</h3>
-                <p><a href="faqs.html">FAQS</a></p>
+                <p><a href="{% url 'home:faqs' %}">FAQS</a></p>
                 <br>
-                <p><a href="contact.html">Contact us</a></p> 
+                <p><a href="{% url 'home:contact' %}">Contact us</a></p> 
             </div>
 
             <div class="div2"> 
                 <h3>Learn more</h3>
-                <p>Learn more <a href="about.html">about us</a></p>
+                <p>Learn more <a href="{% url 'home:about' %}">about us</a></p>
                 <br>
-                <p>Learn more about our <a href="artists.html">artists</a></p>
+                <p>Learn more about our <a href="{% url 'home:artists' %}">artists</a></p>
             </div>
 
             <div class="div3">
                 <h3>Customer services</h3>
-                <p>Discover our <a href="services.html">services</a></p>
+                <p>Discover our <a href="{% url 'home:services' %}">services</a></p>
             </div>
         <div class="div4">
             <h3>Shop now</h3>
-            <p>Visit our <a href="store2.html">store</a></p>
+            <p>Visit our <a href="{% url 'home:store' %}">store</a></p>
         </div>
         <div class="div5">
             <h3>language</h3>
@@ -112,7 +113,7 @@
         <br>
         <p>Copyright &copy; 2024 Artful Atlas. All rights reserved</p>
         <hr>
-        <a href="index.html"><img class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas Logo"></a>
+        <a href="{% url 'home:index' %}"><img class="logo" src="{% static 'images/logos-images/logo.png' %}" alt="Artful Atlas Logo"></a>
     </footer>
     
 </body>
