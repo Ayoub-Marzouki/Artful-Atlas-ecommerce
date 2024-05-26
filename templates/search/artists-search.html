@@ -59,6 +59,11 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+            <br>
+            {% if not artists %}
+            <p>No artists with your filters found.</p>
+            {% endif %}
+
         {% endif %}          
         </p>
     </header>
@@ -130,7 +135,7 @@
             &nbsp;
             <a href="{% url 'home:artist-details' a.aid %}">{{a.name}}</a>
             &nbsp;&nbsp;
-            <p>69</p> &nbsp;
+            <p>{{a.views}}</p> &nbsp;
             <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
             &nbsp;&nbsp;
             <p>{{a.city}}</p> &nbsp;

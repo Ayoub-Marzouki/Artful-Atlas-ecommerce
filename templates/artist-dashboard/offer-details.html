@@ -1,0 +1,67 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+{% include 'artist-dashboard/partials/header.html' %}
+
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+    
+    <section id="orders" class="content flex-item">
+        <h1>Offers</h1>
+        {% if offer %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Offer Status</th>
+                        <th>Artwork's Name</th>
+                        <th>Artwork's Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    {{ form.status }}
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="button" style="width:100%;height:40px;">Update Status</button>
+                                </form>
+                            </td>
+                            <td>{{offer.artwork.title}}</td>
+                            <td style="padding:1%"><img width="150"
+                                height="200" style="display:block;margin:auto;" src="{{offer.artwork.image.url}}" alt=""></td>
+                        </tr>
+                </tbody>
+            </table>
+            <br>
+            <h1>Information of the buyer </h1>
+            <br>
+            <p>Username : {{offer.user.username}}</p>
+            <br>
+            <p>Email : {{offer.user.email}}</p>
+            <br>
+            <p>Buyer's message : {{offer.message}}</p>
+        {% else %}
+            <p>No offers yet.</p>
+        {% endif %}
+        <br><br>
+        <h2 style="text-align:center;">Note</h2>
+        <br>
+        <p>Once you accept the offer, a message will be sent to the buyer to contact you, and your artwork will be marked as SOLD. </p>
+    </section>
+</header>
+
+{% endblock content %}

@@ -1,5 +1,8 @@
 {% load static %}
 
+{% load socialaccount %}
+{% providers_media_js %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,11 +15,16 @@
     <link rel="stylesheet" href="{% static 'messagesstyle.css' %}">
     <script src="{% static 'messagesjs.js' %}" defer></script>
     <script src="{% static 'sign-upjs.js' %}" defer></script>
+    <script src="//accounts.google.com/gsi/client" async></script>
     <link rel="icon" href="/static/images/logos-images/logo.png" type="image/x-icon">
     <title>Sign up</title>
 </head>
 
 <body>
+    <div id="g_id_onload"
+     data-client_id="328479635001-fogkcfcucg5gl3bf6qcbr0bi1tn3552b.apps.googleusercontent.com"
+     data-login_uri="{% url 'google_login_by_token' %}">
+    </div>
     <!-- Handling the login / sign-up / etc messages -->
     {% if messages %}
         <div id="messages">
@@ -58,13 +66,19 @@
             <p>Or :</p>
 
             <header id="social-media">
-                <h4>Continue with Facebook</h4>
-                <h4>Continue with Google</h4>
-                <h4>Continue with Instagram</h4>
+                <a id="facebook" href="{% provider_login_url 'facebook' %}">
+                    <img class="icons" src="{% static 'images/icons/facebook.png' %}" alt="">
+                    <h4>Continue with Facebook</h4>
+                </a>
+                <a id="google" href="{% provider_login_url 'google' %}">
+                    <img class="icons" src="{% static 'images/icons/google.png' %}" alt="">
+                    <h4>Continue with Google</h4>
+                </a>
+                <!-- <h4>Continue with Instagram</h4> -->
             </header>
         </header>
 
-        <p id="privacy">Your personal data will be used to enhance your experience throughout this website, to manage access to your account, and for other purposes. Learn more in our <a href="#">privacy policy</a>.</p>
+        <!-- <p id="privacy">Your personal data will be used to enhance your experience throughout this website, to manage access to your account, and for other purposes. Learn more in our <a href="#">privacy policy</a>.</p> -->
     </main>    
 </body>
 </html>

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from artist_dashboard.views import artist_dashboard, update_profile, artworks, edit_artwork, orders, reviews, account_details, delete_artwork, order_detail
+from artist_dashboard.views import artist_dashboard, update_profile, artworks, edit_artwork, orders, reviews, account_details, delete_artwork, order_detail, offers, offer_detail
 
 app_name = "artist-dashboard"
 
@@ -15,5 +15,7 @@ urlpatterns = [
     path("orders/order-details/<id>", order_detail, name = "order-details"),
     path("reviews/", reviews, name="reviews"),
     path("account-details/", account_details, name="account-details"),
+    path("offers/", offers, name="offers"),
+    path("offers/offer-details/<id>", offer_detail, name = "offer-details"),
 
 ]

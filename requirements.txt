@@ -3,5 +3,5 @@ Django==5.0.3
 django-jazzmin==2.6.1
 sqlparse==0.4.4
 tzdata==2024.1
-pyngrok==5.0.5. # your version may be later
+pyngrok==5.0.5.
 

@@ -1,8 +1,8 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http import JsonResponse
-from django.db.models import Q, Avg, Count
-from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList, UserReview, UserRating, Profile
-from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm, UserReviewForm, UserRatingForm, ContactForm, NewsletterSubscriptionForm, ProfileForm
+from django.db.models import Q, Avg, Count, F
+from home.models import Technique, Style, SubjectMatter, Philosophy, Product, Artist, ProductReview, ArtistReview, CartOrder, CartOrderItems, Address, WishList, UserReview, UserRating, Profile, Offer
+from home.forms import ProductReviewForm, ArtistReviewForm, CheckoutForm, UserReviewForm, UserRatingForm, ContactForm, NewsletterSubscriptionForm, ProfileForm, OfferForm
 from django.template.loader import render_to_string
 
 from django.urls import reverse
@@ -153,8 +153,13 @@ def contact_view(request):
 
 
 def about_view(request):
+    reviews = UserReview.objects.all().order_by("-date")
+
+    context = {
+        'reviews':reviews,
+    }
     
-    return render(request,'home/about.html')
+    return render(request,'home/about.html', context)
 
 def faqs_view(request):
     
@@ -199,13 +204,14 @@ def product_detail_view(request, pid):
     make_review = True
     if request.user.is_authenticated:
         user_review_count = ProductReview.objects.filter(user=request.user, product=product).count()
+        
+        if user_review_count > 0:
+            make_review = False
 
     # Check if the logged-in user is the artist themselves
     if request.user == product.artist.user:
         make_review = False
-        
-    elif user_review_count > 0:
-        make_review = False
+       
 
 
     context = {
@@ -251,6 +257,10 @@ def artist_detail_view(request, aid):
 
     # Get average reviews of a product
     average_rating = ArtistReview.objects.filter(artist=artist).aggregate(rating = Avg('rating'))
+
+    # Increment artist view count
+    artist.views += 1
+    artist.save()
 
     # Product review form
     review_form = ArtistReviewForm()
@@ -615,6 +625,7 @@ def checkout(request):
         if request.user.profile.phone:
             order.phone = request.user.profile.phone
         order.price = total_price
+        price_in_usd = total_price / 10
         order.address = active_address.address
         order.save()
         
@@ -633,13 +644,13 @@ def checkout(request):
             product_page = item['page']
         )
 
-
     context = {
         "cart_data": request.session['cart_data_object'], 
         'totalCartItems': len(request.session['cart_data_object']), 
         'total_price': total_price,
         'active_address':active_address,
         'order':order,
+        'price_in_usd':price_in_usd,
     }
     
     return render(request, "home/checkout.html", context)
@@ -667,13 +678,18 @@ def payment_completed_view(request, oid):
         for product_id, item in request.session['cart_data_object'].items():
             total_price += float(item['price'])
 
-    # Update the paid_status of the order if necessary
+    # Access the associated CartOrderItems instances directly from the CartOrder instance
+    cart_order_items = order.cartorderitems_set.all()
+
+    # Update the paid_status of the order 
     if not order.paid_status:
         order.paid_status = True
         order.save()
 
-    # Access the associated CartOrderItems instances directly from the CartOrder instance
-    cart_order_items = order.cartorderitems_set.all()
+        products = Product.objects.filter(cartorderitems__order=order)
+        # Mark artworks as SOLD
+        products.update(available=False)
+
 
 
     context = {
@@ -684,6 +700,8 @@ def payment_completed_view(request, oid):
         'cart_order_items': cart_order_items,
     }
     return render(request, 'home/payment/payment-completed.html', context)
+
+
 
 def payment_failed_view(request):
     # context = {
@@ -700,6 +718,8 @@ def customer_dashboard(request):
         profile = Profile()
 
     address = Address.objects.filter(user = request.user).order_by("-address_status")
+
+    offers = Offer.objects.filter(user = request.user).order_by("-id")
 
     this_month = datetime.datetime.now().month
     orders = CartOrder.objects.filter(user = request.user).order_by("-id")
@@ -728,6 +748,15 @@ def customer_dashboard(request):
     else:
         profile_form = ProfileForm(instance=profile)
 
+    if request.method == "POST":
+        # Check if the user clicked the "Become an artist" button
+        if "become-artist-button-name" in request.POST:
+            user = request.user
+            user.user_type = 'artist'
+            Artist.objects.create(user=user, name=user.username)
+            user.save()
+            messages.success(request, "You are officially a registered artist on our website!")
+            return redirect("artist-dashboard:artist-dashboard")
 
     context = {
         'orders':orders,
@@ -735,6 +764,7 @@ def customer_dashboard(request):
         'this_month':this_month,
         'profile':profile,
         'profile_form':profile_form,
+        'offers':offers,
     }
     return render(request, 'home/dashboard.html', context)
 
@@ -773,13 +803,17 @@ def order_details(request, id):
 
 
 def wishlist_view(request):
-    wishlist =WishList.objects.filter(user = request.user)
-    wishlist_count = WishList.objects.filter(user = request.user).count()
-    context = {
-        'wishlist':wishlist,
-        'wishlist_count':wishlist_count,
-    }
-    return render(request,"home/wishlist.html", context)
+    if request.user.is_authenticated: 
+        wishlist =WishList.objects.filter(user = request.user)
+        wishlist_count = WishList.objects.filter(user = request.user).count()
+        context = {
+            'wishlist':wishlist,
+            'wishlist_count':wishlist_count,
+        }
+        return render(request,"home/wishlist.html", context)
+    else:
+        messages.warning(request, "You must be logged in in order to have a wishlist.")
+        return redirect('userauths:login')
 
 
 def add_to_wishlist(request):
@@ -857,3 +891,24 @@ def update_order(request):
     else:
         # If the request method is not POST, return an error response
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
+
+@login_required
+def make_offer(request, pid):
+    product = get_object_or_404(Product, pid=pid)
+    if request.method == 'POST':
+        form = OfferForm(request.POST)
+        if form.is_valid():
+            offer = form.save(commit=False)
+            offer.artwork = product
+            offer.user = request.user
+            offer.save()
+            messages.success(request, "Your offer has been sent to the artist!")
+            return redirect('home:product-details', pid=pid)
+    else:
+        form = OfferForm()
+    context = {
+        'form': form, 
+        'product': product,
+    }
+    return render(request, 'home/make-offer.html', context)

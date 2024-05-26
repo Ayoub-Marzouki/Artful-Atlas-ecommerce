@@ -1,0 +1,28 @@
+{% load static %}
+<header id="nav" class="sticky">
+    <nav class="flexboxcontainer">
+        <a class="flexbox" href="{% url 'home:index' %}"><span style="color:rgba(0,0,0,0.7);text-shadow:none; font-size:50px;">Artful Atlas</span></a>
+        <a class="flexbox" href="{% url 'home:index' %}">Home</a>
+        <a class="flexbox" href="{% url 'home:services' %}">Services</a>
+        <a class="flexbox" href="{% url 'home:contact' %}">Contact</a>
+        <a class="flexbox" href="{% url 'home:about' %}">About</a>
+        <a class="flexbox" href="{% url 'home:artists' %}">Artists</a>
+        <div class="flexbox dropdown">
+            <a href="{% if request.user.is_authenticated %}{% url 'home:dashboard' %}{% else %}{% url 'userauths:login' %}{% endif %}">Account</a>
+            <div class="dropdown-content">
+                {% if request.user.is_authenticated %}
+                {% if request.user.user_type == 'artist' %}
+                        <a href="{% url 'artist-dashboard:artist-dashboard' %}">Artist Dashboard</a>
+                {% endif %}
+                    <a href="{% url 'home:dashboard' %}">Dashboard</a>
+                    <a href="{% url 'home:dashboard' %}">Profile</a>
+                    <a href="{% url 'userauths:logout' %}">Log out</a>
+                {% else %}
+                    <a href="{% url 'userauths:login' %}">Login</a>
+                    <a href="{% url 'userauths:sign-up' %}">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
+        <a class="flexbox" href="{% url 'home:store' %}">Store</a>
+    </nav>
+</header>

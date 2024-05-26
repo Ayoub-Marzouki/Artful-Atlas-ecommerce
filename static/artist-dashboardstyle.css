@@ -213,7 +213,7 @@ table th, table td {
     height:150px;
 }
 
-#id_product_status {
+#id_product_status, #id_status {
     width:100%;
 }
 

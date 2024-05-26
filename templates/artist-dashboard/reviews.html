@@ -13,19 +13,7 @@
 {% endblock header %}
 
 {% block content %}
-<header class="sticky">
-    <nav class="flexboxcontainer">
-        <a class="flexbox" href="index.html"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
-        <div class="flexbox dropdown">
-            <a>Account</a>
-            <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-    </nav>
-</header>
+{% include 'artist-dashboard/partials/header.html' %}
 
 <header id="main">
     {% include 'artist-dashboard/partials/base.html' %}
@@ -42,7 +30,7 @@
                 {% for a in artist_reviews %}
                 <div class="flex" class="review" style="width:600px;">
                     {% if user.profile.image %}
-                    <img id="user-profile-picture" src="{{user.profile.image}}" alt="">
+                    <img id="user-profile-picture" src="{{user.profile.image.url}}" alt="">
                     {% else %}
                     <img id="user-profile-picture" src="{% static 'images/icons/account.png' %}" alt="">
                     {% endif %}

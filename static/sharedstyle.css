@@ -95,6 +95,7 @@ a {
     background-color:#212a2f; */
     display:flex;
     align-items:center;
+    justify-content: space-around;
     font-size:23px;
 
 }
@@ -186,8 +187,10 @@ a {
     text-decoration:underline;
     font-weight:900;
 }
-
-.footer2 a:hover {
+#featured-products a {
+    transition:300ms;
+}
+#featured-products a:hover, .footer2 a:hover {
     color:lightseagreen;
     transition:300ms;
 }

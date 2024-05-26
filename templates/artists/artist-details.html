@@ -20,9 +20,13 @@
     <section id="media">
         <br>
         <section class="flex">
-            <span>Follow {{artist.name}}</span>
-            <img class="icons2" src="{% static 'images/icons/facebook-icon.png' %}" alt="">
-            <img class="icons2" src="{% static 'images/icons/instagram-icon.png' %}" alt="">
+            <span>Follow {{artist.name}} :</span>
+            {% if artist.facebook != None and artist.instagram != None %}
+            <a href="{{artist.facebook}}"><img class="icons2" src="{% static 'images/icons/facebook-icon.png' %}" alt=""></a>
+            <a href="{{artist.instagram}}"><img class="icons2" src="{% static 'images/icons/instagram-icon.png' %}" alt=""></a>
+            {% else %}
+            <p>No social media have <br> been provided yet.</p>
+            {% endif %}
         </section>
         <section class="right">
             <span>Comments & Reviews : <a href="#comments">{{reviews.count}}</a></span>
@@ -32,7 +36,7 @@
     <h1 style="text-align:center"> {{artist.name}} </h1>
     <br>
     <section class="profile-info">
-        <p>69</p> &nbsp;
+        <p>{{artist.views}}</p> &nbsp;
         <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
         &nbsp;&nbsp;
         <p>{{artist.city}}</p> &nbsp;
@@ -122,9 +126,13 @@
             <p> By <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist}}</a> </p>
             <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
             <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
+            {% if product.available == True %}
             <p class="cart-button">Add To Cart</p>
             <br>
+            {% if request.user.is_authenticated %}
             <p class="add-to-wishlist wish-button" data-product-item="{{product.id}}">Add to Wishlist</p>
+            {% endif %}
+            {% endif %}
             </figure>
         {% endif %}
         {% endfor %}

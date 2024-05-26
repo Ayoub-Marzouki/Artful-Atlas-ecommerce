@@ -67,10 +67,7 @@ iframe {
     width:100%;
     transition:300ms;
 }
-.icons a img:hover {
-    width:110%;
-    transition:300ms;
-}
+
 .footer2 p {
     margin:0;
     padding:0;

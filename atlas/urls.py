@@ -18,13 +18,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from django.conf import settings # to access settings.py file
+from django.conf import settings
 from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("home.urls")),
     path("user/",include("userauths.urls")),
     path("artist-dashboard/", include("artist_dashboard.urls")),
+
+    # google authentication and whatnot
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:

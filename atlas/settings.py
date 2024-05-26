@@ -37,7 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
     'http://127.0.0.1',
     'https://.ngrok-free.app',
-    'https://224d-196-74-147-19.ngrok-free.app',
+    'https://25c4-41-142-21-169.ngrok-free.app',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -68,6 +68,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'artist_dashboard',
+
+    # Facebook & Google authentication
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +87,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    # allauth 
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'atlas.urls'
@@ -179,3 +189,43 @@ PAYPAL_TEST = True
 
 # Force the paypal popup to work
 SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
+
+# For google & facebook authentication
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+        'APP': {
+            'client_id': '328479635001-fogkcfcucg5gl3bf6qcbr0bi1tn3552b.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
+
+# To skip the intermediate page
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+# Google and facebook cliend id & secret 
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '328479635001-fogkcfcucg5gl3bf6qcbr0bi1tn3552b.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '455015673880666'
+SOCIAL_AUTH_FACEBOOK_SECRET = '75af2f6c9027ae2d0fb4ca5facc1ae94'

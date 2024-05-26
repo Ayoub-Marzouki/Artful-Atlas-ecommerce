@@ -1,0 +1,54 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block cssFilename %} /static/artist-dashboardstyle.css {% endblock cssFilename %}
+
+{% block script %} {% endblock script %}
+
+{% block title %} Artist Dashboard {% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+{% include 'artist-dashboard/partials/header.html' %}
+
+<header id="main">
+    {% include 'artist-dashboard/partials/base.html' %}
+
+    <section id="orders" class="content flex-item">
+        <h1>Offers</h1>
+        {% if offers %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Artwork in question</th>
+                        <th>Original price</th>
+                        <th>Buyer's price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for o in offers %}
+                        <tr>
+                            <td>{{o.status|title}}</td>
+                            <td>{{o.created_at}}</td>
+                            <td>{{o.artwork.title}}</td>
+                            <td>{{o.artwork.price}}</td>
+                            <td>{{o.offer_price}}</td>
+                            <td><a href="{% url 'artist-dashboard:offer-details' o.id %}">View Offer details</a></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No offers yet.</p>
+        {% endif %}
+    </section>
+</header>
+
+{% endblock content %}

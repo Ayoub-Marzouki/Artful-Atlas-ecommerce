@@ -151,18 +151,22 @@
 <h1>Artworks</h1>
 
 <header class="store">
-    {% for p in products %}
+    {% for product in products %}
         <figure>
-            <a href="{% url 'home:product-details' p.pid %}">
-                {% if p.image %}
-                    <img class="store-images" src="{{ p.image.url }}" alt="{{ p.title }}">
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}">
+                {% if product.image %}
+                    <img class="store-images" src="{{ product.image.url }}" alt="{{ product.title }}">
                 {% endif %}
             </a>
-            <a href="{% url 'home:product-details' p.pid %}" target="_blank" ><p class="view-more">View More</p></a>
-            <p>{{ p.title }}</p>
-            <p>{{ p.price }} dh</p>
-            <p> By <a href="{% url 'home:artist-details' p.artist.aid %}">{{p.artist}}</a> </p>
+            <a data-product-url="{% url 'home:product-details' product.pid %}" href="{% url 'home:product-details' product.pid %}" target="_blank" ><p class="view-more">View More</p></a>
+            <p>{{ product.title }}</p>
+            <p class="price">{{ product.price }}</p> <span>dh</span>
+            <p> By <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist}}</a> </p>
+            <input type="hidden" class="product-id" value="{{product.id}}" name="" id="">
+            <input type="hidden" class="product-title" value="{{product.title}}" name="" id="">
             <p class="cart-button">Add To Cart</p>
+            <br>
+            <p class="add-to-wishlist wish-button" data-product-item="{{product.id}}">Add to Wishlist</p>
         </figure>
     {% endfor %}
 </header>

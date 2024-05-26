@@ -13,19 +13,8 @@
 {% endblock header %}
 
 {% block content %}
-<header class="sticky">
-    <nav class="flexboxcontainer">
-        <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
-        <div class="flexbox dropdown">
-            <a>Account</a>
-            <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-    </nav>
-</header>
+{% include 'artist-dashboard/partials/header.html' %}
+
 <header id="main">
     {% include 'artist-dashboard/partials/base.html' %}
     

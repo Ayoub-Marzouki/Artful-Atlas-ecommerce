@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.db.models import Sum, Count
-from home.models import CartOrder, Product, Technique, Style, Philosophy, SubjectMatter, CartOrderItems, Artist, ProductReview, ArtistReview
-from .forms import addArtworkForm, UpdateOrderStatusForm, ProfileImageForm, CoverImageForm, SocialMediaForm, ArtistInfoForm, OrientationForm, DescriptionForm,BiographyForm
+from home.models import CartOrder, Product, Technique, Style, Philosophy, SubjectMatter, CartOrderItems, Artist, ProductReview, ArtistReview, Offer
+from .forms import addArtworkForm, UpdateOrderStatusForm, ProfileImageForm, CoverImageForm, SocialMediaForm, ArtistInfoForm, OrientationForm, DescriptionForm,BiographyForm, UpdateOfferStatusForm
 
 import datetime
 from django.contrib import messages
@@ -286,3 +286,47 @@ def account_details(request):
     return render(request, "artist-dashboard/account-details.html", context)
 
 
+
+def offers(request):
+    user = request.user 
+    artist = Artist.objects.get(user=user)
+    
+    offers = Offer.objects.filter(artwork__artist=artist).order_by('-id')
+
+    if request.method == 'POST':
+        form = UpdateOfferStatusForm(request.POST, instance=offers)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Offer status has been updated successfully.")
+            return redirect('artist-dashboard:orders')
+    else:
+        form = UpdateOfferStatusForm()
+    
+    context = {
+        'artist':artist,
+        'offers':offers,
+        'form':form,
+    }
+    return render(request, "artist-dashboard/offers.html", context)
+
+def offer_detail(request, id):
+    offer = Offer.objects.get(id = id)
+    user = request.user 
+    artist = Artist.objects.get(user=user)
+
+    if request.method == 'POST':
+        form = UpdateOfferStatusForm(request.POST, instance=offer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Offer status has been updated successfully.")
+            return redirect('artist-dashboard:orders')
+    else:
+        form = UpdateOfferStatusForm()
+
+    context = {
+        'artist':artist,
+        'offer':offer,
+        'form':form,
+    }
+
+    return render(request, "artist-dashboard/offer-details.html", context)

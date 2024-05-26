@@ -1,0 +1,72 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block title %} Artwork's details {% endblock title %}
+
+{% block cssFilename %} /static/product-details-style.css {% endblock cssFilename %}
+
+{% block script %} /static/product-details-js.js {% endblock script %}
+
+{% block content %}
+    <br>
+    <h1 style="text-align:center;">Offer for : </h1>
+    <header id="artwork-overview" class="flex" style="align-items:flex-start;">
+        <section id="artwork-images-container">
+            <img id="artwork-image" src="{{ product.image.url }}" alt="">
+            <div>
+                <img class="secondary-images" src="{{ product.image.url }}" alt="">
+                {% for p in product_images %}
+                    <img class="secondary-images" src="{{ p.images.url }}" alt="">
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section id="info">
+            <div class="info-sections">
+                <h1>Title : {{product.title}}</h1>
+                <br>
+            </div>
+
+            <div class="info-sections">
+            <h1>Details :</h1>
+                <br>
+                <ul id="artwork-info" class="flex">
+                    <div id="first-list">
+                        <li>Artist : <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist.name}}</a></li>
+                        <li>Execution date : {{product.date|date:"F d, Y"}}</li>
+                        <li>Availability : <strong>{% if product.available %} Available {% else %} SOLD {% endif %}</strong></li>
+                        <li>Reference : {{ product.pid|slice:"7:" }}</li>
+                    </div>
+                    <div>
+                        {% if not product.medium == other %}
+                        <li>Medium :  {{product.medium}}</li>
+                        {% endif %}
+                        <li>Dimensions : {{product.width}} W x {{product.height}} H x {{product.depth}} D cm</li>
+                        <li>Technique : {{product.technique}}</li>
+                        <li>Style : {{product.style}}</li> 
+                    </div>
+                </ul>
+            </div>
+
+            <br>
+
+            <div class="info-sections" id="price-section">
+                <h1>Price and Shipping</h1>
+                <br>
+                <h3 style="display:inline-block;margin-bottom:10px;" class="price">{{product.price}}</h3> <span>dh</span>
+                <br>
+                <p>Shipping : {{product.shipping|title}}</p>
+                <br>
+            </div>
+        </section>
+    </header>
+
+    <h1>Make an Offer for '{{ product.title }}' artwork</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="offer-button" class="button" type="submit">Submit Offer</button>
+  </form>
+{% endblock content %}

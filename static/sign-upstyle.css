@@ -30,7 +30,7 @@ button {
 }
 
 .bright {
-    filter: brightness(1.3); /* Adjust the brightness as needed */
+    filter: brightness(1.5); /* Adjust the brightness as needed */
 }
 #customer, #artist {
     margin:2%;
@@ -103,22 +103,22 @@ input {
     color:white;
 }
 
-#submit, h4 {
+#submit, #google, #facebook {
     width:300px;
     padding:3%;
     margin:1%;
     display:inline-block;
     font-weight:900;
     font-size:15px;
-    color:whitesmoke;
-    background-color:darkcyan;
+    color:rgba(0,0,0,0.8);
+    background-color:lightskyblue;
     border:1px solid rgba(0,0,0,0.5);
     border-radius:5px;
     transition:300ms;
 }
-#submit:hover, h4:hover {
+#submit:hover {
     cursor:pointer;
-    background-color:lightseagreen;
+    background-color:skyblue;
     transition:300ms;
 }
 
@@ -126,4 +126,27 @@ input {
     margin:2% auto 1% auto;
     width:50%;
     color:rgba(255,255,255,0.5);
+}
+
+/* Styling google & facebook buttons */
+
+#social-media a {
+    text-decoration:none;
+}
+.icons {
+    width:30px;
+    height:30px;
+}
+#google, #facebook {
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+    background-color:whitesmoke;
+    color:black;
+    margin:2% auto 5% auto;
+}
+
+#facebook {
+    background-color:#1877f2;
+    color:whitesmoke;
 }

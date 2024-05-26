@@ -1,5 +1,5 @@
 from django import forms
-from home.models import Technique, Style, Philosophy, SubjectMatter, Product, CartOrder, Artist
+from home.models import Technique, Style, Philosophy, SubjectMatter, Product, CartOrder, Artist, Offer
 
 MEDIUM = (
     ("canvas", "Canvas"),
@@ -119,4 +119,13 @@ class OrientationForm(forms.ModelForm):
             'style': forms.Select(),
             'philosophy': forms.Select(),
             'subject_matter': forms.Select(),
+        }
+
+
+class UpdateOfferStatusForm(forms.ModelForm):
+    class Meta:
+        model = Offer
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'}),
         }

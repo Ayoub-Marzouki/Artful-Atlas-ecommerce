@@ -29,14 +29,14 @@
         <p>Artful Atlas is an online platform on the surface. Deep inside on the other hand, it's a vibrant community dedicated to showcasing the rich Moroccan artistry to the world. <br> <br> Our mission is to amplify the essence of Moroccan identity by spotlighting emerging talents who skillfully capture the essence of their heritage through their distinctive artistic expressions. <br> Ever pondered the possibility of communication transcending linguistic barriers? We've discovered a universal language; that is art. Through the powerful medium of artistic expression, we break down language barriers and connect individuals from diverse backgrounds on a profound level. <br> <br> Join us in celebrating the boundless communication and understanding fostered by the language of art. Through our curated selection of artwork, we aim to bridge cultures and foster a deeper appreciation for the beauty and diversity of Moroccan art. <br> <br> Our team is passionate about supporting young Moroccan artists on their journey to global recognition. We provide a platform for these talents to shine, offering them exposure and opportunities to showcase their work to a global audience. Join us on our journey as we celebrate the creativity, innovation, and cultural richness of Morocco, one masterpiece at a time.</p>
     </div>
 </header>
-<header id="whosuite">
+<!-- <header id="whosuite">
     <h3>Meet the Team</h3>
     
     <div class="flex">
         <img src="{% static 'images/images-testing/5.jpg' %}" alt="">
         <p>Just me!</p>
     </div>
-</header>
+</header> -->
 
 <!-- <hr class="hr"> -->
 
@@ -56,11 +56,11 @@
 
 <!-- <hr class="hr"> -->
 
-<header id="history">
+<!-- <header id="history">
     <h1>Our history</h1>
     <p>It all began with 2 close friends. The first one was an art admirer who kept on sharpening his art skills, bearing no attention whatsoever to recognition nor status. The second however, saw the talent in his friend and the fire w dakchi l mhm chi 9isa 7azina ala ti3sak. w moraha kanden chi image </p>
     <img src="{% static 'images/slider0/morocco0.jpg' %}" alt="" width="800" height="500">
-</header>
+</header> -->
 
 <!-- <hr class="hr"> -->
 
@@ -84,10 +84,51 @@
 <hr class="hr">
 
 <h1>Testimonials</h1>
+<header id="reviews">
+    {% if not reviews %}
+    <br>
+    <span class="larger">No testimonials yet.</span>
+    <br>
+    {% else %}
+        {% for r in reviews %}
+        <div class="flex" id="review">
+            <img id="user-profile-picture" src="{% static 'images/sign-up/customer.jpg' %}" alt="">
+            <h3>{{r.user.username|title}}</h3> <br>
+            <p>{{r.date|date:"F d, Y"}}</p> <br>
+        </div>
+        <p style="text-align:start;"> - {{r.review}}</p> <br>
+    {% endfor %}
+    {% endif %}
+    
+    {% if make_review == True %}
+    {% if request.user.is_authenticated %}
+    <div id="hide">
+        <h3>Add a testimonial</h3>
+        <form action="{% url 'home:index' %}" id="addReview" method="post">
+            {% csrf_token %}
+            <p>{{review_form.review}}</p>
+            <input type="hidden" name="action" value="review">
+            <button class="button" id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+    {% endif %}
+    <br><br>
+    <p id="review-message"></p>
+    {% if not request.user.is_authenticated %}
+        <p>You must be logged in to be able to post a comment or a review. 
+            <a href="{% url 'userauths:login' %}?next={{ current_url }}">Log in</a>
+        </p>
+        <br>
+        <p>Don't have an account yet? <a href="{% url 'userauths:sign-up' %}">Sign up</a></p>
+    {% endif %}
+    </header>
 
 <hr class="hr">
 
 <h1>Contact us!</h1>
+<h3 style="text-align:center;">You can contact us <a href="{% url 'home:contact' %}">here</a>.</h3>
+<br><br><br>
 <div class="clear"></div>
 <br>
 {% endblock content %}

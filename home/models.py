@@ -137,6 +137,9 @@ class Artist(models.Model):
     subject_matter = models.ForeignKey(SubjectMatter, on_delete=models.SET_NULL, null=True, blank = True)
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
+    #Number of people who viewed the artist's profile
+    views = models.PositiveIntegerField(default=0)
+
 
     class Meta:
         verbose_name_plural = "Artists"
@@ -190,10 +193,10 @@ class Product(models.Model):
     pid = ShortUUIDField(unique = True, length = 10, max_length = 30, prefix="product", alphabet = "abcdefgh123456")
     title = models.CharField(max_length = 200)
     image = models.ImageField(upload_to = user_directory_path)
-    description = models.TextField(null = True, blank = True, default="Description | Story | Meaning of the artwork according to the artist.")
-    price = models.DecimalField(max_digits=99999, decimal_places=2) # 99999,99
+    description = models.TextField(null = True, blank = True)
+    price = models.DecimalField(max_digits=20, decimal_places=2) # 99999,99
     # old_price = models.DecimalField(max_digits=99999,decimal_places=2, null=True) # b7al sold
-    specifications = models.TextField(null=True, blank = True, default = "A more detailed description of the tools used to paint the artwork.") 
+    specifications = models.TextField(null=True, blank = True) 
     product_status = models.CharField(choices = STATUS, max_length=30,default = "in review")
     medium = models.CharField(choices = MEDIUM, max_length=40,default = "canvas")
     height = models.IntegerField(default = 0)
@@ -267,7 +270,7 @@ class CartOrder(models.Model):
     tracking_id = models.CharField(max_length = 100, null = True, blank = True)
     tracking_website_address = models.CharField(max_length = 100, null = True, blank = True)
 
-    price = models.DecimalField(max_digits=99999, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
     # Whether or not the order has been paid for
     paid_status = models.BooleanField(default = False)
     order_date = models.DateTimeField(auto_now_add = True)
@@ -289,8 +292,8 @@ class CartOrderItems(models.Model):
     name = models.CharField(max_length = 200)
     image = models.CharField(max_length = 200)
     quantity = models.IntegerField(default = 0)
-    price = models.DecimalField(max_digits=99999, decimal_places=2)
-    total = models.DecimalField(max_digits=99999, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
+    total = models.DecimalField(max_digits=20, decimal_places=2)
     invoice_no = models.CharField(max_length=200)
 
     class Meta:
@@ -443,3 +446,19 @@ class Profile(models.Model):
             return self.full_name
         except AttributeError:
             return self.user.username
+
+
+class Offer(models.Model):
+    artwork = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='offers')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')
+    offer_price = models.DecimalField(max_digits=10, decimal_places=2)
+    message = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=10, choices=[
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ], default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Offer by {self.user.username} for {self.artwork.title}"

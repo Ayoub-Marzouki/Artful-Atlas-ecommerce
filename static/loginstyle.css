@@ -1,4 +1,5 @@
 body {
+    font-size:larger;
     font-family:monospace;
     text-align:center;
     background-image:linear-gradient(to bottom,#212a2f,#00415a,#1E5162,#296E85);
@@ -70,12 +71,13 @@ a {
 }
 
 input {
-    padding:2%;
-    margin:2%;
+    border:10px solid skyblue;
+    background-color:skyblue;
     width:300px;
     height:50px;
-    border:3px solid lightseagreen;
-    border-radius:5px;
+    border-radius:15px;
+    padding:2%;
+    margin:2%;
 }
 
 #remember {
@@ -94,24 +96,48 @@ label {
     color:whitesmoke;
 }
 
-#submit, h4 {
+#submit, #facebook, #google {
     width:300px;
     padding:3%;
     margin:1%;
     display:inline-block;
     font-weight:900;
     font-size:15px;
-    color:whitesmoke;
-    background-color:lightseagreen;
+    color:rgba(0,0,0,0.8);
+    background-color:lightskyblue;
     border:1px solid rgba(0,0,0,0.5);
     border-radius:5px;
 }
-#submit:hover, h4:hover {
+#submit:hover {
     cursor:pointer;
+    background-color:skyblue;
 }
 
 .hr {
     margin:2% auto 1% auto;
     width:50%;
     color:rgba(0,0,0,0.5);
+}
+
+/* Styling google & facebook buttons */
+
+#social-media a {
+    text-decoration:none;
+}
+.icons {
+    width:30px;
+    height:30px;
+}
+#google, #facebook {
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+    background-color:whitesmoke;
+    color:black;
+    margin:2% auto 5% auto;
+}
+
+#facebook {
+    background-color:#1877f2;
+    color:whitesmoke;
 }

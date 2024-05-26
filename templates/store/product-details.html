@@ -48,7 +48,7 @@
             </div>
 
             <br>
-
+            {% if product.available == True %}
             <div class="info-sections" id="price-section">
                 <h1>Price and Shipping</h1>
                 <br>
@@ -70,33 +70,45 @@
                 </button>
             </div>
 
-            <div class="button offer"> 
-                <img class="icons" src="{% static 'images/icons/bid.png' %}" alt="">
-                <span>Make an Offer!</span>
-            </div>
+            <a style="text-decoration:none;" href="{% url 'home:make-offer' product.pid %}">
+                <div class="button offer"> 
+                    <img class="icons" src="{% static 'images/icons/bid.png' %}" alt="">
+                    <span>Make an Offer!</span>
+                </div>
+            </a>
 
             <div class="button wishlist add-to-wishlist" data-product-item="{{product.id}}"> 
                 <img class="icons" src="{% static 'images/icons/heart.png' %}" alt="">
                 <span>Add to Wishlist</span>
             </div>
+            {% endif %}
         </section>
     </header>
     <br><br>
-    {% if product.specifications %}
     <header>
         <h1>Artworks's specifications</h1>
         <br>
-        <p>{{product.specifications}}</p>
+        <p style="padding:2%;">{% if product.specifications %}
+            {{product.specifications}} 
+            {% else %}
+            No specifications provided by the artist yet. 
+            {% endif %}
+        </p>
     </header>
-    {% endif %}
     <br><br>
-    {% if product.description %}
     <header>
         <h1>Artwork's description according to the artist</h1>
         <br>
-        <p>{{product.description}}</p>
+        
+        <p style="padding:2%;">
+            {% if product.description %}
+            {{product.description}}
+            {% else %}
+            No description is provided by the artist yet.
+            {% endif %}
+        </p>
     </header>
-    {% endif %}
+    
 
     <header id="extra" class="flex">
         <div class="extra-info">
@@ -166,6 +178,7 @@
             {% endif %}
             {% endif %}
             <p id="review-message"></p>
+            <br>
             {% if not request.user.is_authenticated %}
                 <p>You must be logged in to be able to post a comment or a review. 
                     <a href="{% url 'userauths:login' %}?next={{ current_url }}">Log in</a>
@@ -185,7 +198,7 @@
                 &nbsp;
                 <a id="artist-name" href="{% url 'home:artist-details' product.artist.aid %}">{{product.artist.name}}</a>
                 &nbsp;&nbsp;
-                <p>69</p> &nbsp;
+                <p>{{product.artist.views}}</p> &nbsp;
                 <img class="icons" src="{% static 'images/icons/eye.png' %}" alt="Eye Icon">
                 &nbsp;&nbsp;
                 <p>{{product.artist.city}}</p> &nbsp;

@@ -66,6 +66,11 @@ main {
     color:lightseagreen;
 }
 
+/* Forcing the artwork of the month to take only 100% width of the screen at most */
+#selection {
+    width:100%;
+}
+
 
 /* Styling the first header */
 

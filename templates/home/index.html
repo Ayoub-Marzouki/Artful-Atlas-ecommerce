@@ -36,31 +36,38 @@
 <!-- We added this script because we want to handle the artwork of the month manually, but I have it as a css property, not an image tag, so I found a workaround -->
 <script>
     var imageUrl = "{{chosen_product.image.url}}";
-    document.getElementById("selection").style.backgroundImage = "url(" + imageUrl + ")";
+    var selection = document.getElementById("selection");
+    if (selection) {
+        selection.style.backgroundImage = "url(" + imageUrl + ")";
+    }
 </script>
 
 <header id="nav" class="sticky">
     <nav class="flexboxcontainer">
-        <a class="flexbox" href="{% url 'home:index' %}"><img class="logo0" src="{% static 'images/logos-images/logo0.png' %}" alt=""></a>
+        <a class="flexbox" href="{% url 'home:index' %}"><h1 style="color:rgba(0,0,0,0.7);text-shadow:none; font-size:50px;">Artful Atlas</h1></a>
         <a class="flexbox" href="{% url 'home:index' %}">Home</a>
         <a class="flexbox" href="{% url 'home:services' %}">Services</a>
         <a class="flexbox" href="{% url 'home:contact' %}">Contact</a>
-        <a class="flexbox" href="sell.html">Sell</a>
         <a class="flexbox" href="{% url 'home:about' %}">About</a>
         <a class="flexbox" href="{% url 'home:artists' %}">Artists</a>
         <a class="flexbox" href="{% url 'home:store' %}">Store</a>
         <div class="flexbox dropdown">
-            <a href="{% url 'home:dashboard' %}">Account</a>
+            <a href="{% if request.user.is_authenticated %}{% url 'home:dashboard' %}{% else %}{% url 'userauths:login' %}{% endif %}">Account</a>
             <div class="dropdown-content">
-                <a href="{% url 'home:dashboard' %}">Dashboard</a>
-                <a href="{% url 'home:dashboard' %}">Profile</a>
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'userauths:logout' %}">Log out</a>
+                {% if request.user.user_type == 'artist' %}
+                        <a href="{% url 'artist-dashboard:artist-dashboard' %}">Artist Dashboard</a>
+                {% endif %}
+                    <a href="{% url 'home:dashboard' %}">Dashboard</a>
+                    <a href="{% url 'home:dashboard' %}">Profile</a>
+                    <a href="{% url 'userauths:logout' %}">Log out</a>
                 {% else %}
-                <a href="{% url 'userauths:login' %}">Login</a>
+                    <a href="{% url 'userauths:login' %}">Login</a>
+                    <a href="{% url 'userauths:sign-up' %}">Sign up</a>
                 {% endif %}
             </div>
         </div>
+
         <div class="flexbox">
             <a class="cart" href="{% url 'home:cart' %}">
                 <img class="icons" src="{% static 'images/icons/cart.png' %}" alt="cart icon" width="25" height="25">
@@ -153,7 +160,7 @@
 
 <header id="discover-artists">
     <span class="larger">Discover a curated collection of captivating artworks by Moroccan talented artists. From mesmerizing paintings to exquisite landscapes, explore diverse expressions of creativity that inspire and enrich. Dive into our artists' corner and find the perfect piece to elevate your space.</span>
-    <h1 id="h1-artists">More about our  <a href="artists.html">artists</a></h1>
+    <h1 id="h1-artists">More about our  <a href="{% url 'home:artists' %}">artists</a></h1>
 </header>
 
 <br><br><br><br>
@@ -215,7 +222,7 @@
         {% endif %}
 
         <br>
-        <h2>Current Score : {{average_rating.rating|floatformat}}  /5</h2>
+        <h2>Current Score : {{average_rating.rating|floatformat}}/5</h2>
     {% endif %}
 
     {% if make_rating == True %}

@@ -100,7 +100,7 @@
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: "{{order.price}}"
+                        value: "{{price_in_usd}}"
                     }
                 }]
             });
@@ -187,7 +187,7 @@
                     },
                     purchase_units: [{
                         amount: {
-                            value: '{{order.price}}',
+                            value: '{{price_in_usd}}',
                             currency_code: 'USD'
                         },
                     }]
@@ -242,7 +242,7 @@
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: "{{order.price}}"
+                        value: "{{price_in_usd}}"
                     }
                 }]
             });
@@ -308,7 +308,7 @@
                     intent: 'CAPTURE',
                     purchase_units: [{
                         amount: {
-                            value: '{{order.price}}',
+                            value: '{{price_in_usd}}',
                             currency_code: 'USD'
                         },
                     }]

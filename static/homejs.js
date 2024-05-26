@@ -2,15 +2,16 @@
 function scrollToSection(buttonId, sectionId) {
     const scrollButton = document.getElementById(buttonId);
     const section = document.getElementById(sectionId);
+    if (scrollButton && section) {
+        scrollButton.addEventListener('click', () => {
+            const offset = section.offsetTop;
 
-    scrollButton.addEventListener('click', () => {
-        const offset = section.offsetTop;
-
-        window.scrollTo({
-            top: offset,
-            behavior: 'smooth'
+            window.scrollTo({
+                top: offset,
+                behavior: 'smooth'
+            });
         });
-    });
+}
 }
 
 // Function to create sliders

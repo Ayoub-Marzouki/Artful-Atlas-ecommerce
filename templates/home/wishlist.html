@@ -29,7 +29,12 @@
         </div>
         <div>
             <h2 class="flex">Availability</h2> 
-            <h3>Available / SOLD</h3>
+            <h3>{% if w.product.available %}
+                Available
+                {% else %}
+                Sold
+                {% endif %}
+            </h3>
         </div>
         <span>
             <input type="hidden" class="product-id" value="{{w.product.id}}" name="" id="">

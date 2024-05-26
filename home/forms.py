@@ -1,5 +1,5 @@
 from django import forms
-from home.models import ProductReview, ArtistReview, UserReview, UserRating, Contact, NewsletterSubscriber, Profile
+from home.models import ProductReview, ArtistReview, UserReview, UserRating, Contact, NewsletterSubscriber, Profile, Offer
 from cities_light.models import Country, City
 
 class ProductReviewForm(forms.ModelForm):
@@ -53,3 +53,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'image', 'bio', 'phone']
+
+
+class OfferForm(forms.ModelForm):
+    offer_price = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={'placeholder':"Your custom price"}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'placeholder':"Tell the artist about your offer"}))
+    class Meta:
+        model = Offer
+        fields = ['offer_price', 'message']

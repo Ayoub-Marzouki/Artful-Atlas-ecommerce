@@ -25,6 +25,11 @@
             <img class="icons" src="{% static 'images/icons/orders.png' %}" alt=""> 
             <span>Orders</span>
         </div>
+
+        <div class="flex tab"  id="offers-tab">
+            <img class="icons" src="{% static 'images/icons/bid.png' %}" alt=""> 
+            <span>Offers</span>
+        </div>
     
         <div class="flex tab" id="addresses-tab">
             <img class="icons" src="{% static 'images/icons/location.png' %}" alt=""> 
@@ -99,7 +104,8 @@
                         {% for o in orders %}
                         <tr>
                             <td>INVOICE_NO-{{o.oid}}</td>
-                            <td>{{o.order_date}}</td>
+                            <td>{{ o.order_date|date:"Y-m-d" }}</td>
+
                             <td>{{o.product_status}}</td>
 
                             {% if o.paid_status == True %}
@@ -117,6 +123,36 @@
             </table>
         {% else %}
             <p>No orders yet.</p>
+        {% endif %}
+    </section>
+
+    <section id="offers" class="content">
+        <h1>Your offers</h1>
+        {% if offers %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Artwork in question</th>
+                        <th>Original price</th>
+                        <th>Your price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for o in offers %}
+                        <tr>
+                            <td>{{o.status|title}}</td>
+                            <td>{{o.created_at}}</td>
+                            <td>{{o.artwork.title}}</td>
+                            <td>{{o.artwork.price}}</td>
+                            <td>{{o.offer_price}}</td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No offers yet.</p>
         {% endif %}
     </section>
 
@@ -175,11 +211,18 @@
     <section id="account-details" class="content">
         <h1>Account details</h1>
         {% if user.user_type == 'art_enthusiast' %}
-            <p>User type : Art Enthusiast</p>
+            <p>User type : Customer</p>
+            <br>
+            <h2>Become an artist</h2>
+            <br>
+            <form action="" method="post">
+                {% csrf_token %}
+                <br>
+                <button class="button" name="become-artist-button-name" type="submit">Become an Artist</button>
+            </form>
         {% else %}
             <p>User type : Artist</p>
         {% endif %}
-
     </section>
 </section>
 {% endblock content %}
