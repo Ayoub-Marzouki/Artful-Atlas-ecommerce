@@ -59,8 +59,8 @@
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/Warrior-Player/Official-backend.git
-    cd Official-backend
+    git clone https://github.com/Warrior-Player/Artful-Atlas-ecommerce.git
+    cd Artful-Atlas-ecommerce
     ```
 
 2. Install dependencies:
